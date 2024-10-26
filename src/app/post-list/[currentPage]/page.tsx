@@ -49,10 +49,10 @@ export default async function PostListPage({
 					href={`/post/${post.id}`}>
 					{post.title}
 				</Link>
-				<p className="opacity-60 my-4">
+				<p className="opacity-60 my-4 darkani">
 					{post.modified_at.toLocaleDateString()}
 				</p>
-				<p className="my-4">{post.description}</p>
+				<p className="my-4 darkani">{post.description}</p>
 			</div>
 		);
 	});
