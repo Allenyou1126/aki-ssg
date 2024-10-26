@@ -80,7 +80,7 @@ export default function Navigation({
 	const toggleExpand = useCallback(() => {
 		setExpanded(!expanded);
 		if (!expanded) {
-			setNavHeight(5 + 3.5 * (links.length + 1) + 0.25);
+			setNavHeight(5 + 3.5 * (links.length + 2) + 0.25);
 			startTransistion(() => {
 				setMenuStep(2);
 			});
@@ -135,6 +135,9 @@ export default function Navigation({
 								</li>
 							);
 						})}
+						<li>
+							<Link href="https://www.travellings.cn/go.html">开往</Link>
+						</li>
 					</ul>
 					<div className="flex gap-1">
 						<DarkModeSwitcher />
@@ -185,6 +188,13 @@ export default function Navigation({
 							</li>
 						);
 					})}
+					<li className="contents">
+						<Link
+							className="h-14 leading-[3.5rem] w-full text-center align-middle block text-xl"
+							href="https://www.travellings.cn/go.html">
+							开往
+						</Link>
+					</li>
 				</ul>
 			</div>
 		</nav>
