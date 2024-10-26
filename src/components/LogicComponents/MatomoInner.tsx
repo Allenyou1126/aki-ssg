@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { useEffect } from "react";
 
 export default function MatomoInner() {
 	useEffect(() => {
-		var _paq = ((window as any)._paq = (window as any)._paq || []);
+		let _paq = ((window as any)._paq = (window as any)._paq || []);
 		_paq.push(["trackPageView"]);
 		_paq.push(["enableLinkTracking"]);
 		(function () {
-			var u = "https://stat.allenyou.wang/";
+			let u = "https://stat.allenyou.wang/";
 			_paq.push(["setTrackerUrl", u + "matomo.php"]);
 			_paq.push(["setSiteId", "4"]);
-			var d = document,
+			let d = document,
 				g = d.createElement("script"),
 				s = d.getElementsByTagName("script")[0];
 			g.async = true;
