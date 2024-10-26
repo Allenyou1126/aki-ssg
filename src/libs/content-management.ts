@@ -62,7 +62,11 @@ class CMS {
 					);
 				})
 				.then((list) => {
-					this.posts = list.filter((v) => v !== undefined);
+					this.posts = list
+						.filter((v) => v !== undefined)
+						.sort((a, b) => {
+							return b.modified_at.getTime() - a.modified_at.getTime();
+						});
 				}),
 			fs
 				.readdir(path.join(process.cwd(), "src", "data", "pages"))
