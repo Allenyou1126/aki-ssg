@@ -16,8 +16,8 @@ declare type WalineCommentConfig = { enabled: true; waline_api: string };
 declare type CommentConfig = DisableCommentConfig | WalineCommentConfig;
 
 declare type FollowConfig = {
-	user_id: number;
-	feed_id: number;
+	user_id: string;
+	feed_id: string;
 };
 
 declare type StyleConfig = {
