@@ -6,14 +6,14 @@ import { useEffect } from "react";
 
 export default function MatomoInner() {
 	useEffect(() => {
-		let _paq = ((window as any)._paq = (window as any)._paq || []);
+		const _paq = ((window as any)._paq = (window as any)._paq || []);
 		_paq.push(["trackPageView"]);
 		_paq.push(["enableLinkTracking"]);
 		(function () {
-			let u = "https://stat.allenyou.wang/";
+			const u = "https://stat.allenyou.wang/";
 			_paq.push(["setTrackerUrl", u + "matomo.php"]);
 			_paq.push(["setSiteId", "4"]);
-			let d = document,
+			const d = document,
 				g = d.createElement("script"),
 				s = d.getElementsByTagName("script")[0];
 			g.async = true;
