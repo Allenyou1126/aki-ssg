@@ -1,5 +1,6 @@
 import AntiReverseProxy from "./AntiReverseProxy";
 import { DarkModeClient } from "./DarkModeClient";
+import { Matomo } from "./Matomo";
 import { ScrollClient } from "./ScrollClient";
 
 export default function CommonLogic() {
@@ -8,6 +9,7 @@ export default function CommonLogic() {
 			<AntiReverseProxy />
 			<DarkModeClient />
 			<ScrollClient />
+			<Matomo />
 		</>
 	);
 }
