@@ -8,11 +8,6 @@ import { initCMS } from "@/libs/content-management";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export let metadata: Metadata = {
-	title: `文章 - ${config.blog.title}`,
-	description: "没有描述",
-};
-
 export async function generateStaticParams() {
 	const cms = await initCMS();
 	return cms.getPostId().map((i) => {
@@ -20,6 +15,24 @@ export async function generateStaticParams() {
 			id: i.toString(),
 		};
 	});
+}
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{
+		id: number;
+	}>;
+}): Promise<Metadata> {
+	const cms = await initCMS();
+	const post = cms.getPost(parseInt((await params).id.toString()));
+	if (post === undefined) {
+		notFound();
+	}
+	return {
+		title: `${post.title} - ${config.blog.title}`,
+		description: post.description,
+	};
 }
 
 export default async function PostPage({
@@ -34,10 +47,6 @@ export default async function PostPage({
 	if (post === undefined) {
 		notFound();
 	}
-	metadata = {
-		title: `${post.title} - ${config.blog.title}`,
-		description: post.description,
-	};
 	return (
 		<>
 			<div className="rounded-3xl bg-white/70 dark:bg-gray-950/70 backdrop-blur-lg w-full max-w-4xl mx-auto md:w-4xl p-6 min-h-48 transition-colors duration-500">

@@ -4,11 +4,6 @@ import { initCMS } from "@/libs/content-management";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export let metadata: Metadata = {
-	title: `页面 - ${config.blog.title}`,
-	description: "没有描述",
-};
-
 export async function generateStaticParams() {
 	const cms = await initCMS();
 	return cms.getPageSlug().map((s) => {
@@ -16,6 +11,21 @@ export async function generateStaticParams() {
 			slug: s,
 		};
 	});
+}
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+	const cms = await initCMS();
+	const page = cms.getPage((await params).slug);
+	if (page === undefined) {
+		notFound();
+	}
+	return {
+		title: `${page.title} - ${config.blog.title}`,
+	};
 }
 
 export default async function CustomPage({
@@ -28,9 +38,6 @@ export default async function CustomPage({
 	if (page === undefined) {
 		notFound();
 	}
-	metadata = {
-		title: `${page.title} - ${config.blog.title}`,
-	};
 	return (
 		<>
 			<div className="rounded-3xl bg-white/70 dark:bg-gray-950/70 backdrop-blur-lg w-full max-w-4xl mx-auto md:w-4xl p-6 min-h-48 transition-colors duration-500">

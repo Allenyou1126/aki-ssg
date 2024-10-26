@@ -4,8 +4,6 @@ import { connectString } from "@/utils/connectString";
 import { Metadata } from "next";
 import Link from "next/link";
 
-export let metadata: Metadata = { title: "文章列表 - ${config.blog.title}" };
-
 export async function generateStaticParams() {
 	const cms = await initCMS();
 	const total: number = Math.ceil(cms.getPostId().length / 10);
@@ -18,6 +16,20 @@ export async function generateStaticParams() {
 	return ret;
 }
 
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{
+		currentPage: number;
+	}>;
+}): Promise<Metadata> {
+	return {
+		title: `文章列表 - 第${(await params).currentPage}页 - ${
+			config.blog.title
+		}`,
+	};
+}
+
 export default async function PostListPage({
 	params,
 }: {
@@ -25,11 +37,6 @@ export default async function PostListPage({
 		currentPage: number;
 	}>;
 }) {
-	metadata = {
-		title: `文章列表 - 第${(await params).currentPage}页 - ${
-			config.blog.title
-		}`,
-	};
 	const cms = await initCMS();
 	const total_page = Math.ceil(cms.getPostId().length / 10);
 	const current_page = (await params).currentPage;
