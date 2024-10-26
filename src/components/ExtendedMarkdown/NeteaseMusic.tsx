@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NeteaseMusicClient } from "./NeteaseMusicClient";
 
 export default async function NeteaseMusic({ id }: { id: number }) {

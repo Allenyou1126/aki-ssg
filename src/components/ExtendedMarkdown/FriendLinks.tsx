@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import { initCMS } from "@/libs/content-management";
 import getAvatar from "@/utils/getAvatar";
 import Link from "next/link";

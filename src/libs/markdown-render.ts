@@ -105,6 +105,7 @@ export class MarkdownContent implements RenderableContent {
 				Fragment,
 				components: {
 					...extended_components,
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} as any,
 				ignoreInvalidStyle: true,
 				jsx,
