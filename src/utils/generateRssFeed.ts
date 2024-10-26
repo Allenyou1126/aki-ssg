@@ -4,12 +4,12 @@ import RSS from "rss";
 import fs from "fs";
 import path from "path";
 
-export function generateRssFeed() {
+export async function generateRssFeed() {
 	const feed = new RSS({
 		title: config.blog.title,
 		description: config.blog.description,
 		site_url: `https://${config.blog.hostname}/`,
-		feed_url: `https://${config.blog.hostname}/feed/`,
+		feed_url: `https://${config.blog.hostname}/feed.xml`,
 		language: "zh-CN",
 		custom_elements:
 			config.follow === undefined
@@ -24,22 +24,21 @@ export function generateRssFeed() {
 				  ],
 		generator: "Aki-SSG",
 	});
-	initCMS().then((cms) => {
-		cms.getPostId().forEach((id) => {
-			const post = cms.getPost(id)!;
-			feed.item({
-				title: post.title,
-				description: post.markdown_content.toRssFeed(),
-				url: `https://${config.blog.hostname}/post/${id}`,
-				date: post.modified_at,
-			});
+	const cms = await initCMS();
+	cms.getPostId().forEach((id) => {
+		const post = cms.getPost(id)!;
+		feed.item({
+			title: post.title,
+			description: post.markdown_content.toRssFeed(),
+			url: `https://${config.blog.hostname}/post/${id}`,
+			date: post.modified_at,
 		});
-		fs.promises.writeFile(
-			path.join(process.cwd(), "public", "feed.xml"),
-			feed.xml(),
-			{
-				flag: "w",
-			}
-		);
 	});
+	await fs.promises.writeFile(
+		path.join(process.cwd(), "public", "feed.xml"),
+		feed.xml(),
+		{
+			flag: "w",
+		}
+	);
 }

@@ -24,7 +24,7 @@ export const config: SiteConfig = createConfig({
 	},
 	gravatar_mirror: "https://blog-oss.allenyou.top/avatar/",
 	follow: {
-		user_id: 69221670505945088,
-		feed_id: 73041701218313216,
+		user_id: "69221670505945088",
+		feed_id: "73041701218313216",
 	},
 });
