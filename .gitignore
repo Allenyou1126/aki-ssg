@@ -40,3 +40,5 @@ next-env.d.ts
 
 # generated feed file
 feed.xml
+
+deploy
