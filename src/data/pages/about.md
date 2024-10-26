@@ -7,7 +7,7 @@ navigation_title: 关于
 navigation_index: 3
 ---
 
-你好，这里是秋实-Allenyou （a.k.a. Allenyou、秋实、Allen You），业余 Bug 制造者，Furry 控，前 OIer，现 ACMer（蒟蒻），平时主要在湖南长沙活跃，这是一些关于我和本站的信息。
+你好，这里是秋实-Allenyou （a.k.a. Allenyou、秋实、Allen You），业余 Bug 制造者，Furry 控，前 OIer，现 ACMer（蒟蒻），ENTJ-A，平时主要在湖南长沙活跃，这是一些关于我和本站的信息。
 
 ## 技术栈
 
@@ -21,6 +21,11 @@ navigation_index: 3
 - Tailwind CSS：用来解决我不会写 CSS 的问题（bushi）
 - Linux & Docker：非常适合偷懒的服务器运维
 
+## 维护的项目
+
+- [Aki-SSG](https://github.com/Allenyou1126/aki-ssg)：一个基于 Next.js 和 Tailwind CSS 的静态站点生成器
+- [开往 Travellings](https://travellings.cn)：一个友链接力项目，旨在通过网络跳转的方式将流量引入那些鲜为人知的独立站点，从而推动网络的开放性和多元性
+
 ## 常用设备
 
 - 💻：Lenovo REGION R9000P 2023
@@ -32,17 +37,14 @@ navigation_index: 3
 
 ## VAN♂ 游戏
 
-我平时花在游戏上的时间不算特别多，在玩的游戏有下面这些（按照最近玩的时间长短排序）：
+我平时花在游戏上的时间不算特别多，最近在玩的游戏有下面这些（按照最近玩的时间长短排序）：
 
-- Counter Strike 2 (5e 优先 1400)
+- Counter Strike 2 (5e 优先 1700)
+- Arcaea（ptt 10.91）
 - Phigros（rks 15.54）
-- Maimai DX 2024（DX Rating 9554）
-- PUBG: BATTLEGROUNDS
+- Maimai DX 2024（DX Rating w1）
 - 旋转音律 Rotaeno（音律值 15.336）
-- Arcaea（ptt 10.75）
 - Minecraft: Java Edition
-- Apex Legends
-- League of Legends
 
 突然发现我真的好菜啊 QwQ
 
@@ -75,7 +77,7 @@ navigation_index: 3
 
 ### 特别感谢
 
-本站前端样式模仿自[tcdw](https://www.tcdw.net)，感谢大佬授权！
+本站前端样式模仿自[tcdw/koi](https://github.com/tcdw/koi)，感谢大佬授权！
 
 ### 使用的服务设施
 
@@ -89,4 +91,4 @@ DNS 使用 Cloudflare 的免费服务进行解析，没开启 CDN（CF 的国外
 
 ### 网站架构
 
-使用 Next.js + React + TailwindCSS 开发并静态构建，运行于 Linux + Nginx in Docker 架构上。
+基于 [Aki-SSG](https://github.com/Allenyou1126/aki-ssg) 使用 Next.js + React + TailwindCSS 开发并静态构建，运行于 Linux + Nginx in Docker 架构上。
