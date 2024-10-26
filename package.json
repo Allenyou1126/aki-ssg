@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "next dev --turbo",
 		"build": "next build",
+		"postbuild": "bash deploy.sh",
 		"start": "next start",
 		"lint": "next lint"
 	},
