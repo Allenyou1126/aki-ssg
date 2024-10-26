@@ -1,5 +1,5 @@
 ---
-slug: about
+slug: friend
 title: 友情链接
 enable_comment: true
 allow_index: false
