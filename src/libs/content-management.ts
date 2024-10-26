@@ -104,8 +104,7 @@ class CMS {
 											attr.allow_index === undefined ||
 											typeof attr.allow_index !== "boolean"
 												? false
-												: (attr.allow_index as string).toLocaleLowerCase() ===
-												  "true",
+												: attr.allow_index,
 										navigation_title: attr.navigation_title,
 										navigation_index:
 											attr.navigation_index === undefined
