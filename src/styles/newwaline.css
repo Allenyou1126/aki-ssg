@@ -85,9 +85,6 @@
 .comment .token.bold {
 	@apply font-bold;
 }
-.comment .token.italic {
-	@apply italic;
-}
 .comment .token.entity {
 	@apply cursor-help;
 }
