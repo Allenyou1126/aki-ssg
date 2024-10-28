@@ -1,39 +1,26 @@
 #comment-area * {
-	line-height: 1.75rem;
-}
-
-.lh-1\.75 {
-	line-height: 1.75;
+	@apply leading-[1.75];
 }
 .comment pre,
 .comment pre[class*="language-"] {
-	@apply overflow-auto;
-	margin: 0.75rem 0;
-	padding: 1rem 1.25rem;
-	border-radius: 6px;
-	line-height: 1.4;
+	@apply overflow-auto leading-[1.4] rounded-md px-4 py-5 mx-3 my-0;
 }
 .comment pre code,
 .comment pre[class*="language-"] code {
-	@apply p-0;
-	border-radius: 0;
-	background: rgba(0, 0, 0, 0) !important;
+	@apply p-0 rounded-none !bg-black/0;
 	color: #bbb;
 	direction: ltr;
 }
 .comment code[class*="language-"],
 .comment pre[class*="language-"] {
-	background: none;
+	@apply text-left whitespace-pre hyphens-none bg-[none];
 	color: #ccc;
 	font-size: 1em;
 	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-	@apply text-left whitespace-pre hyphens-none;
-	white-space: pre;
 	word-spacing: normal;
 	word-wrap: normal;
 	word-break: normal;
 	tab-size: 4;
-	hyphens: none;
 }
 .comment pre[class*="language-"] {
 	@apply overflow-auto;
@@ -43,9 +30,7 @@
 	background: #2d2d2d;
 }
 .comment :not(pre) > code[class*="language-"] {
-	padding: 0.1em;
-	border-radius: 0.3em;
-	white-space: normal;
+	@apply p-[0.1em] rounded-[0.3em] whitespace-normal;
 }
 .comment .token.comment,
 .comment .token.block-comment,
@@ -98,13 +83,13 @@
 }
 .comment .token.important,
 .comment .token.bold {
-	font-weight: bold;
+	@apply font-bold;
 }
 .comment .token.italic {
-	font-style: italic;
+	@apply italic;
 }
 .comment .token.entity {
-	cursor: help;
+	@apply cursor-help;
 }
 .comment .token.inserted {
 	color: green;

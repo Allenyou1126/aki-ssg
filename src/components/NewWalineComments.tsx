@@ -319,7 +319,7 @@ export function NewWalineCommentCard({
 				/>
 			</div>
 			<div className="flex flex-1 pb-2 flex-col gap-1">
-				<div className="overflow-hidden relative w-full lh-1.75">
+				<div className="overflow-hidden relative w-full leading-[1.75]">
 					{c.link !== null &&
 					(c.link.startsWith("http://") || c.link.startsWith("https://")) ? (
 						<a
@@ -357,7 +357,7 @@ export function NewWalineCommentCard({
 					</span>
 					<UpdateButton c={c} parent={parent} />
 				</div>
-				<div className="w-full comment prose prose-ay dark:prose-invert max-w-none text-sm lh-1.75 break-all">
+				<div className="w-full comment prose prose-ay dark:prose-invert max-w-none text-sm leading-[1.75] break-all">
 					{toJsxRuntime(
 						fromHtml(c.comment, {
 							fragment: true,
