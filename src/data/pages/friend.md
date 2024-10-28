@@ -38,4 +38,4 @@ navigation_index: 1
 ]
 ```
 
-::friend_link
+::friend_links
