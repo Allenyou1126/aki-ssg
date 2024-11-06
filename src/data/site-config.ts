@@ -22,7 +22,11 @@ export const config: SiteConfig = createConfig({
 		enabled: true,
 		waline_api: "https://waline.allenyou.wang/",
 	},
-	gravatar_mirror: "https://blog-oss.allenyou.top/avatar/",
+	optimize: {
+		gravatar_mirror: "https://blog-oss.allenyou.top/avatar/",
+		thumb_query: "/thumb",
+		cdn_prefix: "https://blog-oss.allenyou.top/BlogNGCDN/",
+	},
 	follow: {
 		user_id: "69221670505945088",
 		feed_id: "73041701218313216",
