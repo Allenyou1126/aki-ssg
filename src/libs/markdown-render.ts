@@ -30,6 +30,7 @@ import NeteaseMusic from "@/components/ExtendedMarkdown/NeteaseMusic";
 import { remarkNeteaseMusic } from "./markdown-extension/remark-netease-music";
 import { remarkFriendLinks } from "./markdown-extension/remark-friend-links";
 import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks";
+import Image from "@/components/PostComponents/Image";
 
 const extended_components = {
 	bilibili: BilibiliVideo,
@@ -104,6 +105,7 @@ export class MarkdownContent implements RenderableContent {
 			toJsxRuntime(this.hastTree, {
 				Fragment,
 				components: {
+					img: Image,
 					...extended_components,
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} as any,

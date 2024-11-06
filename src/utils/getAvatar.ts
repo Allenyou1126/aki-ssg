@@ -5,5 +5,5 @@ export default function getAvatar(
 	email: string = "test@example.com",
 	size: number = 80
 ): string {
-	return `${config.gravatar_mirror}${md5(email)}?s=${size}`;
+	return `${config.optimize.gravatar_mirror}${md5(email)}?s=${size}`;
 }

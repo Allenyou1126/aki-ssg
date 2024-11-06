@@ -70,7 +70,15 @@ export const config: SiteConfig = createConfig({
 			enabled: true,
 			waline_api: ""
 		},
-		// Gravatar 镜像源
+		optimize: { // 优化配置
+			gravatar_mirror: "https://gravatar.com/avatar/", // Gravatar 镜像源
+			cdn_prefix: "", // 可选，加载静态资源时使用的 CDN 地址前缀（参见 next.config.ts 文件中的 assetPrefix 配置项）
+							// 如果该项没有配置，静态资源将全部从本地加载。
+			thumb_query: "", // 可选，代表文章中引用图片的缩略图 URL 末尾的部分。
+							// 当文章中图片没有完全加载时，将显示缩略图代替。
+							// 如果该项没有配置，将不显示缩略图。
+		}
+
 		gravatar_mirror: "https://gravatar.com/avatar/",
 	};);
 ```

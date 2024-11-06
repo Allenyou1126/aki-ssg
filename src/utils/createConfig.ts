@@ -20,10 +20,18 @@ export function createConfig(c: PartialSiteConfig): SiteConfig {
 		comment: {
 			enabled: false,
 		},
-		gravatar_mirror: "https://gravatar.com/avatar/",
+		optimize: {
+			gravatar_mirror: "https://gravatar.com/avatar/",
+		},
 	};
-	if (c.gravatar_mirror !== undefined) {
-		ret.gravatar_mirror = c.gravatar_mirror;
+	if (c.optimize?.gravatar_mirror !== undefined) {
+		ret.optimize.gravatar_mirror = c.optimize.gravatar_mirror;
+	}
+	if (c.optimize?.cdn_prefix !== undefined) {
+		ret.optimize.cdn_prefix = c.optimize.cdn_prefix;
+	}
+	if (c.optimize?.thumb_query !== undefined) {
+		ret.optimize.thumb_query = c.optimize.thumb_query;
 	}
 	if (c.comment !== undefined) {
 		ret.comment = c.comment;

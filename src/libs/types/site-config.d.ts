@@ -38,13 +38,19 @@ declare type PartialStyleConfig = {
 		| string;
 };
 
+declare type OptimizeConfig = {
+	gravatar_mirror: string;
+	cdn_prefix?: string;
+	thumb_query?: string;
+};
+
 declare type SiteConfig = {
 	author: AuthorConfig;
 	blog: BlogConfig;
 	style: StyleConfig;
 	comment: CommentConfig;
-	gravatar_mirror: string;
 	follow?: FollowConfig;
+	optimize: OptimizeConfig;
 };
 
 declare type PartialSiteConfig = {
@@ -52,6 +58,6 @@ declare type PartialSiteConfig = {
 	blog?: Partial<BlogConfig>;
 	style?: PartialStyleConfig;
 	comment?: CommentConfig;
-	gravatar_mirror?: string;
 	follow?: FollowConfig;
+	optimize?: Partial<OptimizeConfig>;
 };
