@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-// import DarkModeSwitcher from "./DarkModeSwitcher";
 import getAvatar from "@/utils/getAvatar";
 import Link from "next/link";
 import { connectString } from "@/utils/connectString";
@@ -13,10 +12,7 @@ import {
 	faMoon,
 	faSun,
 } from "@fortawesome/free-solid-svg-icons";
-import "@/styles/animations.css";
 import { config } from "@/data/site-config";
-
-// import AllenyouLink from "./AllenyouLink";
 
 function getDarkModeAlt(mode: "auto" | "light" | "dark") {
 	switch (mode) {
@@ -148,11 +144,22 @@ export default function Navigation({
 							}}>
 							<span className="block relative w-5 h-5" aria-hidden="true">
 								<span
-									className={`burger-bar duration-200 block w-5 h-[0.225rem] bg-black dark:bg-gray-300/80 rounded-full burger-bar-1--s${menuStep} absolute left-1/2`}></span>
+									className={connectString([
+										"duration-200 block w-5 h-[0.225rem] bg-black dark:bg-gray-300/80 rounded-full absolute left-1/2 -translate-x-1/2",
+										menuStep === 1 ? "top-0" : "top-1/2 -translate-y-1/2",
+										menuStep === 3 ? "h-[0.2rem] rotate-45 scale-[1.3]" : "",
+									])}></span>
 								<span
-									className={`burger-bar duration-200 block w-5 h-[0.225rem] bg-black dark:bg-gray-300/80 rounded-full burger-bar-2--s${menuStep} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`}></span>
+									className={connectString([
+										"duration-200 w-5 h-[0.225rem] bg-black dark:bg-gray-300/80 rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+										menuStep === 3 ? "hidden" : "block",
+									])}></span>
 								<span
-									className={`burger-bar duration-200 block w-5 h-[0.225rem] bg-black dark:bg-gray-300/80 rounded-full burger-bar-3--s${menuStep} absolute left-1/2`}></span>
+									className={connectString([
+										"duration-200 block w-5 h-[0.225rem] bg-black dark:bg-gray-300/80 rounded-full absolute left-1/2 -translate-x-1/2",
+										menuStep === 1 ? "bottom-0" : "bottom-1/2 translate-y-1/2",
+										menuStep === 3 ? "h-[0.2rem] -rotate-45 scale-[1.3]" : "",
+									])}></span>
 							</span>
 						</button>
 					</div>
