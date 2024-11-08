@@ -74,8 +74,6 @@ export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
 		return true;
 	}, [src]);
 
-	const isImageFullyLoaded = useImageFullyLoaded(rawImageElRef, src);
-
 	const [setIntersection, isIntersected, resetIntersected] =
 		useIntersection<HTMLImageElement>({
 			rootMargin: "200px",
@@ -156,8 +154,7 @@ export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
 					aspectRatio: ratio,
 				}}
 				className={connectString([
-					"border-box p-0 border-0 m-auto block cursor-zoom-in zoomable",
-					isImageFullyLoaded ? "" : "bg-primary/60",
+					"border-box p-0 border-0 m-auto block cursor-zoom-in zoomable bg-primary/60",
 					props.className == null ? "" : props.className,
 				])}
 				alt={alt}
