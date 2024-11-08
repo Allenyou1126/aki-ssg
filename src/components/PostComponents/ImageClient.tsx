@@ -6,7 +6,7 @@ import { getThumbUrl } from "@/utils/getThumbUrl";
 import { useIntersection } from "@/utils/useIntersection";
 import mediumZoom, { Zoom } from "medium-zoom";
 
-import {
+import React, {
 	useRef,
 	useMemo,
 	useLayoutEffect,
@@ -30,7 +30,6 @@ export const useImageFullyLoaded = (
 		if (srcString) {
 			const img = imageElRef.current;
 			if (!img) return;
-			// 真实图片元素当前的 src（currentSrc，当网页用 picture / source 元素指定了变种后，浏览器实际采用的 src）
 			const imgSrc = img.currentSrc || img.src;
 			if (
 				imgSrc &&
@@ -38,22 +37,17 @@ export const useImageFullyLoaded = (
 					? !imgSrc.endsWith(config.optimize.thumb_query)
 					: imgSrc !== SMALLEST_GIF)
 			) {
-				// 利用 HTMLImageElement.prototype.decode API，获取图片解码后的回调
-				// 在不兼容的浏览器上直接等待一个 microtask
 				const promise = "decode" in img ? img.decode() : Promise.resolve();
 				promise
 					.catch(() => {})
 					.then(() => {
 						if (!imageElRef.current) return;
-						// 记录已经加载完、解码的图片
 						LOADED_IMAGE_URLS.add(srcString);
 						setIsFullyLoaded(true);
 					});
 			}
 		}
 	}, [imageElRef, srcString]);
-	// 由于 SSR 输出了完整 HTML，而页面的 JS 又全部都是异步加载。
-	// 浏览器可能在 React DOM 还没 Hydration 时就完成了图片的下载，因此不能直接添加 onLoad
 	useEffect(() => {
 		if (imageElRef.current) {
 			if (imageElRef.current.complete) {
@@ -68,18 +62,8 @@ export const useImageFullyLoaded = (
 };
 
 export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
-	const {
-		src,
-		className,
-		ref,
-		decoding,
-		crossOrigin,
-		width,
-		height,
-		alt,
-		...rest
-	} = props;
-	const rawImageElRef = useRef<HTMLImageElement | null>(null);
+	const { src, className, ref, decoding, width, height, alt, ...rest } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+	const rawImageElRef = useRef<HTMLImageElement>(null);
 	const previousSrcRef = useRef<string | undefined>(src);
 	const isLazy = useMemo(() => {
 		if (!src) return false;
@@ -115,7 +99,15 @@ export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
 		return zoomRef.current;
 	}
 	const imageElRef: RefCallback<HTMLImageElement> = (node) => {
-		rawImageElRef.current = node;
+		(rawImageElRef as React.MutableRefObject<HTMLImageElement | null>).current =
+			node;
+		if (ref !== null && ref !== undefined && typeof ref !== "string") {
+			if (typeof ref === "function") {
+				ref(node);
+			} else if (ref !== null) {
+				(ref as React.MutableRefObject<HTMLImageElement | null>).current = node;
+			}
+		}
 		const zoom = getZoom();
 		if (node) {
 			zoom.attach(node);
@@ -135,11 +127,11 @@ export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
 				{...rest}
 				className={connectString([
 					"border-box p-0 border-0 m-auto cursor-zoom-in bg-primary/60 block zoomable",
-					props.className == null ? "" : props.className,
+					className == null ? "" : className,
 				])}
+				alt={alt}
 				ref={imageElRef}
 				decoding="async"
-				crossOrigin="anonymous"
 				src={srcString}
 			/>
 		);
@@ -164,12 +156,13 @@ export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
 					aspectRatio: ratio,
 				}}
 				className={connectString([
-					"border-box p-0 border-0 m-auto block cursor-zoom-in zoomable bg-primary/60",
+					"border-box p-0 border-0 m-auto block cursor-zoom-in zoomable",
+					isImageFullyLoaded ? "" : "bg-primary/60",
 					props.className == null ? "" : props.className,
 				])}
+				alt={alt}
 				ref={imageElRef}
 				decoding="async"
-				crossOrigin="anonymous"
 				src={srcString}
 			/>
 			{alt && (

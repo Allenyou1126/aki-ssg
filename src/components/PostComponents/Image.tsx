@@ -6,7 +6,7 @@ export default async function Image(props: JSX.IntrinsicElements["img"]) {
 	if (!src || src.startsWith("data:") || src.startsWith("blob:")) {
 		return <ImageClient {...props} />;
 	}
-	let result = await probe(src, {
+	const result = await probe(src, {
 		rejectUnauthorized: false,
 	});
 	return (
