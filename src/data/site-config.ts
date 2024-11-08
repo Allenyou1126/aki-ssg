@@ -24,7 +24,7 @@ export const config: SiteConfig = createConfig({
 	},
 	optimize: {
 		gravatar_mirror: "https://blog-oss.allenyou.top/avatar/",
-		thumb_query: "/thumb",
+		thumb_query: "-thumb",
 		cdn_prefix: "https://blog-oss.allenyou.top/BlogNGCDN/",
 	},
 	follow: {
