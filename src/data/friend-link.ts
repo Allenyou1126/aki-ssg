@@ -83,4 +83,11 @@ export const friend_link_list: FriendLink[] = [
 		avatar: "https://blog-oss.allenyou.top/image/660a838323b51.jpg",
 		description: "一个吃OI老本的ACMer",
 	},
+	{
+		title: "逐暗者的麦田",
+		url: "https://www.iasuna.com/",
+		avatar: "https://blog-oss.allenyou.top/image/6731662522c76.jpg",
+		description:
+			"一位Java攻城狮的个人博客，主要分享编程、建站、动漫、趣闻和生活内容",
+	},
 ];
