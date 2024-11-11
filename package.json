@@ -23,6 +23,7 @@
 		"aplayer-ts": "^2.4.5",
 		"app-root-path": "^3.1.0",
 		"babel-plugin-react-compiler": "19.0.0-beta-8a03594-20241020",
+		"critters": "^0.0.25",
 		"css": "^3.0.0",
 		"front-matter": "^4.0.2",
 		"hast-util-from-html": "^2.0.3",
