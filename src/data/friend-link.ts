@@ -66,8 +66,8 @@ export const friend_link_list: FriendLink[] = [
 	},
 	{
 		title: "孤熵小狼",
-		url: "https://blog.nixieka.top",
-		avatar: "https://blog-oss.allenyou.top/image/65ed6956adbf1.webp",
+		url: "https://blog.furen.link/",
+		avatar: "https://blog-oss.allenyou.top/image/673c797d92f13.webp",
 		description: "趁年轻，多闯荡",
 	},
 	{
