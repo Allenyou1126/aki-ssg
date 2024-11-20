@@ -1,11 +1,18 @@
 import type { Config } from "tailwindcss";
 import { config as siteConfig } from "./src/data/site-config";
+import typography from "@tailwindcss/typography";
+import hljs from "tailwind-hljs";
 
 const config: Config = {
 	content: [
 		"./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+	],
+	safelist: [
+		{
+			pattern: /hljs+/,
+		},
 	],
 	theme: {
 		extend: {
@@ -22,6 +29,7 @@ const config: Config = {
 			height: {
 				nav: "var(--nav-height)",
 			},
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			typography: ({ theme }: any) => ({
 				ay: {
 					css: {
@@ -48,9 +56,15 @@ const config: Config = {
 		},
 		hljs: {
 			theme: "night-owl",
+			custom: {
+				base: {
+					background: "none",
+					padding: "0",
+				},
+			},
 		},
 	},
 	darkMode: "class",
-	plugins: [require("@tailwindcss/typography"), require("tailwind-hljs")],
+	plugins: [typography, hljs],
 };
 export default config;
