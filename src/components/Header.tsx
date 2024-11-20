@@ -1,7 +1,7 @@
 import { config } from "@/data/site-config";
 import Link from "next/link";
 
-export default function Header() {
+export default async function Header() {
 	return (
 		<header className="bg-primary bg-default dark:bg-dark h-[calc(65lvh+8rem)] min-h-[30rem] bg-cover bg-top flex flex-col z-0">
 			<div className="flex-auto relative">

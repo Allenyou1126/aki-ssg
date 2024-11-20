@@ -1,7 +1,7 @@
 import { config } from "@/data/site-config";
 import Link from "next/link";
 
-export default function Footer() {
+export default async function Footer() {
 	return (
 		<footer className="bottom-0 relative items-center flex-col flex my-3 gap-3 justify-center w-full text-center py-4">
 			<p>

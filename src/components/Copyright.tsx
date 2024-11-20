@@ -1,10 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import { config } from "@/data/site-config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreativeCommons } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 
-export default function Copyright({
+export default async function Copyright({
 	title,
 	id,
 	cc,

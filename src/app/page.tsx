@@ -1,6 +1,6 @@
 import PostListPage from "./post-list/[currentPage]/page";
 
-export default function Home() {
+export default async function Home() {
 	return (
 		<PostListPage
 			params={
