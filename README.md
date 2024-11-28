@@ -227,6 +227,30 @@ Use `::friend_links` to insert a friend link list.
 
 The friend links will be loaded from `src/data/friend-link.ts`
 
+### Chat
+
+Every chat should be wrapped by `:::chat` and `:::`.
+
+Inside a chat, use `::chat_sender{name="Name" avatar="Avatar URL" self}` to define a chat participant.
+
+| Parameter        | Description                                                                                                                                           |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name             | The displayed name of participant.                                                                                                                    |
+| avatar(Optional) | The URL of avatar image displayed for participant. If not defined, a default avatar with the first character of the name of participant will be used. |
+| self(Optional)   | If set, the message of this participant will be displayed on the right.                                                                               |
+
+**If participants are defined repeatedly, the later definition will override the earlier definition.**
+
+Use `::chat_item[Text]{name="Name" avatar="Avatar URL" self}` to define a message in chat.
+
+| Parameter        | Description                                                                                                                                           |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name             | The displayed name of participant. If this participant has been defined by using `::chat_sender`, the defined parameter will be                       |
+| avatar(Optional) | The URL of avatar image displayed for participant. If not defined, a default avatar with the first character of the name of participant will be used. |
+| self(Optional)   | If set, the message of this participant will be displayed on the right.                                                                               |
+
+It should be noted that participants defined by `::chat_sender` has the highest priority. When conflict appears, parameters set `::chat_item` will be overrided.
+
 ## Other
 
 The RSS Feed file will be saved in `/feed.xml`.

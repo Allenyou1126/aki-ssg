@@ -1,6 +1,6 @@
 {
 	"name": "aki-ssg",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbo",
@@ -33,6 +33,7 @@
 		"jotai": "^2.10.1",
 		"jsdom": "^23.2.0",
 		"md5-ts": "^0.1.6",
+		"mdast-util-directive": "^3.0.0",
 		"mdast-util-toc": "^7.1.0",
 		"medium-zoom": "^1.1.0",
 		"next": "15.0.1",

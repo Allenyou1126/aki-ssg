@@ -77,6 +77,9 @@ importers:
       md5-ts:
         specifier: ^0.1.6
         version: 0.1.6
+      mdast-util-directive:
+        specifier: ^3.0.0
+        version: 3.0.0
       mdast-util-toc:
         specifier: ^7.1.0
         version: 7.1.0

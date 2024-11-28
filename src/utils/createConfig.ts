@@ -13,8 +13,8 @@ export function createConfig(c: PartialSiteConfig): SiteConfig {
 		style: {
 			primary_color: "#6db0ec",
 			header_image: {
-				default: "https://blog-oss.allenyou.top/image/658ad4c208349.png",
-				dark: "https://blog-oss.allenyou.top/image/658ad4c208349.png",
+				default: "/header-image.jpg",
+				dark: "/header-image-dark.jpg",
 			},
 		},
 		comment: {

@@ -31,11 +31,16 @@ import { remarkNeteaseMusic } from "./markdown-extension/remark-netease-music";
 import { remarkFriendLinks } from "./markdown-extension/remark-friend-links";
 import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks";
 import Image from "@/components/PostComponents/Image";
+import { remarkChat } from "./markdown-extension/remark-chat";
+import * as Chat from "@/components/ExtendedMarkdown/Chat";
 
 const extended_components = {
 	bilibili: BilibiliVideo,
 	"netease-music": NeteaseMusic,
 	"friend-links": FriendLinks,
+	chat: Chat.Container,
+	"chat-item": Chat.Item,
+	"chat-sender": Chat.SenderItem,
 };
 
 const pipeline = unified()
@@ -47,6 +52,7 @@ const pipeline = unified()
 	.use(remarkDirectiveRehype)
 	.use(remarkBilibili)
 	.use(remarkNeteaseMusic)
+	.use(remarkChat)
 	.use(remarkFriendLinks)
 	.use(remarkRehype, { allowDangerousHtml: true })
 	.use(rehypeSlug, {})
@@ -55,6 +61,12 @@ const pipeline = unified()
 	})
 	.use(rehypeSanitize, {
 		tagNames: defaultSchema.tagNames?.concat(Object.keys(extended_components)),
+		attributes: {
+			chat: [],
+			"chat-item": ["sender_name", "sender_avatar", "align_right"],
+			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
+			bilibili: ["bvid", "cid"],
+		},
 	})
 	.use(rehypeMathjax, {})
 	.use(rehypeHighlight, {
