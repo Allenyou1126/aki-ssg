@@ -62,6 +62,7 @@ const pipeline = unified()
 	.use(rehypeSanitize, {
 		tagNames: defaultSchema.tagNames?.concat(Object.keys(extended_components)),
 		attributes: {
+			"*": ["className"],
 			chat: [],
 			"chat-item": ["sender_name", "sender_avatar", "align_right"],
 			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
@@ -110,6 +111,7 @@ export class MarkdownContent implements RenderableContent {
 	constructor(original: string) {
 		const file = new VFile(original);
 		this.mdastTree = pipeline.parse(original);
+		console.log(JSON.stringify(this.mdastTree));
 		this.hastTree = pipeline.runSync(this.mdastTree, file);
 	}
 	toReactNode(): React.ReactNode {
