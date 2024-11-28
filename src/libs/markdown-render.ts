@@ -66,6 +66,7 @@ const pipeline = unified()
 			"chat-item": ["sender_name", "sender_avatar", "align_right"],
 			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
 			bilibili: ["bvid", "cid"],
+			img: ["src", "width", "height", "alt"],
 		},
 	})
 	.use(rehypeMathjax, {})
