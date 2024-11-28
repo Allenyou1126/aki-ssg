@@ -111,7 +111,6 @@ export class MarkdownContent implements RenderableContent {
 	constructor(original: string) {
 		const file = new VFile(original);
 		this.mdastTree = pipeline.parse(original);
-		console.log(JSON.stringify(this.mdastTree));
 		this.hastTree = pipeline.runSync(this.mdastTree, file);
 	}
 	toReactNode(): React.ReactNode {
