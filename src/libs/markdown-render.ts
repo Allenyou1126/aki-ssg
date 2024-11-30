@@ -68,6 +68,7 @@ const pipeline = unified()
 			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
 			bilibili: ["bvid", "cid"],
 			img: ["src", "width", "height", "alt"],
+			a: ["href"],
 		},
 	})
 	.use(rehypeMathjax, {})
