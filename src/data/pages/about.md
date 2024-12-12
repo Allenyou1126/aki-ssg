@@ -31,7 +31,7 @@ navigation_index: 3
 - 💻：Lenovo REGION R9000P 2023
 - 📱：Redmi K60
 - 📱：Xiaomi Pad 6 Pro
-- ⌚：Xiaomi Smart Band 8 NFC
+- ⌚：Xiaomi Smart Band 9 NFC
 - 🎧：Redmi Buds 5 Pro
 - ⌨：GNASS GS104C
 
@@ -39,12 +39,11 @@ navigation_index: 3
 
 我平时花在游戏上的时间不算特别多，最近在玩的游戏有下面这些（按照最近玩的时间长短排序）：
 
-- Counter Strike 2 (5e 优先 1700)
-- Arcaea（ptt 10.91）
+- Counter Strike 2 (5e 优先 1500)
+- 逃离塔科夫（线上俄白 + PvE & 离线版 SPT-AKI）
+- Maimai DX 2024（DX Rating w2）
+- Arcaea（ptt 11.07）
 - Phigros（rks 15.54）
-- Maimai DX 2024（DX Rating w1）
-- 旋转音律 Rotaeno（音律值 15.336）
-- Minecraft: Java Edition
 
 突然发现我真的好菜啊 QwQ
 
