@@ -1,7 +1,7 @@
 export const friend_link_list: FriendLink[] = [
 	{
 		title: "MelloM的博客",
-		url: "https://blog.dmxvx.cc/",
+		url: "https://www.rua.ink/",
 		avatar:
 			"https://blog-oss.allenyou.top/avatar/2764b0d411f9847464a866cb5500beed",
 		description: "写点无聊事",
