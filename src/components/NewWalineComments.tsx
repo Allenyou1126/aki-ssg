@@ -7,10 +7,15 @@ import "@/styles/newwaline.css";
 import {
 	createContext,
 	DispatchWithoutAction,
+	ForwardedRef,
+	RefObject,
 	Suspense,
 	useCallback,
 	useContext,
+	useEffect,
+	useImperativeHandle,
 	useReducer,
+	useRef,
 	useState,
 } from "react";
 import { usePathname } from "next/navigation";
@@ -25,9 +30,6 @@ import { connectString } from "@/utils/connectString";
 import getAvatar from "@/utils/getAvatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentAlt } from "@fortawesome/free-regular-svg-icons";
-// import htmr from "htmr";
-// import AllenyouLink from "./AllenyouLink";
-// import LazyloadImage from "./LazyloadImage";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
 import { CommentsLoading } from "./Comments";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
@@ -56,6 +58,9 @@ export function NewWalineCommentsDataProvider({
 	const [pid, setPid] = useState("");
 	const [rid, setRid] = useState("");
 	const [at, setAt] = useState("");
+	const [mutate, setMutate] = useState(() => {
+		return () => {};
+	});
 	return (
 		<pidContext.Provider value={pid}>
 			<ridContext.Provider value={rid}>
@@ -88,15 +93,19 @@ export const NewWalineErrorHandler = (props: FallbackProps) => {
 };
 
 export default function NewWalineComments() {
-	const [updateHooker, forceUpdate] = useReducer((x) => x + 1, 0);
+	const cardsRef = useRef<{ reload: () => void }>(null);
 	return (
 		<NewWalineCommentsDataProvider>
 			<div id="comment" className="text-start w-full">
-				<NewWalineCommentArea forceUpdate={forceUpdate} />
+				<NewWalineCommentArea
+					updateFunction={() => {
+						cardsRef.current?.reload();
+					}}
+				/>
 				<div id="comment-content">
 					<ErrorBoundary fallbackRender={NewWalineErrorHandler}>
 						<Suspense fallback={<CommentsLoading />}>
-							<NewWalineCommentCards updateHooker={updateHooker} />
+							<NewWalineCommentCards ref={cardsRef} />
 						</Suspense>
 					</ErrorBoundary>
 				</div>
@@ -106,9 +115,9 @@ export default function NewWalineComments() {
 }
 
 export function NewWalineCommentArea({
-	forceUpdate,
+	updateFunction,
 }: {
-	forceUpdate: DispatchWithoutAction;
+	updateFunction: () => void;
 }) {
 	const pathname = usePathname();
 	const rid = useContext(ridContext);
@@ -163,7 +172,7 @@ export function NewWalineCommentArea({
 			setAt("");
 			setContent("");
 			setSubmitAvailable(true);
-			forceUpdate();
+			updateFunction();
 		});
 	}, [
 		nick,
@@ -177,7 +186,7 @@ export function NewWalineCommentArea({
 		setPid,
 		setRid,
 		setAt,
-		forceUpdate,
+		updateFunction,
 	]);
 	return (
 		<div
@@ -390,10 +399,14 @@ export function NewWalineCommentCard({
 	);
 }
 
-export function NewWalineCommentCards(props: { updateHooker: number }) {
+export function NewWalineCommentCards({
+	ref,
+}: {
+	ref: ForwardedRef<{ reload: () => void }>;
+}) {
 	const [page, setPage] = useState(1);
 	const pathname = usePathname();
-	const { data } = useSWR(
+	const { data, mutate } = useSWR(
 		{ path: pathname, page: page },
 		({ path, page }: { path: string; page: number }) => {
 			return getComment({
@@ -407,6 +420,17 @@ export function NewWalineCommentCards(props: { updateHooker: number }) {
 		{
 			suspense: true,
 		}
+	);
+	useImperativeHandle(
+		ref,
+		() => {
+			return {
+				reload: () => {
+					mutate();
+				},
+			};
+		},
+		[mutate]
 	);
 	const ret = data!;
 	const total = ret.totalPages;
