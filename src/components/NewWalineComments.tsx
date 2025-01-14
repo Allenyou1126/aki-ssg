@@ -339,8 +339,7 @@ export function NewWalineCommentCard({
 					) : (
 						<p className="inline-block text-sm font-bold darkani">{c.nick}</p>
 					)}
-					{(c.avatar === getAvatar("allenyou1126@gmail.com") ||
-						c.avatar === getAvatar("i@allenyou.wang")) && (
+					{c.avatar === getAvatar(config.author.email) && (
 						<span className="inline-block rounded-md bg-primary/30 text-primary text-xs px-1 py-0.5 ml-2">
 							博主
 						</span>
