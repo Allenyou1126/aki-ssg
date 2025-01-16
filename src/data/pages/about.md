@@ -25,6 +25,7 @@ navigation_index: 3
 
 - [Aki-SSG](https://github.com/Allenyou1126/aki-ssg)：一个基于 Next.js 和 Tailwind CSS 的静态站点生成器
 - [开往 Travellings](https://travellings.cn)：一个友链接力项目，旨在通过网络跳转的方式将流量引入那些鲜为人知的独立站点，从而推动网络的开放性和多元性
+- [Allenyou-DN42](https://www.allenyou.wang/dn42)：AS4242421056，一个建立在 42 号去中心网络（DN42）中的 AS。
 
 ## 常用设备
 
@@ -42,8 +43,8 @@ navigation_index: 3
 - Counter Strike 2 (5e 优先 1500)
 - 逃离塔科夫（线上俄白 + PvE & 离线版 SPT-AKI）
 - Maimai DX 2024（DX Rating w2）
-- Arcaea（ptt 11.07）
-- Phigros（rks 15.54）
+- Arcaea（ptt 11.19）
+- Phigros（rks 15.56）
 
 突然发现我真的好菜啊 QwQ
 
@@ -80,7 +81,7 @@ navigation_index: 3
 
 ### 使用的服务设施
 
-本站部署在狗云的香港-KC 机房 VPS 上，配置为 2 核，2G 内存，25M 带宽，阿里云线路。
+本站部署在狗云的香港-KC 机房 VPS 上，配置为 2 核，2G 内存，50M 带宽，BGP-优化线路。
 
 域名是在腾讯云买的 `.wang` 域名，价格是一年 40，短期内无备案计划。
 
