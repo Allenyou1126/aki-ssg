@@ -62,7 +62,7 @@ const pipeline = unified()
 	.use(rehypeSanitize, {
 		tagNames: defaultSchema.tagNames?.concat(Object.keys(extended_components)),
 		attributes: {
-			"*": ["className"],
+			"*": ["className", "id"],
 			chat: [],
 			"chat-item": ["sender_name", "sender_avatar", "align_right"],
 			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
