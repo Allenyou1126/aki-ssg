@@ -180,17 +180,17 @@ Docker Compose 依赖配置文件`docker-compose.yml`工作，该文件遵循`YA
 
 ```yaml
 version: "3"
-services:
-server:
-image: eclipse-temurin:8-jdk-alpine # 指定镜像名称和镜像版本
-ports:
-  - "25565:25565" # 将容器 25565 端口映射到主机 25565 端口
-restart: always # 设置重启策略为 always
-stdin_open: true # 打开容器 STDIN，同 -i
-tty: true # 给容器分配 tty，同 -t
-volumes:
-  - /data/mcserver/server/:/server # 将主机/data/mcserver/server 目录映射到容器内/server
-command: java -Xmx2048M -jar /server/server.jar nogui # Minecraft Server 启动命令
+  services:
+    server:
+      image: eclipse-temurin:8-jdk-alpine # 指定镜像名称和镜像版本
+      ports:
+        - "25565:25565" # 将容器 25565 端口映射到主机 25565 端口
+      restart: always # 设置重启策略为 always
+      stdin_open: true # 打开容器 STDIN，同 -i
+      tty: true # 给容器分配 tty，同 -t
+      volumes:
+        - /data/mcserver/server/:/server # 将主机/data/mcserver/server 目录映射到容器内/server
+      command: java -Xmx2048M -jar /server/server.jar nogui # Minecraft Server 启动命令
 ```
 
 编写完成后保存为`/data/mcserver/docker-compose.yml`。
