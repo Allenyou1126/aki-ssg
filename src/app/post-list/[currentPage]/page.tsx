@@ -70,7 +70,7 @@ export default async function PostListPage({
 						current_page <= 1 ? "hidden" : "",
 						"absolute left-0 px-4 py-2 rounded-3xl bg-primary text-base top-2/4 -translate-y-2/4 font-bold text-white hover:opacity-90",
 					])}
-					href={`/post-list/${current_page - 1}`}>
+					href={`/post-list/${parseInt(current_page.toString()) - 1}`}>
 					上一页
 				</Link>
 				<Link
@@ -78,7 +78,7 @@ export default async function PostListPage({
 						current_page >= total_page ? "hidden" : "",
 						"absolute right-0 px-4 py-2 rounded-3xl bg-primary text-base top-2/4 -translate-y-2/4 font-bold text-white hover:opacity-90",
 					])}
-					href={`/post-list/${current_page + 1}`}>
+					href={`/post-list/${parseInt(current_page.toString()) + 1}`}>
 					下一页
 				</Link>
 			</div>
