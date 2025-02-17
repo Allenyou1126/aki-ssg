@@ -90,4 +90,10 @@ export const friend_link_list: FriendLink[] = [
 		description:
 			"一位Java攻城狮的个人博客，主要分享编程、建站、动漫、趣闻和生活内容",
 	},
+	{
+		title: "涛叔",
+		url: "https://taoshu.in/",
+		avatar: "https://blog-oss.allenyou.top/image/67b2dc7782b23.png",
+		description: "有朋来远，不亦乐乎。",
+	},
 ];
