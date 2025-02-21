@@ -90,13 +90,15 @@ function filterNodes(node: HastNode): HastNode | undefined {
 					tagName: "span",
 					properties: {},
 					children: [{ type: "text", value: "[MathJax Expression]" }],
-				} as HastElement;
+				} as HastElement as HastNode;
 			}
 			if ((node as HastElement).tagName === "style") {
 				return undefined;
 			}
 			(node as HastElement).children = (node as HastElement).children
-				.map((ch) => filterNodes(ch) as HastElementContent | undefined)
+				.map(
+					(ch) => filterNodes(ch as HastNode) as HastElementContent | undefined
+				)
 				.filter((v) => v !== undefined);
 			return node;
 		default:
@@ -106,7 +108,7 @@ function filterNodes(node: HastNode): HastNode | undefined {
 
 function generateForRss(tree: HashRoot): HashRoot {
 	tree.children = tree.children
-		.map((ch) => filterNodes(ch) as HastRootContent | undefined)
+		.map((ch) => filterNodes(ch as HastNode) as HastRootContent | undefined)
 		.filter((v) => v !== undefined);
 	return tree;
 }

@@ -18,6 +18,7 @@ export default async function Meme({
 	return (
 		<Image
 			src={`${config.optimize.meme_base_url}${group}/${mid}`}
+			alt={`Meme: ${group}/${mid}`}
 			inline
 			scale={0.2}
 		/>

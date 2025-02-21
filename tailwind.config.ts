@@ -1,18 +1,12 @@
 import type { Config } from "tailwindcss";
 import { config as siteConfig } from "./src/data/site-config";
 import typography from "@tailwindcss/typography";
-import hljs from "tailwind-hljs";
 
 const config: Config = {
 	content: [
 		"./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-	],
-	safelist: [
-		{
-			pattern: /hljs+/,
-		},
 	],
 	theme: {
 		extend: {
@@ -65,6 +59,6 @@ const config: Config = {
 		},
 	},
 	darkMode: "class",
-	plugins: [typography, hljs],
+	plugins: [typography],
 };
 export default config;

@@ -65,8 +65,9 @@ export const useImageFullyLoaded = (
 export default function ImageClient(
 	props: JSX.IntrinsicElements["img"] & { inline?: boolean }
 ) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { src, className, ref, decoding, width, height, alt, inline, ...rest } =
-		props; // eslint-disable-line @typescript-eslint/no-unused-vars
+		props;
 	const rawImageElRef = useRef<HTMLImageElement>(null);
 	const previousSrcRef = useRef<string | undefined>(src);
 	const isLazy = useMemo(() => {
