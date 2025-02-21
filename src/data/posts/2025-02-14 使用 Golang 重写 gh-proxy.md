@@ -15,7 +15,9 @@ tags:
 
 项目目前以与原项目相同的 MIT License 开源，项目地址为 [Allenyou1126/gh-proxy-go](https://github.com/Allenyou1126/gh-proxy-go)。
 
-目前项目暂未提供编译好的二进制文件与 Docker 镜像，需要自行 Clone 后构建。
+目前项目暂未提供编译好的二进制文件，需要自行 Clone 后构建。
+
+Docker 镜像可以自行 Clone 后进行构建，也可以通过 `ghcr.io/allenyou1126/gh-proxy-go:[最新版本号]` 获取，具体请参见 Github Package 的版本号。
 
 一部分原项目通过代码中变量控制的配置项在重构时改为了使用环境变量 / `.env` 文件控制，详情请参见 README 文件。
 
