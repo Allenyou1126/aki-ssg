@@ -25,7 +25,7 @@ export function useIntersection<T extends Element>({
 	// 通过 isDisabled 控制 useEffect 中副作用是否需要执行
 	const isDisabled: boolean = disabled || !hasIntersectionObserver;
 	// 通过 Ref 缓存上一次调用 useIntersection 时生成的 unobserve 方法
-	const unobserve = useRef<() => void>();
+	const unobserve = useRef<() => void>(null);
 	const [visible, setVisible] = useState(false);
 	// 设置 IntersectionObserver 的 root
 	const [root, setRoot] = useState(rootRef ? rootRef.current : null);
@@ -33,9 +33,9 @@ export function useIntersection<T extends Element>({
 	const setRef = useCallback(
 		(el: T | null) => {
 			// unobserve 上一次调用 useIntersection 时观察的元素
-			if (unobserve.current) {
+			if (unobserve.current !== null) {
 				unobserve.current();
-				unobserve.current = undefined;
+				unobserve.current = null;
 			}
 
 			if (isDisabled || visible) return;
