@@ -33,6 +33,9 @@ export function createConfig(c: PartialSiteConfig): SiteConfig {
 	if (c.optimize?.thumb_query !== undefined) {
 		ret.optimize.thumb_query = c.optimize.thumb_query;
 	}
+	if (c.optimize?.meme_base_url !== undefined) {
+		ret.optimize.meme_base_url = c.optimize.meme_base_url;
+	}
 	if (c.comment !== undefined) {
 		ret.comment = c.comment;
 	}

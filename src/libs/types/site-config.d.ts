@@ -42,6 +42,7 @@ declare type OptimizeConfig = {
 	gravatar_mirror: string;
 	cdn_prefix?: string;
 	thumb_query?: string;
+	meme_base_url?: string;
 };
 
 declare type SiteConfig = {

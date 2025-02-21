@@ -33,6 +33,8 @@ import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks";
 import Image from "@/components/PostComponents/Image";
 import { remarkChat } from "./markdown-extension/remark-chat";
 import * as Chat from "@/components/ExtendedMarkdown/Chat";
+import { remarkMeme } from "./markdown-extension/remark-meme";
+import Meme from "@/components/ExtendedMarkdown/Meme";
 
 const extended_components = {
 	bilibili: BilibiliVideo,
@@ -41,6 +43,7 @@ const extended_components = {
 	chat: Chat.Container,
 	"chat-item": Chat.Item,
 	"chat-sender": Chat.SenderItem,
+	meme: Meme,
 };
 
 const pipeline = unified()
@@ -51,6 +54,7 @@ const pipeline = unified()
 	.use(remarkDirective)
 	.use(remarkDirectiveRehype)
 	.use(remarkBilibili)
+	.use(remarkMeme)
 	.use(remarkNeteaseMusic)
 	.use(remarkChat)
 	.use(remarkFriendLinks)
@@ -67,8 +71,9 @@ const pipeline = unified()
 			"chat-item": ["sender_name", "sender_avatar", "align_right"],
 			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
 			bilibili: ["bvid", "cid"],
-			img: ["src", "width", "height", "alt"],
+			img: ["src", "width", "height", "alt", "inline"],
 			a: ["href"],
+			meme: ["group", "mid"],
 		},
 	})
 	.use(rehypeMathjax, {})

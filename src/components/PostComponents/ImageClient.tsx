@@ -14,6 +14,7 @@ import React, {
 	useEffect,
 	useCallback,
 	useState,
+	JSX,
 } from "react";
 
 const LOADED_IMAGE_URLS = new Set<string>();
@@ -61,8 +62,11 @@ export const useImageFullyLoaded = (
 	return isFullyLoaded;
 };
 
-export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
-	const { src, className, ref, decoding, width, height, alt, ...rest } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+export default function ImageClient(
+	props: JSX.IntrinsicElements["img"] & { inline?: boolean }
+) {
+	const { src, className, ref, decoding, width, height, alt, inline, ...rest } =
+		props; // eslint-disable-line @typescript-eslint/no-unused-vars
 	const rawImageElRef = useRef<HTMLImageElement>(null);
 	const previousSrcRef = useRef<string | undefined>(src);
 	const isLazy = useMemo(() => {
@@ -97,13 +101,12 @@ export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
 		return zoomRef.current;
 	}
 	const imageElRef: RefCallback<HTMLImageElement> = (node) => {
-		(rawImageElRef as React.MutableRefObject<HTMLImageElement | null>).current =
-			node;
+		(rawImageElRef as React.RefObject<HTMLImageElement | null>).current = node;
 		if (ref !== null && ref !== undefined && typeof ref !== "string") {
 			if (typeof ref === "function") {
 				ref(node);
 			} else if (ref !== null) {
-				(ref as React.MutableRefObject<HTMLImageElement | null>).current = node;
+				(ref as React.RefObject<HTMLImageElement | null>).current = node;
 			}
 		}
 		const zoom = getZoom();
@@ -119,14 +122,20 @@ export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
 			? getThumbUrl(src!)
 			: SMALLEST_GIF;
 	const srcString = isVisible ? src : thumbSrcString;
+	const w = typeof width! === "number" ? width! : parseInt(width!);
+	const h = typeof height! === "number" ? height! : parseInt(height!);
+	const ratio = w / h;
 	if (!config.optimize.thumb_query) {
 		return (
 			<img
 				{...rest}
 				className={connectString([
-					"border-box p-0 border-0 m-auto cursor-zoom-in bg-primary/60 block zoomable",
+					"border-box p-0 border-0 m-auto zoomable cursor-zoom-in",
 					className == null ? "" : className,
+					inline ? "inline-block" : "block",
 				])}
+				width={w}
+				height={h}
 				alt={alt}
 				ref={imageElRef}
 				decoding="async"
@@ -134,28 +143,18 @@ export default function ImageClient(props: JSX.IntrinsicElements["img"]) {
 			/>
 		);
 	}
-	let ratio = 1.0;
-	if (typeof width! === "number") {
-		ratio = width!;
-	} else {
-		ratio = parseInt(width!);
-	}
-	if (typeof height! === "number") {
-		ratio /= height!;
-	} else {
-		ratio /= parseInt(height!);
-	}
 	return (
 		<span className="inline-block box-border relative max-w-full w-full h-auto my-auto mt-0 mb-1 text-[0]">
 			<img
 				{...rest}
 				style={{
-					width: width!,
+					width: w,
 					aspectRatio: ratio,
 				}}
 				className={connectString([
-					"border-box p-0 border-0 m-auto block cursor-zoom-in zoomable bg-primary/60",
-					props.className == null ? "" : props.className,
+					"border-box p-0 border-0 m-auto zoomable cursor-zoom-in",
+					className == null ? "" : className,
+					inline ? "inline-block" : "block",
 				])}
 				alt={alt}
 				ref={imageElRef}

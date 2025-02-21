@@ -214,7 +214,7 @@ Aki-SSG supports [Generic directives/plugins syntax](https://talk.commonmark.org
 
 #### Bilibili Video
 
-Use `::bilibili[bvid="" cid=""]` to embed the Bilibili video player.
+Use `::bilibili{bvid="" cid=""}` to embed the Bilibili video player.
 
 | Parameter     | Description                            |
 | ------------- | -------------------------------------- |
@@ -250,6 +250,19 @@ Use `::chat_item[Text]{name="Name" avatar="Avatar URL" self}` to define a messag
 | self(Optional)   | If set, the message of this participant will be displayed on the right.                                                                               |
 
 It should be noted that participants defined by `::chat_sender` has the highest priority. When conflict appears, parameters set `::chat_item` will be overrided.
+
+#### Meme
+
+Use `:meme{group="" mid=""}` to insert a meme.
+
+| Parameter | Description             |
+| --------- | ----------------------- |
+| group     | The group name of meme. |
+| mid       | The id of the meme.     |
+
+If the `optimize.meme_base_url` item in config is not set, a warning will be displayed instead of meme.
+
+The meme will be displayed as an inline image with 20% scale, loaded from `${optimize.meme_base_url}${group}/${mid}`.
 
 ## Other
 

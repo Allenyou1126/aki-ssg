@@ -214,7 +214,7 @@ Aki-SSG 支持[通用指令/插件语法](https://talk.commonmark.org/t/generic-
 
 #### Bilibili 视频
 
-使用 `::bilibili[bvid="" cid=""]` 来嵌入 Bilibili 视频播放器。
+使用 `::bilibili{bvid="" cid=""}` 来嵌入 Bilibili 视频播放器。
 
 | 参数        | 描述                    |
 | ----------- | ----------------------- |
@@ -250,6 +250,19 @@ Aki-SSG 支持[通用指令/插件语法](https://talk.commonmark.org/t/generic-
 | self（可选）   | 若带有该参数，则该参与者的发言将全部显示在右边。                                      |
 
 需要注意的是，`::chat_sender` 定义的参与者具有最高优先级，在冲突时将覆盖 `::chat_item` 参数中设定的信息。
+
+#### 表情包
+
+使用 `:meme{group="" mid=""}` 指令插入表情包。
+
+| 参数  | 描述             |
+| ----- | ---------------- |
+| group | 表情包分组名称。 |
+| mid   | 表情包 ID。      |
+
+如果设置项 `optimize.meme_base_url` 未设置，一项警告将会代替表情包显示。
+
+表情包将被显示为一张尺寸为原图 20% 的行内图片，加载地址为 `${optimize.meme_base_url}${group}/${mid}`。
 
 ## 其他
 
