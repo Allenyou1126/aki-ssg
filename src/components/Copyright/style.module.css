@@ -1,0 +1,45 @@
+.wrap {
+	background-color: var(--copyright-bg);
+	margin: 2rem -1.5rem;
+	padding: 1.5rem;
+	border-radius: 1.5rem;
+	position: relative;
+	overflow: hidden;
+}
+
+.title {
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	font-weight: 500;
+}
+
+.link {
+	color: var(--primary);
+	text-decoration: underline;
+}
+
+.grid {
+	margin-top: 1rem;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	gap: 1rem;
+}
+
+.gridTitle {
+	grid-row: span 1 / span 1;
+	font-weight: 700;
+}
+
+.gridContent {
+	grid-row: span 2 / span 2;
+}
+
+.icon {
+	font-size: 180px;
+	position: absolute;
+	opacity: 0.3;
+	top: -2rem;
+	right: -2rem;
+}

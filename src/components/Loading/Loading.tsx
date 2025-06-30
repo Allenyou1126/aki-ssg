@@ -1,4 +1,4 @@
-import loader from "@/styles/utils/loader.module.css";
+import loader from "./style.module.css";
 
 export function Loading() {
 	return (

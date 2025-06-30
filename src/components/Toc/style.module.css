@@ -1,4 +1,4 @@
-#toc {
+.toc {
 	display: none;
 	position: absolute;
 	left: 16px;
@@ -6,12 +6,12 @@
 }
 
 @media (min-width: 1536px) {
-	#toc {
+	.toc {
 		display: block;
 	}
 }
 
-#toc-wrap {
+.wrap {
 	position: sticky;
 	top: 7rem;
 	width: 20rem;
@@ -20,17 +20,17 @@
 	height: 85vh;
 }
 
-.toc-list {
+.list {
 	padding-left: 2rem;
 	width: 100%;
 	opacity: 0.9;
 	font-weight: 500;
 }
 
-.toc-item {
+.item {
 	text-align: left;
 }
 
-.toc-item:hover {
+.item:hover {
 	opacity: 0.8;
 }

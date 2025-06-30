@@ -1,0 +1,8 @@
+.tip {
+	padding: 1rem;
+	border-radius: 1rem;
+	overflow: hidden;
+	background-color: rgb(from var(--primary) r g b / 0.8);
+	backdrop-filter: blur(24px);
+	vertical-align: baseline;
+}

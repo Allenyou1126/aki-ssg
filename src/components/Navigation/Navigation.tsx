@@ -20,7 +20,7 @@ import {
 	faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { config } from "@/data/site-config";
-import "@/styles/navigation.css";
+import style from "./style.module.css";
 
 function getDarkModeAlt(mode: "auto" | "light" | "dark") {
 	switch (mode) {
@@ -63,7 +63,7 @@ function DarkModeSwitcher() {
 	}, [theme, setTheme]);
 	return (
 		<button
-			id="dark-mode-switcher"
+			className={style.switcher}
 			onClick={handler}
 			title={`切换深色模式状态（当前：${getDarkModeAlt(theme)}）`}>
 			<FontAwesomeIcon icon={getDarkModeIcon(theme)} />
@@ -133,14 +133,15 @@ export default function Navigation({
 				toggleExpand();
 			}}>
 			<nav
+				className={style.nav}
 				style={
 					{
 						"--nav-height": `${navHeight}rem`,
 						"--nav-width": `${navWidth}rem`,
 					} as React.CSSProperties
 				}>
-				<div id="navigation-wrap" className={scroll > 500 ? "wide" : ""}>
-					<div id="navigation-bar">
+				<div className={scroll > 500 ? style.wrapWide : style.wrap}>
+					<div className={style.bar}>
 						<Link href="/">
 							<img
 								src={getAvatar(config.author.email, 80)}
@@ -150,7 +151,7 @@ export default function Navigation({
 								style={{ borderRadius: "9999px" }}
 							/>
 						</Link>
-						<ul id="pc-navigation">
+						<ul className={style.pc}>
 							<li>
 								<Link href="/">首页</Link>
 							</li>
@@ -162,37 +163,48 @@ export default function Navigation({
 								);
 							})}
 						</ul>
-						<div id="navigation-tools">
+						<div className={style.tools}>
 							<DarkModeSwitcher />
 							<button
-								id="mobile-navigation-toggle"
-								// className="w-12 h-12 md:hidden flex items-center justify-center rounded-full md:-ms-3 transition-colors bg-white bg-opacity-0 active:bg-opacity-10"
+								className={style.toggle}
 								onClick={() => {
 									toggleExpand();
 								}}>
-								<span id="mobile-navigation-toggle-icon" aria-hidden="true">
+								<span className={style.icon} aria-hidden="true">
 									<span
-										className={`mobile-navigation-toggle-bar mobile-navigation-toggle-bar-1 step-${menuStep}`}
+										className={[
+											style.toggleBar,
+											style.toggleBar1,
+											style[`step${menuStep}`],
+										].join(" ")}
 									/>
 									<span
-										className={`mobile-navigation-toggle-bar mobile-navigation-toggle-bar-2 step-${menuStep}`}
+										className={[
+											style.toggleBar,
+											style.toggleBar2,
+											style[`step${menuStep}`],
+										].join(" ")}
 									/>
 									<span
-										className={`mobile-navigation-toggle-bar mobile-navigation-toggle-bar-3 step-${menuStep}`}
+										className={[
+											style.toggleBar,
+											style.toggleBar3,
+											style[`step${menuStep}`],
+										].join(" ")}
 									/>
 								</span>
 							</button>
 						</div>
 					</div>
 					<hr
-						id="mobile-navigation-divider"
+						className={style.divider}
 						style={{
 							display: expanded ? undefined : "none",
 							borderColor: expanded ? undefined : "transparent",
 						}}
 					/>
 					<ul
-						id="mobile-navigation"
+						className={style.mobile}
 						style={{ display: expanded ? undefined : "none" }}>
 						<NavigationItem link={{ title: "首页", url: "/" }} />
 						{links.map((ln) => {

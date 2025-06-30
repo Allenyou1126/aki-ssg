@@ -2,7 +2,7 @@
 
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "@/styles/utils.css";
+import style from "./style.module.css";
 
 export default function OutdateTip({ created }: { created: string }) {
 	const created_at = new Date(created);
@@ -15,7 +15,7 @@ export default function OutdateTip({ created }: { created: string }) {
 		<p
 			suppressHydrationWarning
 			style={{ display: vis ? "block" : "none" }}
-			className="outdate-tip">
+			className={style.tip}>
 			<FontAwesomeIcon icon={faInfoCircle} /> 本文最后修改于 {val}{" "}
 			天前，请注意文章内容的时效性。
 		</p>

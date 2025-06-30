@@ -1,4 +1,4 @@
-import { Loading } from "../Loading";
+import { Loading } from "../Loading/Loading";
 import style from "./style.module.css";
 
 export function CommentsLoading() {
