@@ -6,8 +6,8 @@ import { config } from "@/data/site-config";
 import Navigation from "@/components/Navigation";
 import CommonLogic from "@/components/LogicComponents/CommonLogic";
 import { initCMS } from "@/libs/content-management";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
 import GoToTop from "@/components/GoToTop";
 
 export const metadata: Metadata = {
@@ -51,6 +51,7 @@ export default async function RootLayout({
 						__html: `!function(){var t=localStorage.getItem("dark-mode"),a=document.documentElement.classList;("dark"===t||("auto"===t&&window.matchMedia("(prefers-color-scheme: dark)").matches))&&a.add("dark")}();`,
 					}}
 				/>
+				<meta name="theme-color" content={config.style.primary_color} />
 			</head>
 			<body>
 				<Navigation links={links} />
