@@ -1,0 +1,177 @@
+.container {
+	text-align: start;
+	width: 100%;
+}
+
+.area {
+	background-color: var(--bg);
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	border-radius: 0.5rem;
+	border: 1.5px solid rgb(from var(--border) r g b / 10);
+}
+
+.error {
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	font-weight: 700;
+	color: rgb(239 68 68);
+}
+
+.metadata {
+	display: flex;
+	padding: 0 0.25rem;
+	overflow: hidden;
+	width: 100%;
+	border-bottom: 2px dashed rgb(from var(--border) r g b / 10);
+}
+.metadataItem {
+	display: flex;
+	flex: 1 1 0%;
+	align-items: center;
+	font-size: 0.75rem;
+	line-height: 1.75;
+}
+.metadataLabel {
+	padding: 0.5rem;
+	font-weight: 300;
+	vertical-align: baseline;
+}
+.metadataInput {
+	resize: none;
+	width: 0;
+	max-width: 100%;
+	padding: 0.5rem;
+	flex: 1 1 0%;
+	background: transparent;
+	border: none;
+	outline: none;
+	vertical-align: baseline;
+}
+
+.areaInput {
+	width: 100%;
+	margin: 0.75rem 0.5rem;
+	outline: none;
+	background: transparent;
+	resize: none;
+	height: 7rem;
+}
+
+.areaBar {
+	margin: 0.75rem 0.5rem;
+	display: flex;
+	overflow: hidden;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+}
+.areaBarPart {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+.areaBarText {
+	opacity: 0.6;
+	font-size: 0.75rem;
+	line-height: 1.75;
+}
+.areaBarButton {
+	background-color: var(--primary);
+	padding: 0.25rem 1rem;
+	color: rgb(255 255 255 / 1);
+	border-radius: 0.75rem;
+	font-size: 0.875rem;
+	line-height: 1.75;
+}
+.areaBarButton:hover {
+	opacity: 0.9;
+}
+
+.count {
+	font-size: 1.25rem;
+	line-height: 1.75rem;
+	font-weight: 700;
+	margin: 1rem 0;
+}
+
+.commentTag {
+	display: inline-block;
+	border-radius: 0.375rem;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	padding: 0.125rem 0.25rem;
+	margin-right: 0.5rem;
+	opacity: 0.6;
+	background-color: rgb(209 213 219 / 0.4);
+}
+.ownerTag {
+	composes: commentTag;
+	background-color: rgb(from var(--primary) r g b / 0.4);
+	color: var(--primary);
+	margin-left: 0.5rem;
+	margin-right: 0;
+	opacity: 1;
+}
+
+.updateButton {
+	position: absolute;
+	top: 0;
+	right: 0.5rem;
+	opacity: 0.8;
+	transition: color 0.5s ease;
+	color: var(--text);
+}
+.updateButton:hover {
+	color: var(--primary);
+}
+
+.avatar {
+	width: 2.75rem;
+	height: auto;
+	border-radius: 9999px;
+}
+
+@media (min-width: 768px) {
+	.avatar {
+		width: 4rem;
+	}
+}
+
+.card {
+	display: flex;
+	padding: 0.5rem;
+	position: relative;
+	gap: 0.75rem;
+}
+
+.data {
+	display: flex;
+	flex: 1 1 0%;
+	padding-bottom: 0.5rem;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.meta {
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	line-height: 1.75;
+}
+
+.metaText {
+	display: inline-block;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	margin-left: 0.5rem;
+	opacity: 0.6;
+}
+
+.nick {
+	display: inline-block;
+	font-weight: 700;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}

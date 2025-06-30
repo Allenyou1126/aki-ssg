@@ -1,0 +1,108 @@
+.comment {
+	width: 100%;
+	max-width: none !important;
+	font-size: 0.9rem !important;
+	line-height: 1.5 !important;
+	margin: 0 auto;
+}
+.comment pre,
+.comment pre[class*="language-"] {
+	overflow: auto;
+	line-height: 1.4;
+	border-radius: 0.375rem;
+	padding: 1rem 1.25rem;
+	margin: 0.75rem 0;
+}
+.comment pre code,
+.comment pre[class*="language-"] code {
+	padding: 0;
+	border-radius: 0;
+	background-color: rgba(0, 0, 0, 0) !important;
+	color: #bbb;
+	direction: ltr;
+}
+.comment code[class*="language-"],
+.comment pre[class*="language-"] {
+	text-align: left;
+	white-space: pre;
+	hyphens: none;
+	background-color: none;
+	color: #ccc;
+	font-size: 1em;
+	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+	word-spacing: normal;
+	word-wrap: normal;
+	word-break: normal;
+	tab-size: 4;
+}
+.comment pre[class*="language-"] {
+	overflow: auto;
+}
+.comment :not(pre) > code[class*="language-"],
+.comment pre[class*="language-"] {
+	background: #2d2d2d;
+}
+.comment :not(pre) > code[class*="language-"] {
+	padding: 0.1rem;
+	border-radius: 0.3rem;
+	white-space: normal;
+}
+.comment .token.comment,
+.comment .token.block-comment,
+.comment .token.prolog,
+.comment .token.doctype,
+.comment .token.cdata {
+	color: #999;
+}
+.comment .token.punctuation {
+	color: #ccc;
+}
+.comment .token.tag,
+.comment .token.attr-name,
+.comment .token.namespace,
+.comment .token.deleted {
+	color: #e2777a;
+}
+.comment .token.function-name {
+	color: #6196cc;
+}
+.comment .token.boolean,
+.comment .token.number,
+.comment .token.function {
+	color: #f08d49;
+}
+.comment .token.property,
+.comment .token.class-name,
+.comment .token.constant,
+.comment .token.symbol {
+	color: #f8c555;
+}
+.comment .token.selector,
+.comment .token.important,
+.comment .token.atrule,
+.comment .token.keyword,
+.comment .token.builtin {
+	color: #cc99cd;
+}
+.comment .token.string,
+.comment .token.char,
+.comment .token.attr-value,
+.comment .token.regex,
+.comment .token.variable {
+	color: #7ec699;
+}
+.comment .token.operator,
+.comment .token.entity,
+.comment .token.url {
+	color: #67cdcc;
+}
+.comment .token.important,
+.comment .token.bold {
+	font-weight: bold;
+}
+.comment .token.entity {
+	cursor: help;
+}
+.comment .token.inserted {
+	color: green;
+}

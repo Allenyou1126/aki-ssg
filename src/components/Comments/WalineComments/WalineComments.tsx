@@ -2,8 +2,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import style from "./style.module.css";
+import pageSwitcher from "@/styles/utils/page-switcher.module.css";
+import "@/components/Comments/WalineComments/style.css";
 import { config } from "@/data/site-config";
-import "@/styles/waline.css";
 import {
 	createContext,
 	ForwardedRef,
@@ -21,12 +23,11 @@ import type {
 	WalineChildComment,
 	WalineComment,
 } from "@waline/api";
-import { connectString } from "@/utils/connectString";
 import getAvatar from "@/utils/getAvatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentAlt } from "@fortawesome/free-regular-svg-icons";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
-import { CommentsLoading } from "./Comments";
+import { CommentsLoading } from "../CommentsLoading";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { fromHtml } from "hast-util-from-html";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
@@ -83,14 +84,14 @@ function WalineCommentsDataProvider({
 
 const WalineErrorHandler = (props: FallbackProps) => {
 	console.error(props.error.message);
-	return <p id="comment-error">加载评论内容失败。</p>;
+	return <p className={style.error}>加载评论内容失败。</p>;
 };
 
 export default function WalineComments() {
 	const cardsRef = useRef<{ reload: () => void }>(null);
 	return (
 		<WalineCommentsDataProvider>
-			<div id="comment">
+			<div className={style.container}>
 				<WalineCommentArea
 					updateFunction={() => {
 						cardsRef.current?.reload();
@@ -179,12 +180,12 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 		updateFunction,
 	]);
 	return (
-		<div id="comment-area">
-			<div className="comment-area-metadata">
-				<div className="comment-area-metadata-item">
-					<label className="comment-area-metadata-label">昵称*</label>
+		<div id="comment-area" className={style.area}>
+			<div className={style.metadata}>
+				<div className={style.metadataItem}>
+					<label className={style.metadataLabel}>昵称*</label>
 					<input
-						className="comment-area-metadata-input"
+						className={style.metadataInput}
 						onChange={(e) => {
 							setNick(e.target.value);
 						}}
@@ -192,10 +193,10 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 						type="text"
 					/>
 				</div>
-				<div className="comment-area-metadata-item">
-					<label className="comment-area-metadata-label">邮箱*</label>
+				<div className={style.metadataItem}>
+					<label className={style.metadataLabel}>邮箱*</label>
 					<input
-						className="comment-area-metadata-input"
+						className={style.metadataInput}
 						onChange={(e) => {
 							setMail(e.target.value);
 						}}
@@ -203,10 +204,10 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 						type="email"
 					/>
 				</div>
-				<div className="comment-area-metadata-item">
-					<label className="comment-area-metadata-label">网站</label>
+				<div className={style.metadataItem}>
+					<label className={style.metadataLabel}>网站</label>
 					<input
-						className="comment-area-metadata-input"
+						className={style.metadataInput}
 						onChange={(e) => {
 							setUrl(e.target.value);
 						}}
@@ -216,18 +217,18 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 				</div>
 			</div>
 			<textarea
-				id="comment-area-input"
+				className={style.areaInput}
 				onChange={(e) => {
 					setContent(e.target.value);
 				}}
 				value={content}
 			/>
-			<div id="comment-area-bar">
-				<div className="comment-area-bar-part">
+			<div className={style.areaBar}>
+				<div className={style.areaBarPart}>
 					{pid !== "" && (
 						<p
 							style={{ cursor: "pointer" }}
-							className="comment-area-bar-text"
+							className={style.areaBarText}
 							title="点击取消回复"
 							onClick={() => {
 								setPid("");
@@ -238,15 +239,13 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 						</p>
 					)}
 				</div>
-				<div className="comment-area-bar-part">
-					<p className="comment-area-bar-text">
-						{content.length.toString()} 字
-					</p>
+				<div className={style.areaBarPart}>
+					<p className={style.areaBarText}>{content.length.toString()} 字</p>
 					<button
 						style={{
 							filter: submitAvailable ? undefined : "brightness(0.75)",
 						}}
-						className="comment-area-bar-button"
+						className={style.areaBarButton}
 						disabled={!submitAvailable}
 						onClick={onSubmit}>
 						提交
@@ -281,7 +280,7 @@ function UpdateButton({ c, parent }: { c: WalineComment; parent?: string }) {
 			style={{
 				color: pid === c.objectId ? "var(--primary)" : undefined,
 			}}
-			className="comment-update-button"
+			className={style.updateButton}
 			onClick={onClick}>
 			<FontAwesomeIcon icon={faCommentAlt} />
 		</button>
@@ -296,39 +295,39 @@ function WalineCommentCard({
 	parent?: string;
 }) {
 	return (
-		<div className="comment-card">
+		<div className={style.card}>
 			<div>
-				<img className="comment-avatar" src={c.avatar} alt="avatar" />
+				<img className={style.avatar} src={c.avatar} alt="avatar" />
 			</div>
-			<div className="comment-data">
-				<div className="comment-metadata">
+			<div className={style.data}>
+				<div className={style.meta}>
 					{c.link !== null &&
 					(c.link.startsWith("http://") || c.link.startsWith("https://")) ? (
 						<a
 							href={c.link}
 							style={{ color: "var(--primary)" }}
-							className="comment-nick">
+							className={style.nick}>
 							{c.nick}
 						</a>
 					) : (
-						<p className="comment-nick">{c.nick}</p>
+						<p className={style.nick}>{c.nick}</p>
 					)}
 					{c.avatar === getAvatar(config.author.email) && (
-						<span className="comment-tag owner-tag">博主</span>
+						<span className={style.ownerTag}>博主</span>
 					)}
-					<span className="comment-metadata-text">
+					<span className={style.metaText}>
 						{new Date(c.time).toLocaleDateString()}
 					</span>
-					<span className="comment-metadata-text">#{c.objectId}</span>
+					<span className={style.metaText}>#{c.objectId}</span>
 					{parent !== undefined && (
-						<span className="comment-metadata-text">
+						<span className={style.metaText}>
 							<FontAwesomeIcon icon={faReply} /> #
 							{(c as WalineChildComment).pid}
 						</span>
 					)}
 					<br />
-					<span className="comment-tag">{c.browser}</span>
-					<span className="comment-tag">{c.os}</span>
+					<span className={style.commentTag}>{c.browser}</span>
+					<span className={style.commentTag}>{c.os}</span>
 					<UpdateButton c={c} parent={parent} />
 				</div>
 				<div className="comment content">
@@ -398,9 +397,9 @@ function WalineCommentCards({
 	return (
 		<>
 			{ret.count === 0 ? (
-				<p id="comment-count">没有评论</p>
+				<p className={style.count}>没有评论</p>
 			) : (
-				<p id="comment-count">{ret.count} 条评论</p>
+				<p className={style.count}>{ret.count} 条评论</p>
 			)}
 			<div>
 				{ret.data.map((c) => {
@@ -411,14 +410,17 @@ function WalineCommentCards({
 				style={{
 					display: total <= 1 ? "none" : undefined,
 				}}
-				className="page-switcher-wrap">
-				<p className="page-switcher page-switcher-page">{`第${page}页，共${total}页`}</p>
+				className={pageSwitcher.pageSwitcherWrap}>
+				<p
+					className={
+						pageSwitcher.pageSwitcherPage
+					}>{`第${page}页，共${total}页`}</p>
 				<button
 					style={{
 						left: 0,
 						display: page <= 1 ? "none" : undefined,
 					}}
-					className="page-switcher page-switcher-button"
+					className={pageSwitcher.pageSwitcherButton}
 					onClick={() => {
 						setPage(page - 1);
 					}}>
@@ -429,7 +431,7 @@ function WalineCommentCards({
 						right: 0,
 						display: page >= total ? "none" : undefined,
 					}}
-					className="page-switcher page-switcher-button"
+					className={pageSwitcher.pageSwitcherButton}
 					onClick={() => {
 						setPage(page + 1);
 					}}>
