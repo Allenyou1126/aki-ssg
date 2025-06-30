@@ -17,39 +17,6 @@
 	margin: 2rem auto;
 }
 
-.content-image {
-	border-width: 0;
-	box-sizing: border-box;
-	padding: 0;
-	margin: auto;
-	cursor: zoom-in;
-}
-
-.content-image-alt {
-	display: block;
-	width: 100%;
-	margin: 0.5rem 0;
-	text-align: center;
-	opacity: 0.8;
-	font-size: 1.125rem;
-	line-height: 1.75rem;
-}
-
-.content-image-wrap {
-	display: inline-block;
-	box-sizing: border-box;
-	position: relative;
-	max-width: 100%;
-	width: 100%;
-	height: auto;
-	margin: 0 0 0.25rem;
-	font-size: 0;
-}
-
-.content-image-thumb {
-	filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='$'%3E%3CfeGaussianBlur stdDeviation='10'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0,0 1 0 0 0,0 0 1 0 0,0 0 0 9 0'/%3E%3CfeComposite in2='SourceGraphic' operator='in'/%3E%3C/filter%3E%3C/svg%3E#$");
-}
-
 /* MathJax Compatible */
 mjx-container > svg {
 	display: inline !important;

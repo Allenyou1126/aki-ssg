@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { config } from "@/data/site-config";
-import { connectString } from "@/utils/connectString";
 import { getThumbUrl } from "@/utils/getThumbUrl";
 import { useIntersection } from "@/utils/useIntersection";
 import mediumZoom, { Zoom } from "medium-zoom";
 import "@/styles/content.css";
+import style from "./style.module.css";
 
 import React, {
 	useRef,
@@ -113,7 +113,7 @@ export default function ImageClient(
 	const ratio = w / h;
 	if (!config.optimize.thumb_query) {
 		return (
-			<span className="content-image-wrap">
+			<span className={style.wrap}>
 				<img
 					{...rest}
 					style={{
@@ -121,7 +121,7 @@ export default function ImageClient(
 						aspectRatio: ratio,
 						display: inline ? "inline-block" : "block",
 					}}
-					className="content-image"
+					className={style.img}
 					width={w}
 					height={h}
 					alt={alt}
@@ -129,12 +129,12 @@ export default function ImageClient(
 					decoding="async"
 					src={srcString}
 				/>
-				{alt && <span className="content-image-alt">{alt}</span>}
+				{alt && <span className={style.alt}>{alt}</span>}
 			</span>
 		);
 	}
 	return (
-		<span className="content-image-wrap">
+		<span className={style.wrap}>
 			<img
 				{...rest}
 				style={{
@@ -142,17 +142,14 @@ export default function ImageClient(
 					aspectRatio: ratio,
 					display: inline ? "inline-block" : "block",
 				}}
-				className={connectString([
-					"content-image ",
-					isFullyLoaded ? "" : "content-image-thumb",
-				])}
+				className={[style.img, isFullyLoaded ? "" : style.thumb].join(" ")}
 				alt={alt}
 				onLoad={handleLoad}
 				ref={imageElRef}
 				decoding="async"
 				src={srcString}
 			/>
-			{alt && <span className="content-image-alt">{alt}</span>}
+			{alt && <span className={style.alt}>{alt}</span>}
 		</span>
 	);
 }
