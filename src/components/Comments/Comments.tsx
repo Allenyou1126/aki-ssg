@@ -2,7 +2,6 @@
 import dynamic from "next/dynamic";
 import { config } from "@/data/site-config";
 import React from "react";
-import "@/styles/comment.css";
 import { CommentsLoading } from "./CommentsLoading";
 
 const availableComments: Record<

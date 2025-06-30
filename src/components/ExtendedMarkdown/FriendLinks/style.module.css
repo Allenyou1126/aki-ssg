@@ -1,4 +1,4 @@
-.friend-link-item {
+.item {
 	display: flex;
 	align-items: center;
 	gap: 1rem;
@@ -6,41 +6,41 @@
 	grid-column: span 1 / span 1;
 }
 
-.friend-link-item:hover {
+.item:hover {
 	opacity: 0.9;
 }
 
-.friend-link-avatar {
+.avatar {
 	border-radius: 9999px;
 	object-fit: cover;
 }
 
-.friend-link-metadata {
+.metadata {
 	display: grid;
 	grid-template-rows: repeat(3, minmax(0, 1fr));
 	padding: 1.5rem 0;
 }
 
-.friend-link-title {
+.title {
 	font-weight: 600;
 	color: var(--color-primary);
 	font-size: 1.25rem;
 	line-height: 1.75rem;
 }
 
-.friend-link-description {
+.description {
 	opacity: 60;
 	grid-row: span 2 / span 2;
 }
 
-.friend-link-grid {
+.grid {
 	display: grid;
 	grid-template-columns: repeat(1, minmax(0, 1fr));
 	gap: 1rem;
 }
 
 @media (min-width: 768px) {
-	.friend-link-grid {
+	.grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
