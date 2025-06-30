@@ -1,4 +1,4 @@
-import { Comments } from "@/components/Comments";
+import { Comments } from "@/components/Comments/Comments";
 import { config } from "@/data/site-config";
 import { initCMS } from "@/libs/content-management";
 import type { Metadata } from "next";

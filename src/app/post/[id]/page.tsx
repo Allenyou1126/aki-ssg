@@ -1,4 +1,4 @@
-import { Comments } from "@/components/Comments";
+import { Comments } from "@/components/Comments/Comments";
 import Copyright from "@/components/Copyright";
 import OutdateTip from "@/components/OutdateTip";
 import Toc from "@/components/Toc";
