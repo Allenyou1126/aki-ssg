@@ -1,8 +1,8 @@
-.postlist-item {
+.item {
 	margin-bottom: 2rem;
 }
 
-.postlist-link {
+.link {
 	font-weight: 700;
 	font-size: 1.5rem;
 	line-height: 2rem;
@@ -10,15 +10,15 @@
 	margin: 1rem 0;
 }
 
-.postlist-link:hover {
+.link:hover {
 	opacity: 0.8;
 }
 
-.postlist-metadata {
+.metadata {
 	opacity: 0.6;
 	margin: 1rem 0;
 }
 
-.postlist-description {
+.description {
 	margin: 1rem 0;
 }
