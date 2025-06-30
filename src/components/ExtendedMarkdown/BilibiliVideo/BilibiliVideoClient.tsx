@@ -1,4 +1,5 @@
 "use client";
+import style from "./style.module.css";
 
 export default function BilibiliVideoClient({
 	bvid,
@@ -15,7 +16,7 @@ export default function BilibiliVideoClient({
 				cid == undefined ? "" : `&cid=${cid}`
 			}&page=1&high_quality=1&danmaku=0`}
 			allowFullScreen={true}
-			className="bilibili-video"
+			className={style.video}
 			sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
 	);
 }
