@@ -76,9 +76,9 @@ const toggleExpandContext = createContext<() => void>(() => {});
 function NavigationItem({ link }: { link: { title: string; url: string } }) {
 	const toggleExpand = useContext(toggleExpandContext);
 	return (
-		<li className="navigation-item" key={link.title}>
+		<li className={style.item} key={link.title}>
 			<Link
-				className="navigation-link"
+				className={style.link}
 				onClick={() => {
 					toggleExpand();
 				}}
