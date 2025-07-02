@@ -15,6 +15,7 @@ body {
 	--text: rgb(0 0 0 / 1);
 	--border: #e5e7eb;
 	--copyright-bg: rgb(209 213 219 / 0.3);
+	color-scheme: light dark;
 }
 
 .dark {
@@ -22,6 +23,7 @@ body {
 	--text: rgb(209 213 219 / 1);
 	--border: #2d2d2d;
 	--copyright-bg: rgb(75 85 99 / 0.3);
+	color-scheme: dark;
 }
 
 #main {
