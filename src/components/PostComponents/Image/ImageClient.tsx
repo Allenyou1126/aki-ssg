@@ -4,7 +4,6 @@ import { config } from "@/data/site-config";
 import { getThumbUrl } from "@/utils/getThumbUrl";
 import { useIntersection } from "@/utils/useIntersection";
 import mediumZoom, { Zoom } from "medium-zoom";
-import "@/styles/content.css";
 import style from "./style.module.css";
 
 import React, {
