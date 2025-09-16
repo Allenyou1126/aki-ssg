@@ -3,8 +3,10 @@
 
 import { useEffect } from "react";
 import style from "@/components/PostComponents/Image/style.module.css";
+import { usePathname } from "next/navigation";
 
 export default function ImageZoom() {
+	const pathname = usePathname();
 	useEffect(() => {
 		function handleImageClick(img: HTMLImageElement) {
 			if (document.querySelector(".image-zoom-overlay")) {
@@ -86,7 +88,7 @@ export default function ImageZoom() {
 				img.removeEventListener("click", () => handleImageClick(img));
 			});
 		};
-	}, []);
+	}, [pathname]);
 
 	return null;
 }
