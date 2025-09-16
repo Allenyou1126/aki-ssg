@@ -3,14 +3,12 @@
 import { config } from "@/data/site-config";
 import { getThumbUrl } from "@/utils/getThumbUrl";
 import { useIntersection } from "@/utils/useIntersection";
-import mediumZoom, { Zoom } from "medium-zoom";
 import style from "./style.module.css";
 
 import React, {
 	useRef,
 	useMemo,
 	useLayoutEffect,
-	RefCallback,
 	useCallback,
 	useState,
 	JSX,
@@ -50,31 +48,6 @@ export default function ImageClient(
 		}
 		setIntersection(rawImageElRef.current);
 	}, [resetIntersected, setIntersection, src]);
-	const zoomRef = useRef<Zoom | null>(null);
-	const getZoom = useCallback(() => {
-		if (zoomRef.current === null) {
-			zoomRef.current = mediumZoom({
-				background: "rgb(0, 0, 0, 0.3)",
-			});
-		}
-		return zoomRef.current;
-	}, []);
-	const imageElRef: RefCallback<HTMLImageElement> = (node) => {
-		(rawImageElRef as React.RefObject<HTMLImageElement | null>).current = node;
-		if (ref !== null && ref !== undefined && typeof ref !== "string") {
-			if (typeof ref === "function") {
-				ref(node);
-			} else if (ref !== null) {
-				(ref as React.RefObject<HTMLImageElement | null>).current = node;
-			}
-		}
-		const zoom = getZoom();
-		if (node) {
-			zoom.attach(node);
-		} else {
-			zoom.detach();
-		}
-	};
 	const [isFullyLoaded, setIsFullyLoaded] = useState(false);
 	const handleLoad = useCallback(() => {
 		if (!src || typeof src !== "string") {
@@ -124,9 +97,10 @@ export default function ImageClient(
 					width={w}
 					height={h}
 					alt={alt}
-					ref={imageElRef}
+					ref={rawImageElRef}
 					decoding="async"
 					src={srcString}
+					data-zoomable
 				/>
 				{alt && <span className={style.alt}>{alt}</span>}
 			</span>
@@ -144,9 +118,10 @@ export default function ImageClient(
 				className={[style.img, isFullyLoaded ? "" : style.thumb].join(" ")}
 				alt={alt}
 				onLoad={handleLoad}
-				ref={imageElRef}
+				ref={rawImageElRef}
 				decoding="async"
 				src={srcString}
+				data-zoomable
 			/>
 			{alt && <span className={style.alt}>{alt}</span>}
 		</span>
