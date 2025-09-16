@@ -10,6 +10,11 @@
 	opacity: 0.6;
 }
 
+.math {
+	display: inline;
+	vertical-align: middle;
+}
+
 .prose {
 	color: var(--prose-bd);
 	word-break: break-all;
