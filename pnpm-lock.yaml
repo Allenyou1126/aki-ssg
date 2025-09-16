@@ -30,7 +30,7 @@ overrides:
 
 patchedDependencies:
   medium-zoom:
-    hash: 0e1f43e3b6140e791e7fe3503f7477574ad66476a8dfedcff0f96a286800b1a0
+    hash: 044d5986a0aaf44b792cf01bf5c8d7224f974581d453d190b3b5d5777c8785c0
     path: patches/medium-zoom.patch
 
 importers:
@@ -87,7 +87,7 @@ importers:
         version: 7.1.0
       medium-zoom:
         specifier: ^1.1.0
-        version: 1.1.0(patch_hash=0e1f43e3b6140e791e7fe3503f7477574ad66476a8dfedcff0f96a286800b1a0)
+        version: 1.1.0(patch_hash=044d5986a0aaf44b792cf01bf5c8d7224f974581d453d190b3b5d5777c8785c0)
       next:
         specifier: 15.4.1
         version: 15.4.1(babel-plugin-react-compiler@19.0.0-beta-8a03594-20241020)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -4007,7 +4007,7 @@ snapshots:
 
   mdn-data@2.0.30: {}
 
-  medium-zoom@1.1.0(patch_hash=0e1f43e3b6140e791e7fe3503f7477574ad66476a8dfedcff0f96a286800b1a0): {}
+  medium-zoom@1.1.0(patch_hash=044d5986a0aaf44b792cf01bf5c8d7224f974581d453d190b3b5d5777c8785c0): {}
 
   merge2@1.4.1: {}
 
