@@ -13,6 +13,8 @@
 .avatar {
 	border-radius: 9999px;
 	object-fit: cover;
+	width: 80px;
+	height: 80px;
 }
 
 .metadata {
