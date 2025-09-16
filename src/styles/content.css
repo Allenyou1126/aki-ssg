@@ -16,8 +16,3 @@
 	max-width: 56rem;
 	margin: 2rem auto;
 }
-
-/* MathJax Compatible */
-mjx-container > svg {
-	display: inline !important;
-}

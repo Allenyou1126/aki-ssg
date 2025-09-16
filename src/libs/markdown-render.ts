@@ -38,6 +38,7 @@ import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks/FriendLinks";
 import Image from "@/components/PostComponents/Image/Image";
 import * as Chat from "@/components/ExtendedMarkdown/Chat/Chat";
 import Meme from "@/components/ExtendedMarkdown/Meme/Meme";
+import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
 
 const extended_components = {
 	bilibili: BilibiliVideo,
@@ -80,6 +81,7 @@ const pipeline = unified()
 		},
 	})
 	.use(rehypeMathjax, {})
+	.use(rehypeMathjaxPlus)
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],
 	});
