@@ -4,6 +4,7 @@
 	padding: 0;
 	margin: auto;
 	cursor: zoom-in;
+	max-width: 56rem;
 }
 
 .alt {

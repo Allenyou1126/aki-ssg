@@ -127,7 +127,7 @@ export default function ImageClient(
 		const translateY = (window.innerHeight - scaledH) / 2 - rect.top;
 		setIsZoomed(true);
 		setTransform({ x: translateX, y: translateY, scale: s });
-	}, [h, w]);
+	}, []);
 	const closeImage = useCallback(() => {
 		const zoomedImage = zoomedImageRef.current;
 		const zoomedOverlay = zoomedOverlayRef.current;
@@ -175,13 +175,11 @@ export default function ImageClient(
 			/>
 			{isZoomed && (
 				<span
+					className={style.img}
 					style={{
 						width: w,
 						height: h,
 						display: imageDisplay,
-						boxSizing: "border-box",
-						padding: 0,
-						margin: "auto",
 					}}
 				/>
 			)}
@@ -199,10 +197,11 @@ export default function ImageClient(
 								{...rest}
 								style={{
 									aspectRatio: ratio,
-									width: w,
-									height: h,
 									left: rawImageElRef.current?.getBoundingClientRect()?.left,
 									top: rawImageElRef.current?.getBoundingClientRect()?.top,
+									width: rawImageElRef.current?.getBoundingClientRect()?.width,
+									height:
+										rawImageElRef.current?.getBoundingClientRect()?.height,
 									transform: "none",
 									opacity: 1,
 								}}
