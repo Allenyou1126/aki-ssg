@@ -31,6 +31,18 @@
 	filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='$'%3E%3CfeGaussianBlur stdDeviation='10'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0,0 1 0 0 0,0 0 1 0 0,0 0 0 9 0'/%3E%3CfeComposite in2='SourceGraphic' operator='in'/%3E%3C/filter%3E%3C/svg%3E#$");
 }
 
+.zoomed {
+	display: block;
+	position: fixed;
+	z-index: 999;
+	cursor: zoom-out;
+	max-width: none;
+	max-height: none;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	object-fit: contain;
+	transform-origin: top left;
+}
+
 .overlay {
 	position: fixed;
 	top: 0;
@@ -38,18 +50,7 @@
 	right: 0;
 	bottom: 0;
 	background-color: rgba(0, 0, 0, 0.3);
-	z-index: 999;
+	z-index: 40;
 	cursor: zoom-out;
 	transition: opacity 0.3s ease;
-}
-
-.expanded {
-	position: fixed;
-	z-index: 1000;
-	cursor: zoom-out;
-	max-width: none;
-	max-height: none;
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	object-fit: contain;
-	transform-origin: top left;
 }

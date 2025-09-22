@@ -12,7 +12,10 @@ import React, {
 	useCallback,
 	useState,
 	JSX,
+	useEffect,
 } from "react";
+import { createPortal } from "react-dom";
+import { delay } from "@/utils/delay";
 
 const LOADED_IMAGE_URLS = new Set<string>();
 
@@ -24,8 +27,36 @@ export default function ImageClient(
 ) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { src, ref, decoding, width, height, alt, inline, ...rest } = props;
+
+	// 图片属性
+	const w = typeof width! === "number" ? width! : parseInt(width!);
+	const h = typeof height! === "number" ? height! : parseInt(height!);
+	const ratio = w / h;
+	const imageDisplay = inline ? "inline-block" : "block";
+
+	// 图片懒加载用
 	const rawImageElRef = useRef<HTMLImageElement>(null);
 	const previousSrcRef = useRef<string | Blob | undefined>(src);
+
+	// 图片缩放用
+	const zoomedImageRef = useRef<HTMLImageElement>(null);
+	const zoomedOverlayRef = useRef<HTMLDivElement>(null);
+
+	// 仅浏览器环境渲染缩放图片
+	const [isBrowser, setIsBrowser] = useState(false);
+	useEffect(() => {
+		setIsBrowser(true);
+	}, []);
+
+	// 图片缩放状态
+	const [isZoomed, setIsZoomed] = useState(false);
+	const [transform, setTransform] = useState<{
+		x: number;
+		y: number;
+		scale: number;
+	} | null>(null);
+
+	// 图片懒加载逻辑
 	const isLazy = useMemo(() => {
 		if (!src || typeof src !== "string") return false;
 		if (src?.startsWith("data:") || src?.startsWith("blob:")) return false;
@@ -34,7 +65,6 @@ export default function ImageClient(
 		}
 		return true;
 	}, [src]);
-
 	const [setIntersection, isIntersected, resetIntersected] =
 		useIntersection<HTMLImageElement>({
 			rootMargin: "200px",
@@ -80,9 +110,49 @@ export default function ImageClient(
 			? getThumbUrl(src!)
 			: SMALLEST_GIF;
 	const srcString = isVisible ? src : thumbSrcString;
-	const w = typeof width! === "number" ? width! : parseInt(width!);
-	const h = typeof height! === "number" ? height! : parseInt(height!);
-	const ratio = w / h;
+
+	// 图片缩放逻辑
+	const openImage = useCallback(() => {
+		const rect = rawImageElRef.current?.getBoundingClientRect();
+		if (!rect) return;
+
+		const maxW = window.innerWidth * 0.9;
+		const maxH = window.innerHeight * 0.9;
+		const s = Math.min(maxW / w, maxH / h, 3);
+
+		const scaledW = w * s;
+		const scaledH = h * s;
+
+		const translateX = (window.innerWidth - scaledW) / 2 - rect.left;
+		const translateY = (window.innerHeight - scaledH) / 2 - rect.top;
+		setIsZoomed(true);
+		setTransform({ x: translateX, y: translateY, scale: s });
+	}, [h, w]);
+	const closeImage = useCallback(() => {
+		const zoomedImage = zoomedImageRef.current;
+		const zoomedOverlay = zoomedOverlayRef.current;
+		if (!zoomedImage || !zoomedOverlay) {
+			return;
+		}
+		zoomedImage.style.transform = "none";
+		zoomedOverlay.style.opacity = "0";
+		delay(300).then(() => {
+			setIsZoomed(false);
+		});
+	}, []);
+	// 缩放动画
+	useEffect(() => {
+		if (!transform || !isZoomed) {
+			return;
+		}
+		const zoomedImage = zoomedImageRef.current;
+		if (!zoomedImage) {
+			return;
+		}
+		requestAnimationFrame(() => {
+			zoomedImage.style.transform = `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`;
+		});
+	}, [transform, isZoomed]);
 	return (
 		<span className={style.wrap}>
 			<img
@@ -90,20 +160,64 @@ export default function ImageClient(
 				style={{
 					width: w,
 					aspectRatio: ratio,
-					display: inline ? "inline-block" : "block",
+					display: isZoomed ? "none" : imageDisplay,
 				}}
 				alt={alt}
 				ref={rawImageElRef}
 				decoding="async"
 				src={srcString}
-				data-zoomable
 				className={[
 					style.img,
 					!config.optimize.thumb_query || isFullyLoaded ? "" : style.thumb,
 				].join(" ")}
 				onLoad={config.optimize.thumb_query ? handleLoad : undefined}
+				onClick={openImage}
 			/>
+			{isZoomed && (
+				<span
+					style={{
+						width: w,
+						height: h,
+						display: imageDisplay,
+						boxSizing: "border-box",
+						padding: 0,
+						margin: "auto",
+					}}
+				/>
+			)}
 			{alt && <span className={style.alt}>{alt}</span>}
+			{isBrowser &&
+				createPortal(
+					isZoomed && (
+						<>
+							<div
+								ref={zoomedOverlayRef}
+								className={style.overlay}
+								onClick={closeImage}
+							/>
+							<img
+								{...rest}
+								style={{
+									aspectRatio: ratio,
+									width: w,
+									height: h,
+									left: rawImageElRef.current?.getBoundingClientRect()?.left,
+									top: rawImageElRef.current?.getBoundingClientRect()?.top,
+									transform: "none",
+									opacity: 1,
+								}}
+								ref={zoomedImageRef}
+								alt={alt}
+								decoding="async"
+								src={src}
+								className={style.zoomed}
+								onClick={closeImage}
+							/>
+						</>
+					),
+					document.body,
+					"image-zoom-overlay"
+				)}
 		</span>
 	);
 }
