@@ -83,29 +83,6 @@ export default function ImageClient(
 	const w = typeof width! === "number" ? width! : parseInt(width!);
 	const h = typeof height! === "number" ? height! : parseInt(height!);
 	const ratio = w / h;
-	if (!config.optimize.thumb_query) {
-		return (
-			<span className={style.wrap}>
-				<img
-					{...rest}
-					style={{
-						width: w,
-						aspectRatio: ratio,
-						display: inline ? "inline-block" : "block",
-					}}
-					className={style.img}
-					width={w}
-					height={h}
-					alt={alt}
-					ref={rawImageElRef}
-					decoding="async"
-					src={srcString}
-					data-zoomable
-				/>
-				{alt && <span className={style.alt}>{alt}</span>}
-			</span>
-		);
-	}
 	return (
 		<span className={style.wrap}>
 			<img
@@ -115,13 +92,16 @@ export default function ImageClient(
 					aspectRatio: ratio,
 					display: inline ? "inline-block" : "block",
 				}}
-				className={[style.img, isFullyLoaded ? "" : style.thumb].join(" ")}
 				alt={alt}
-				onLoad={handleLoad}
 				ref={rawImageElRef}
 				decoding="async"
 				src={srcString}
 				data-zoomable
+				className={[
+					style.img,
+					!config.optimize.thumb_query || isFullyLoaded ? "" : style.thumb,
+				].join(" ")}
+				onLoad={config.optimize.thumb_query ? handleLoad : undefined}
 			/>
 			{alt && <span className={style.alt}>{alt}</span>}
 		</span>
