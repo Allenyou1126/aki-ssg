@@ -177,8 +177,8 @@ export default function ImageClient(
 				<span
 					className={style.img}
 					style={{
-						width: w,
-						height: h,
+						width: rawImageElRef.current?.getBoundingClientRect()?.width,
+						height: rawImageElRef.current?.getBoundingClientRect()?.height,
 						display: imageDisplay,
 					}}
 				/>
