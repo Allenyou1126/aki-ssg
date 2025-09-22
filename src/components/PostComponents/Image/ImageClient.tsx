@@ -118,10 +118,10 @@ export default function ImageClient(
 
 		const maxW = window.innerWidth * 0.9;
 		const maxH = window.innerHeight * 0.9;
-		const s = Math.min(maxW / w, maxH / h, 3);
+		const s = Math.min(maxW / rect.width, maxH / rect.height, 3);
 
-		const scaledW = w * s;
-		const scaledH = h * s;
+		const scaledW = rect.width * s;
+		const scaledH = rect.height * s;
 
 		const translateX = (window.innerWidth - scaledW) / 2 - rect.left;
 		const translateY = (window.innerHeight - scaledH) / 2 - rect.top;
