@@ -28,11 +28,6 @@ overrides:
   string.prototype.trimend: npm:@nolyfill/string.prototype.trimend@^1
   safe-buffer: npm:@nolyfill/safe-buffer@^1
 
-patchedDependencies:
-  medium-zoom:
-    hash: 044d5986a0aaf44b792cf01bf5c8d7224f974581d453d190b3b5d5777c8785c0
-    path: patches/medium-zoom.patch
-
 importers:
 
   .:
@@ -85,9 +80,6 @@ importers:
       mdast-util-toc:
         specifier: ^7.1.0
         version: 7.1.0
-      medium-zoom:
-        specifier: ^1.1.0
-        version: 1.1.0(patch_hash=044d5986a0aaf44b792cf01bf5c8d7224f974581d453d190b3b5d5777c8785c0)
       next:
         specifier: 15.4.1
         version: 15.4.1(babel-plugin-react-compiler@19.0.0-beta-8a03594-20241020)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1677,9 +1669,6 @@ packages:
 
   mdn-data@2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
-
-  medium-zoom@1.1.0:
-    resolution: {integrity: sha512-ewyDsp7k4InCUp3jRmwHBRFGyjBimKps/AJLjRSox+2q/2H4p/PNpQf+pwONWlJiOudkBXtbdmVbFjqyybfTmQ==}
 
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
@@ -4006,8 +3995,6 @@ snapshots:
       unist-util-visit: 5.0.0
 
   mdn-data@2.0.30: {}
-
-  medium-zoom@1.1.0(patch_hash=044d5986a0aaf44b792cf01bf5c8d7224f974581d453d190b3b5d5777c8785c0): {}
 
   merge2@1.4.1: {}
 
