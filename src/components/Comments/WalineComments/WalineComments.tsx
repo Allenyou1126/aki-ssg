@@ -2,6 +2,7 @@
 "use client";
 
 import style from "./style.module.css";
+import proseStyle from "@/styles/content.module.css";
 import pageSwitcher from "@/styles/utils/page-switcher.module.css";
 import "@/components/Comments/WalineComments/style.css";
 import { config } from "@/data/site-config";
@@ -372,7 +373,7 @@ function WalineCommentCard({
 					<span className={style.commentTag}>{c.os}</span>
 					<UpdateButton c={c} parent={parent} />
 				</div>
-				<div className="comment content">
+				<div className={["comment", proseStyle.prose].join(" ")}>
 					{toJsxRuntime(
 						fromHtml(c.comment, {
 							fragment: true,
