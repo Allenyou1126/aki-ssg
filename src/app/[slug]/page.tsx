@@ -3,7 +3,6 @@ import { config } from "@/data/site-config";
 import { initCMS } from "@/libs/content-management";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import "medium-zoom/dist/style.css";
 import "@/styles/code-highlight.css";
 import style from "@/styles/content.module.css";
 
