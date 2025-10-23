@@ -183,7 +183,11 @@ export default function Navigation({
 						"--nav-width": `${navWidth}rem`,
 					} as React.CSSProperties
 				}>
-				<div className={scroll > 500 ? style.wrapWide : style.wrap}>
+				<div
+					className={[
+						style.wrapCommon,
+						scroll > 500 ? style.wrapWide : style.wrap,
+					].join(" ")}>
 					<div className={style.bar}>
 						<Link href="/">
 							<img

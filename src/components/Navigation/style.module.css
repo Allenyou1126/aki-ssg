@@ -113,8 +113,6 @@
 
 .pc {
 	display: none;
-	justify-content: center;
-	gap: 2rem;
 }
 
 .bar {
@@ -128,18 +126,21 @@
 	flex-shrink: 0;
 }
 
-.wrap {
+.wrapCommon {
 	position: fixed;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	height: var(--nav-height, 5rem);
 	overflow: hidden;
 	flex-shrink: 0;
 	background-color: rgb(from var(--bg) r g b / 0.8);
 	backdrop-filter: blur(16px);
 	transition: width 300ms ease-in-out, height 500ms ease-in-out,
 		top 300ms ease-in-out, border-radius 300ms ease-in-out;
+}
+
+.wrap {
+	height: var(--nav-height, 5rem);
 	width: 66%;
 	top: 1rem;
 	border-radius: 2.5rem;
@@ -153,19 +154,21 @@
 	}
 	.pc {
 		display: flex;
+		justify-content: center;
+		gap: 2rem;
 	}
 	.wrap {
 		height: 5rem;
 		width: var(--nav-width, 10rem);
+		top: 1rem;
+		border-radius: 2.5rem;
 	}
 }
 
 .wrapWide {
-	composes: wrap;
 	width: 100%;
 	top: 0;
 	border-radius: 0;
-	max-width: none;
 }
 
 .tools {
