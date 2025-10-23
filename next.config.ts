@@ -6,9 +6,11 @@ const isProd = process.env.NODE_ENV === "production";
 const nextConfig: NextConfig = {
 	output: "export",
 	assetPrefix: isProd ? config.optimize.cdn_prefix : undefined,
+	reactCompiler: true,
 	experimental: {
-		reactCompiler: true,
 		optimizeCss: true,
+		turbopackFileSystemCacheForDev: true,
+		turbopackFileSystemCacheForBuild: true,
 	},
 };
 
