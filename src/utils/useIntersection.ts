@@ -28,6 +28,7 @@ export function useIntersection<T extends Element>({
 	const unobserve = useRef<() => void>(null);
 	const [visible, setVisible] = useState(false);
 	// 设置 IntersectionObserver 的 root
+	// eslint-disable-next-line react-hooks/refs
 	const [root, setRoot] = useState(rootRef ? rootRef.current : null);
 	// React 回调 Ref
 	const setRef = useCallback(

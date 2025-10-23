@@ -3,7 +3,7 @@
 import { delay } from "@/utils/delay";
 import { scrollIntoViewById } from "@/utils/scrollIntoView";
 import type { Link, List, ListItem, Paragraph, Text } from "mdast";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import style from "./style.module.css";
 
@@ -52,11 +52,12 @@ function rendToc(toc: List | ListItem, index: number = 0): ReactNode {
 
 export default function Toc({ toc }: { toc: List }) {
 	const [mounted, setMounted] = useState(false);
-	const ref = useRef<HTMLElement>(null);
 	useEffect(() => {
-		setMounted(true);
-		ref.current = document.getElementById("main");
-	}, []);
+		if (!mounted) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setMounted(true);
+		}
+	}, [mounted]);
 	if (toc === undefined) {
 		return <></>;
 	}
@@ -67,7 +68,7 @@ export default function Toc({ toc }: { toc: List }) {
 				<div style={{ height: "10rem" }} />
 				<div className={style.wrap}>{tocContent}</div>
 			</div>,
-			ref.current!
+			document.getElementById("main")!
 		)
 	) : (
 		<></>
