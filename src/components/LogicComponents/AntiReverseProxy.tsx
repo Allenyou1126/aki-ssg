@@ -1,12 +1,13 @@
 "use client";
 import { config } from "@/data/site-config";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useEffectEvent } from "react";
 
 const extra_whitelist = ["127.0.0.1", "localhost"];
 
 export default function AntiReverseProxy() {
-	const [_] = useState();
-	useEffect(() => {
+	const pathname = usePathname();
+	const onNavigate = useEffectEvent(() => {
 		if (document.location.hostname === config.blog.hostname) {
 			return;
 		}
@@ -15,6 +16,9 @@ export default function AntiReverseProxy() {
 		}
 		alert("您目前访问的是未授权的镜像站点，站点上可能存在恶意内容。");
 		document.location.host = config.blog.hostname;
-	}, [_]);
+	});
+	useEffect(() => {
+		onNavigate();
+	}, [pathname]);
 	return <></>;
 }

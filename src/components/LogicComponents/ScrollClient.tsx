@@ -3,18 +3,16 @@
 import { scrollY } from "@/libs/state-management";
 import { throttle } from "@/utils/throttle";
 import { useSetAtom } from "jotai";
-import { useCallback, useEffect } from "react";
+import { useEffect, useEffectEvent } from "react";
 
 export function ScrollClient() {
 	const setScrollY = useSetAtom(scrollY);
-	/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	const handler = useCallback(
+	const handler = useEffectEvent(
 		throttle(() => {
 			setScrollY(
 				document.body.scrollTop || document.documentElement.scrollTop || 0
 			);
-		}, 100),
-		[setScrollY]
+		}, 100)
 	);
 	useEffect(() => {
 		setScrollY(
@@ -24,6 +22,6 @@ export function ScrollClient() {
 		return () => {
 			document.removeEventListener("scroll", handler);
 		};
-	}, [handler, setScrollY]);
+	}, [setScrollY]);
 	return <></>;
 }
