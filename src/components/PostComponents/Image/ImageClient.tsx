@@ -138,6 +138,7 @@ export default function ImageClient(
 		zoomedOverlay.style.opacity = "0";
 		delay(300).then(() => {
 			setIsZoomed(false);
+			setTransform(null);
 		});
 	}, []);
 	// 缩放动画
@@ -177,7 +178,9 @@ export default function ImageClient(
 				<span
 					className={style.img}
 					style={{
+						// eslint-disable-next-line react-hooks/refs
 						width: rawImageElRef.current?.getBoundingClientRect()?.width,
+						// eslint-disable-next-line react-hooks/refs
 						height: rawImageElRef.current?.getBoundingClientRect()?.height,
 						display: imageDisplay,
 					}}
@@ -197,10 +200,14 @@ export default function ImageClient(
 								{...rest}
 								style={{
 									aspectRatio: ratio,
+									// eslint-disable-next-line react-hooks/refs
 									left: rawImageElRef.current?.getBoundingClientRect()?.left,
+									// eslint-disable-next-line react-hooks/refs
 									top: rawImageElRef.current?.getBoundingClientRect()?.top,
+									// eslint-disable-next-line react-hooks/refs
 									width: rawImageElRef.current?.getBoundingClientRect()?.width,
 									height:
+										// eslint-disable-next-line react-hooks/refs
 										rawImageElRef.current?.getBoundingClientRect()?.height,
 									transform: "none",
 									opacity: 1,
