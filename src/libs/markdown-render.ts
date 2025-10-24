@@ -139,7 +139,7 @@ export class MarkdownContent implements RenderableContent {
 				ignoreInvalidStyle: true,
 				jsx,
 				jsxs,
-				passNode: true,
+				// passNode: true,
 			})
 		);
 	}

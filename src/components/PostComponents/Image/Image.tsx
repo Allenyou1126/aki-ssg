@@ -6,11 +6,9 @@ export default async function Image(
 	props: JSX.IntrinsicElements["img"] & {
 		inline?: boolean;
 		scale?: number;
-		node?: unknown;
 	}
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { src, inline, scale: ori_scale, node, ...rest } = props;
+	const { src, inline, scale: ori_scale, ...rest } = props;
 	const scale = ori_scale ?? 1.0;
 	if (
 		!src ||
