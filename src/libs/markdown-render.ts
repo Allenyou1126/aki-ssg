@@ -33,7 +33,6 @@ import { remarkFriendLinks } from "./markdown-extension/remark-friend-links";
 import { remarkChat } from "./markdown-extension/remark-chat";
 import { remarkMeme } from "./markdown-extension/remark-meme";
 import BilibiliVideo from "@/components/ExtendedMarkdown/BilibiliVideo/BilibiliVideo";
-import NeteaseMusic from "@/components/ExtendedMarkdown/NeteaseMusic/NeteaseMusic";
 import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks/FriendLinks";
 import Image from "@/components/PostComponents/Image/Image";
 import * as Chat from "@/components/ExtendedMarkdown/Chat/Chat";
@@ -42,7 +41,6 @@ import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
 
 const extended_components = {
 	bilibili: BilibiliVideo,
-	"netease-music": NeteaseMusic,
 	"friend-links": FriendLinks,
 	chat: Chat.Container,
 	"chat-item": Chat.Item,
