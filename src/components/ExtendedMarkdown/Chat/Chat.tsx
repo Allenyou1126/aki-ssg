@@ -2,7 +2,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import "@/components/ExtendedMarkdown/Chat/style.css";
+import * as stylex from "@stylexjs/stylex";
 
 type Sender = {
 	name: string;
@@ -30,6 +30,86 @@ class SenderManager {
 
 const sender_context = createContext<SenderManager>(new SenderManager());
 
+const itemStyle = stylex.create({
+	sender: {
+		color: "var(--text)",
+		opacity: 0.6,
+		textAlign: "left",
+	},
+	senderSelf: {
+		textAlign: "right",
+	},
+	content: {
+		alignItems: "start",
+		display: "flex",
+		flexDirection: "column",
+		gap: "0.125rem",
+	},
+	contentSelf: {
+		alignItems: "end",
+	},
+	text: {
+		backgroundColor: "rgb(209 213 219 / 0.6)",
+		borderBottomLeftRadius: "0.5rem",
+		borderBottomRightRadius: "0.5rem",
+		borderTopRightRadius: "0.5rem",
+		color: "var(--text)",
+		fontSize: "1.125rem",
+		lineHeight: "1.75rem",
+		paddingBlock: "0.25rem",
+		paddingInline: "0.5rem",
+		textAlign: "left",
+		width: "fit-content",
+	},
+	textSelf: {
+		backgroundColor: "rgb(from var(--primary) r g b / 0.6)",
+		borderTopLeftRadius: "0.5rem",
+		borderTopRightRadius: 0,
+		textAlign: "right",
+	},
+	item: {
+		alignItems: "flex-start",
+		display: "flex",
+		flexDirection: "row",
+		gap: "0.5rem",
+		maxWidth: "90%",
+	},
+	itemSelf: {
+		alignSelf: "flex-end",
+		flexDirection: "row-reverse",
+	},
+	avatar: {
+		borderRadius: "9999px",
+		flexShrink: 0,
+		height: "3rem",
+		width: "3rem",
+	},
+	avatarDefault: {
+		backgroundColor: "var(--primary)",
+		color: "white",
+		display: "inline-block",
+		fontSize: "1.5rem",
+		lineHeight: "3rem",
+		textAlign: "center",
+		verticalAlign: "middle",
+	},
+	container: {
+		backgroundColor: "var(--copyright-bg)",
+		borderRadius: "0.375rem",
+		display: "flex",
+		flexDirection: "column",
+		gap: "0.5rem",
+		marginBlock: "0",
+		marginInline: "auto",
+		paddingBlock: "1rem",
+		paddingInline: "0.5rem",
+		width: {
+			default: "100%",
+			"@media (min-width: 768px)": "66%",
+		},
+	},
+});
+
 function Item(props: {
 	sender_name?: string;
 	sender_avatar?: string;
@@ -51,17 +131,39 @@ function Item(props: {
 			  }
 			: senderManager.getSenderByName(props.sender_name)!;
 	return (
-		<div className={`chat-item ${sender.alignRight ? "self" : ""}`}>
+		<div
+			{...stylex.props(
+				itemStyle.item,
+				sender.alignRight && itemStyle.itemSelf
+			)}>
 			{sender.avatar === undefined ? (
-				<span className="chat-avatar default">{sender.name.charAt(0)}</span>
+				<span {...stylex.props(itemStyle.avatar, itemStyle.avatarDefault)}>
+					{sender.name.charAt(0)}
+				</span>
 			) : (
-				<img className="chat-avatar" alt={sender.name} src={sender.avatar!} />
+				<img
+					{...stylex.props(itemStyle.avatar)}
+					alt={sender.name}
+					src={sender.avatar!}
+				/>
 			)}
-			<div className={`chat-content ${sender.alignRight ? "self" : ""}`}>
-				<div className={`chat-sender ${sender.alignRight ? "self" : ""}`}>
+			<div
+				{...stylex.props(
+					itemStyle.content,
+					sender.alignRight && itemStyle.contentSelf
+				)}>
+				<div
+					{...stylex.props(
+						itemStyle.sender,
+						sender.alignRight && itemStyle.senderSelf
+					)}>
 					{sender.name}
 				</div>
-				<p className={`chat-text ${sender.alignRight ? "self" : ""}`}>
+				<p
+					{...stylex.props(
+						itemStyle.text,
+						sender.alignRight && itemStyle.textSelf
+					)}>
 					{props.children}
 				</p>
 			</div>
@@ -90,7 +192,8 @@ function SenderItem(props: {
 function Container(props: { readonly children?: React.ReactNode }) {
 	return (
 		<sender_context.Provider value={new SenderManager(true)}>
-			<div className="chat-container not-prose">{props.children}</div>
+			{/* TODO: Add not-prose style */}
+			<div {...stylex.props(itemStyle.container)}>{props.children}</div>
 		</sender_context.Provider>
 	);
 }
