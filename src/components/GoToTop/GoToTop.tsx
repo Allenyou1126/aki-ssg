@@ -1,7 +1,7 @@
 "use client";
 import { scrollY } from "@/libs/state-management";
 import { useAtomValue } from "jotai";
-import style from "./style.module.css";
+import * as stylex from "@stylexjs/stylex";
 
 function Icon() {
 	return (
@@ -16,6 +16,30 @@ function Icon() {
 	);
 }
 
+const style = stylex.create({
+	top: {
+		backgroundColor: "var(--bg)",
+		borderColor: "rgb(from var(--border) r g b / 0.8)",
+		borderRadius: "1rem",
+		borderWidth: "2px",
+		bottom: "1rem",
+		display: "block",
+		fontSize: "1.875rem",
+		justifyItems: "center",
+		lineHeight: "2.25rem",
+		opacity: {
+			":hover": 0.8,
+		},
+		padding: "1rem",
+		position: "fixed",
+		right: "1rem",
+		textAlign: "center",
+		transition:
+			"opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), visibility 500ms cubic-bezier(0.4, 0, 0.2, 1);",
+		zIndex: 30,
+	},
+});
+
 export default function GoToTop() {
 	const scroll = useAtomValue(scrollY);
 	return (
@@ -25,7 +49,7 @@ export default function GoToTop() {
 				opacity: scroll <= 500 ? 0 : undefined,
 				visibility: scroll <= 500 ? "hidden" : undefined,
 			}}
-			className={style.top}
+			{...stylex.props(style.top)}
 			disabled={scroll <= 500}
 			onClick={() => {
 				window.scrollTo({
