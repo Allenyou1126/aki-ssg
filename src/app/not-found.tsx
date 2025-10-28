@@ -1,7 +1,7 @@
 import { config } from "@/data/site-config";
 import type { Metadata } from "next";
 import Link from "next/link";
-import stylex from "@stylexjs/stylex";
+import * as stylex from "@stylexjs/stylex";
 
 export const metadata: Metadata = {
 	title: `404 - ${config.blog.title}`,
