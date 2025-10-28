@@ -2,8 +2,8 @@ import { config } from "@/data/site-config";
 import { initCMS } from "@/libs/content-management";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { pageSwitcher } from "@/styles/utils/page-switcher";
 import * as stylex from "@stylexjs/stylex";
+import { PageSwitcher } from "@/components/PageSwitcher";
 
 export async function generateStaticParams() {
 	const cms = await initCMS();
@@ -91,33 +91,16 @@ export default async function PostListPage({
 	return (
 		<>
 			{postList}
-			<div
-				style={{
-					display: total_page <= 1 ? "none" : undefined,
+			<PageSwitcher
+				total={total_page}
+				current={current_page}
+				navigation={{
+					type: "link",
+					getLink: (target: number) => {
+						return `/post-list/${target}`;
+					},
 				}}
-				{...stylex.props(pageSwitcher.wrap)}>
-				<p {...stylex.props(pageSwitcher.page)}>
-					第{current_page}页，共{total_page}页
-				</p>
-				<Link
-					style={{
-						left: 0,
-						display: current_page <= 1 ? "none" : undefined,
-					}}
-					{...stylex.props(pageSwitcher.button)}
-					href={`/post-list/${parseInt(current_page.toString()) - 1}`}>
-					上一页
-				</Link>
-				<Link
-					style={{
-						right: 0,
-						display: current_page >= total_page ? "none" : undefined,
-					}}
-					{...stylex.props(pageSwitcher.button)}
-					href={`/post-list/${parseInt(current_page.toString()) + 1}`}>
-					下一页
-				</Link>
-			</div>
+			/>
 		</>
 	);
 }

@@ -449,35 +449,16 @@ function WalineCommentCards({
 					return <WalineCommentCard key={c.objectId} c={c} />;
 				})}
 			</div>
-			<div
-				style={{
-					display: total <= 1 ? "none" : undefined,
+			<PageSwitcher
+				total={total}
+				current={page}
+				navigation={{
+					type: "client",
+					action: (target: number) => {
+						setPage(target);
+					},
 				}}
-				className={pageSwitcher.wrap}>
-				<p className={pageSwitcher.page}>{`第${page}页，共${total}页`}</p>
-				<button
-					style={{
-						left: 0,
-						display: page <= 1 ? "none" : undefined,
-					}}
-					className={pageSwitcher.button}
-					onClick={() => {
-						setPage(page - 1);
-					}}>
-					上一页
-				</button>
-				<button
-					style={{
-						right: 0,
-						display: page >= total ? "none" : undefined,
-					}}
-					className={pageSwitcher.button}
-					onClick={() => {
-						setPage(page + 1);
-					}}>
-					下一页
-				</button>
-			</div>
+			/>
 		</>
 	);
 }
