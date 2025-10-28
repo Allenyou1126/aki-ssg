@@ -40,13 +40,13 @@ const api_option = {
 	lang: "zh",
 };
 
-const pidContext = createContext("");
-const ridContext = createContext("");
+const pidContext = createContext<number | undefined>(undefined);
+const ridContext = createContext<number | undefined>(undefined);
 const atContext = createContext("");
-const setPidContext = createContext((v: string) => {
+const setPidContext = createContext((v: number | undefined) => {
 	console.warn("setPidContext is not set: ", v);
 });
-const setRidContext = createContext((v: string) => {
+const setRidContext = createContext((v: number | undefined) => {
 	console.warn("setRidContext is not set: ", v);
 });
 const setAtContext = createContext((v: string) => {
@@ -91,19 +91,19 @@ function WalineCommentsDataProvider({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const [pid, setPid] = useState("");
-	const [rid, setRid] = useState("");
+	const [pid, setPid] = useState<number | undefined>(undefined);
+	const [rid, setRid] = useState<number | undefined>(undefined);
 	const [at, setAt] = useState("");
 	return (
 		<pidContext.Provider value={pid}>
 			<ridContext.Provider value={rid}>
 				<atContext.Provider value={at}>
 					<setRidContext.Provider
-						value={(v: string) => {
+						value={(v: number | undefined) => {
 							setRid(v);
 						}}>
 						<setPidContext.Provider
-							value={(v: string) => {
+							value={(v: number | undefined) => {
 								setPid(v);
 							}}>
 							<setAtContext.Provider
@@ -186,8 +186,8 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 				nick,
 				mail,
 				link: url === "" ? undefined : url,
-				pid: pid === "" ? undefined : pid,
-				rid: rid === "" ? undefined : rid,
+				pid,
+				rid,
 				at: at === "" ? undefined : at,
 			},
 		}).then((v) => {
@@ -199,8 +199,8 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 			setNickStorageValue(nick);
 			setMailStorageValue(mail);
 			setUrlStorageValue(url);
-			setPid("");
-			setRid("");
+			setPid(undefined);
+			setRid(undefined);
 			setAt("");
 			setContent("");
 			setSubmitAvailable(true);
@@ -269,14 +269,14 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 			/>
 			<div className={style.areaBar}>
 				<div className={style.areaBarPart}>
-					{pid !== "" && (
+					{pid && (
 						<p
 							style={{ cursor: "pointer" }}
 							className={style.areaBarText}
 							title="点击取消回复"
 							onClick={() => {
-								setPid("");
-								setRid("");
+								setPid(undefined);
+								setRid(undefined);
 								setAt("");
 							}}>
 							正在回复 #{pid}
@@ -300,7 +300,7 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 	);
 }
 
-function UpdateButton({ c, parent }: { c: WalineComment; parent?: string }) {
+function UpdateButton({ c, parent }: { c: WalineComment; parent?: number }) {
 	const pid = useContext(pidContext);
 	const setPid = useContext(setPidContext);
 	const setRid = useContext(setRidContext);
@@ -308,15 +308,15 @@ function UpdateButton({ c, parent }: { c: WalineComment; parent?: string }) {
 	const onClick = useCallback(() => {
 		if (pid !== c.objectId) {
 			setPid(c.objectId);
-			setRid(parent === undefined ? c.objectId : parent);
+			setRid(parent ?? c.objectId);
 			setAt(c.nick);
 			delay(10).then(() => {
 				scrollIntoViewById("comment-area");
 			});
 			return;
 		}
-		setPid("");
-		setRid("");
+		setPid(undefined);
+		setRid(undefined);
 		setAt("");
 	}, [pid, c.objectId, c.nick, setPid, setRid, setAt, parent]);
 	return (
@@ -336,7 +336,7 @@ function WalineCommentCard({
 	parent,
 }: {
 	c: WalineComment;
-	parent?: string;
+	parent?: number;
 }) {
 	return (
 		<div className={style.card}>
@@ -363,7 +363,7 @@ function WalineCommentCard({
 						{new Date(c.time).toLocaleDateString()}
 					</span>
 					<span className={style.metaText}>#{c.objectId}</span>
-					{parent !== undefined && (
+					{parent && (
 						<span className={style.metaText}>
 							<Reply /> #{(c as WalineChildComment).pid}
 						</span>
