@@ -1,5 +1,13 @@
 import { config } from "@/data/site-config";
 import Image from "../../PostComponents/Image/Image";
+import * as stylex from "@stylexjs/stylex";
+
+const style = stylex.create({
+	error: {
+		color: "rgb(239 68 68)",
+		display: "inline-block",
+	},
+});
 
 export default async function Meme({
 	group,
@@ -10,7 +18,7 @@ export default async function Meme({
 }) {
 	if (config.optimize.meme_base_url === undefined) {
 		return (
-			<span style={{ display: "inline-block", color: "rgb(239 68 68)" }}>
+			<span {...stylex.props(style.error)}>
 				[Meme: {group}/{mid}]
 			</span>
 		);
