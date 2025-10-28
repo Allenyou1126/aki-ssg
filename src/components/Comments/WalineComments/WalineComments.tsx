@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import style from "./style.module.css";
 import proseStyle from "@/styles/content.module.css";
-import pageSwitcher from "@/styles/utils/page-switcher.module.css";
 import "@/components/Comments/WalineComments/style.css";
 import { config } from "@/data/site-config";
 import {
@@ -34,6 +32,8 @@ import { delay } from "@/utils/delay";
 import { scrollIntoViewById } from "@/utils/scrollIntoView";
 import { atomWithStorage } from "jotai/utils";
 import { useAtom } from "jotai";
+import * as stylex from "@stylexjs/stylex";
+import { PageSwitcher } from "@/components/PageSwitcher";
 
 const api_option = {
 	serverURL: (config.comment as WalineCommentConfig).waline_api,
@@ -120,16 +120,29 @@ function WalineCommentsDataProvider({
 	);
 }
 
+const mainStyle = stylex.create({
+	container: {
+		textAlign: "start",
+		width: "100%",
+	},
+	error: {
+		color: "rgb(239 68 68)",
+		fontSize: "1.125rem",
+		fontWeight: 700,
+		lineHeight: "1.75rem",
+	},
+});
+
 const WalineErrorHandler = (props: FallbackProps) => {
 	console.error(props.error.message);
-	return <p className={style.error}>加载评论内容失败。</p>;
+	return <p {...stylex.props(mainStyle.error)}>加载评论内容失败。</p>;
 };
 
 export default function WalineComments() {
 	const cardsRef = useRef<{ reload: () => void }>(null);
 	return (
 		<WalineCommentsDataProvider>
-			<div className={style.container}>
+			<div {...stylex.props(mainStyle.container)}>
 				<WalineCommentArea
 					updateFunction={() => {
 						cardsRef.current?.reload();
@@ -146,6 +159,98 @@ export default function WalineComments() {
 		</WalineCommentsDataProvider>
 	);
 }
+
+const inputAreaStyle = stylex.create({
+	area: {
+		backgroundColor: "var(--bg)",
+		borderColor: "rgb(from var(--border) r g b / 10)",
+		borderRadius: "0.5rem",
+		borderStyle: "solid",
+		borderWidth: "1.5px",
+		display: "flex",
+		flexWrap: "wrap",
+		width: "100%",
+	},
+	main: {
+		backgroundColor: "transparent",
+		height: "7rem",
+		marginBlock: "0.75rem",
+		marginInline: "0.5rem",
+		outlineStyle: "none",
+		resize: "none",
+		width: "100%",
+	},
+	bar: {
+		alignItems: "center",
+		display: "flex",
+		justifyContent: "space-between",
+		marginBlock: "0.75rem",
+		marginInline: "0.5rem",
+		overflow: "hidden",
+		width: "100%",
+	},
+	button: {
+		backgroundColor: "var(--primary)",
+		borderRadius: "0.75rem",
+		color: "rgb(255 255 255 / 1)",
+		fontSize: "0.875rem",
+		lineHeight: 1.75,
+		opacity: {
+			":hover": 0.9,
+		},
+		paddingBlock: "0.25rem",
+		paddingInline: "1rem",
+	},
+	part: {
+		alignItems: "center",
+		display: "flex",
+		gap: "1rem",
+	},
+	text: {
+		fontSize: "0.75rem",
+		lineHeight: 1.75,
+		opacity: 0.6,
+	},
+	metadata: {
+		borderBottomColor: "rgb(from var(--border) r g b / 10)",
+		borderBottomStyle: "solid",
+		borderBottomWidth: "2px",
+		display: "flex",
+		overflow: "hidden",
+		paddingBlock: "0",
+		paddingInline: "0.25rem",
+		width: "100%",
+	},
+	item: {
+		alignItems: "center",
+		display: "flex",
+		flex: "1 1 0%",
+		fontSize: "0.75rem",
+		lineHeight: 1.75,
+	},
+	label: {
+		fontWeight: 300,
+		padding: "0.5rem",
+		verticalAlign: "baseline",
+	},
+	input: {
+		backgroundColor: "transparent",
+		borderStyle: "none",
+		flex: "1 1 0%",
+		maxWidth: "100%",
+		outlineStyle: "none",
+		padding: "0.5rem",
+		resize: "none",
+		verticalAlign: "baseline",
+		width: 0,
+	},
+	pointer: {
+		cursor: "pointer",
+	},
+	unavailable: {
+		filter: "brightness(0.75)",
+	},
+});
 
 function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 	const pathname = usePathname();
@@ -224,12 +329,12 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 		updateFunction,
 	]);
 	return (
-		<div id="comment-area" className={style.area}>
-			<div className={style.metadata}>
-				<div className={style.metadataItem}>
-					<label className={style.metadataLabel}>昵称*</label>
+		<div id="comment-area" {...stylex.props(inputAreaStyle.area)}>
+			<div {...stylex.props(inputAreaStyle.metadata)}>
+				<div {...stylex.props(inputAreaStyle.item)}>
+					<label {...stylex.props(inputAreaStyle.label)}>昵称*</label>
 					<input
-						className={style.metadataInput}
+						{...stylex.props(inputAreaStyle.input)}
 						onChange={(e) => {
 							setNick(e.target.value);
 						}}
@@ -237,10 +342,10 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 						type="text"
 					/>
 				</div>
-				<div className={style.metadataItem}>
-					<label className={style.metadataLabel}>邮箱*</label>
+				<div {...stylex.props(inputAreaStyle.item)}>
+					<label {...stylex.props(inputAreaStyle.label)}>邮箱*</label>
 					<input
-						className={style.metadataInput}
+						{...stylex.props(inputAreaStyle.input)}
 						onChange={(e) => {
 							setMail(e.target.value);
 						}}
@@ -248,10 +353,10 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 						type="email"
 					/>
 				</div>
-				<div className={style.metadataItem}>
-					<label className={style.metadataLabel}>网站</label>
+				<div {...stylex.props(inputAreaStyle.item)}>
+					<label {...stylex.props(inputAreaStyle.label)}>网站</label>
 					<input
-						className={style.metadataInput}
+						{...stylex.props(inputAreaStyle.input)}
 						onChange={(e) => {
 							setUrl(e.target.value);
 						}}
@@ -261,18 +366,17 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 				</div>
 			</div>
 			<textarea
-				className={style.areaInput}
+				{...stylex.props(inputAreaStyle.main)}
 				onChange={(e) => {
 					setContent(e.target.value);
 				}}
 				value={content}
 			/>
-			<div className={style.areaBar}>
-				<div className={style.areaBarPart}>
+			<div {...stylex.props(inputAreaStyle.bar)}>
+				<div {...stylex.props(inputAreaStyle.part)}>
 					{pid && (
 						<p
-							style={{ cursor: "pointer" }}
-							className={style.areaBarText}
+							{...stylex.props(inputAreaStyle.text, inputAreaStyle.pointer)}
 							title="点击取消回复"
 							onClick={() => {
 								setPid(undefined);
@@ -283,13 +387,15 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 						</p>
 					)}
 				</div>
-				<div className={style.areaBarPart}>
-					<p className={style.areaBarText}>{content.length.toString()} 字</p>
+				<div {...stylex.props(inputAreaStyle.part)}>
+					<p {...stylex.props(inputAreaStyle.text)}>
+						{content.length.toString()} 字
+					</p>
 					<button
-						style={{
-							filter: submitAvailable ? undefined : "brightness(0.75)",
-						}}
-						className={style.areaBarButton}
+						{...stylex.props(
+							inputAreaStyle.button,
+							!submitAvailable && inputAreaStyle.unavailable
+						)}
 						disabled={!submitAvailable}
 						onClick={onSubmit}>
 						提交
@@ -299,6 +405,85 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 		</div>
 	);
 }
+
+const cardStyle = stylex.create({
+	container: {
+		display: "flex",
+		flex: "1 1 0%",
+		flexDirection: "column",
+		gap: "0.25rem",
+		paddingBottom: "0.5rem",
+	},
+	count: {
+		fontSize: "1.25rem",
+		fontWeight: 700,
+		lineHeight: "1.75rem",
+		marginBlock: "1rem",
+		marginInline: "0",
+	},
+	card: {
+		display: "flex",
+		gap: "0.75rem",
+		padding: "0.5rem",
+		position: "relative",
+	},
+	meta: {
+		lineHeight: 1.75,
+		overflow: "hidden",
+		position: "relative",
+		width: "100%",
+	},
+	text: {
+		display: "inline-block",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		marginLeft: "0.5rem",
+		opacity: 0.6,
+	},
+	nick: {
+		display: "inline-block",
+		fontSize: "0.875rem",
+		fontWeight: 700,
+		lineHeight: "1.25rem",
+	},
+	update: {
+		color: {
+			":hover": "var(--primary)",
+		},
+		opacity: 0.8,
+		position: "absolute",
+		right: "0.5rem",
+		top: 0,
+		transition: "color 0.5s ease",
+	},
+	avatar: {
+		aspectRatio: "1 / 1",
+		borderRadius: "9999px",
+		width: {
+			default: "2.75rem",
+			"@media (min-width: 768px)": "4rem",
+		},
+	},
+	tag: {
+		borderRadius: "0.375rem",
+		display: "inline-block",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		paddingBlock: "0.125rem",
+		paddingInline: "0.25rem",
+	},
+	metaTag: {
+		backgroundColor: "rgb(209 213 219 / 0.4)",
+		marginRight: "0.5rem",
+		opacity: 0.6,
+	},
+	ownerTag: {
+		backgroundColor: "rgb(var(--primary) / 0.4)",
+		color: "var(--primary)",
+		marginLeft: "0.5rem",
+		opacity: 1,
+	},
+});
 
 function UpdateButton({ c, parent }: { c: WalineComment; parent?: number }) {
 	const pid = useContext(pidContext);
@@ -324,7 +509,7 @@ function UpdateButton({ c, parent }: { c: WalineComment; parent?: number }) {
 			style={{
 				color: pid === c.objectId ? "var(--primary)" : undefined,
 			}}
-			className={style.updateButton}
+			{...stylex.props(cardStyle.update)}
 			onClick={onClick}>
 			<Message />
 		</button>
@@ -339,40 +524,47 @@ function WalineCommentCard({
 	parent?: number;
 }) {
 	return (
-		<div className={style.card}>
+		<div {...stylex.props(cardStyle.card)}>
 			<div>
-				<img className={style.avatar} src={c.avatar} alt="avatar" />
+				<img {...stylex.props(cardStyle.avatar)} src={c.avatar} alt="avatar" />
 			</div>
-			<div className={style.data}>
-				<div className={style.meta}>
+			<div {...stylex.props(cardStyle.container)}>
+				<div {...stylex.props(cardStyle.meta)}>
 					{c.link !== null &&
 					(c.link.startsWith("http://") || c.link.startsWith("https://")) ? (
 						<a
 							href={c.link}
 							style={{ color: "var(--primary)" }}
-							className={style.nick}>
+							{...stylex.props(cardStyle.nick)}>
 							{c.nick}
 						</a>
 					) : (
-						<p className={style.nick}>{c.nick}</p>
+						<p {...stylex.props(cardStyle.nick)}>{c.nick}</p>
 					)}
 					{c.avatar === getAvatar(config.author.email) && (
-						<span className={style.ownerTag}>博主</span>
+						<span {...stylex.props(cardStyle.tag, cardStyle.ownerTag)}>
+							博主
+						</span>
 					)}
-					<span className={style.metaText}>
+					<span {...stylex.props(cardStyle.text)}>
 						{new Date(c.time).toLocaleDateString()}
 					</span>
-					<span className={style.metaText}>#{c.objectId}</span>
+					<span {...stylex.props(cardStyle.text)}>#{c.objectId}</span>
 					{parent && (
-						<span className={style.metaText}>
+						<span {...stylex.props(cardStyle.text)}>
 							<Reply /> #{(c as WalineChildComment).pid}
 						</span>
 					)}
 					<br />
-					<span className={style.commentTag}>{c.browser}</span>
-					<span className={style.commentTag}>{c.os}</span>
+					<span {...stylex.props(cardStyle.tag, cardStyle.metaTag)}>
+						{c.browser}
+					</span>
+					<span {...stylex.props(cardStyle.tag, cardStyle.metaTag)}>
+						{c.os}
+					</span>
 					<UpdateButton c={c} parent={parent} />
 				</div>
+				{/* TODO: Migrate this style to StyleX */}
 				<div className={["comment", proseStyle.prose].join(" ")}>
 					{toJsxRuntime(
 						fromHtml(c.comment, {
@@ -440,9 +632,9 @@ function WalineCommentCards({
 	return (
 		<>
 			{ret.count === 0 ? (
-				<p className={style.count}>没有评论</p>
+				<p {...stylex.props(cardStyle.count)}>没有评论</p>
 			) : (
-				<p className={style.count}>{ret.count} 条评论</p>
+				<p {...stylex.props(cardStyle.count)}>{ret.count} 条评论</p>
 			)}
 			<div>
 				{ret.data.map((c) => {

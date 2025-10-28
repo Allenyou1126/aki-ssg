@@ -29,7 +29,7 @@
 	background-color: none;
 	color: #ccc;
 	font-size: 1em;
-	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+	font-family: "Cascadia Mono", monospace;
 	word-spacing: normal;
 	word-wrap: normal;
 	word-break: normal;
@@ -99,9 +99,6 @@
 .comment .token.important,
 .comment .token.bold {
 	font-weight: bold;
-}
-.comment .token.entity {
-	cursor: help;
 }
 .comment .token.inserted {
 	color: green;
