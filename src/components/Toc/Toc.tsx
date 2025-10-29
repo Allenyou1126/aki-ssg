@@ -43,17 +43,16 @@ const style = stylex.create({
 });
 
 function TocItem({ item }: { item: Paragraph }) {
+	const link = item.children[0] as Link;
 	return (
 		<button
 			{...stylex.props(style.item)}
 			onClick={() => {
 				delay(10).then(() => {
-					scrollIntoViewById(
-						`user-content-${(item.children[0] as Link).url.substring(1)}`
-					);
+					scrollIntoViewById(`user-content-${link.url.substring(1)}`);
 				});
 			}}>
-			{((item.children[0] as Link).children[0] as Text).value}
+			{(link.children[0] as Text).value}
 		</button>
 	);
 }
