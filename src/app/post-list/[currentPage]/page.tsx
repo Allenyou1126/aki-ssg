@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import * as stylex from "@stylexjs/stylex";
 import { PageSwitcher } from "@/components/PageSwitcher";
+import { themeTokens } from "@/styles/variables.stylex";
 
 export async function generateStaticParams() {
 	const cms = await initCMS();
@@ -36,7 +37,7 @@ const style = stylex.create({
 		marginBottom: "2rem",
 	},
 	link: {
-		color: "var(--primary)",
+		color: themeTokens.primaryColor,
 		fontSize: "1.5rem",
 		fontWeight: 700,
 		lineHeight: "2rem",

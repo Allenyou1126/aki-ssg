@@ -3,6 +3,7 @@
 
 import { createContext, useContext } from "react";
 import * as stylex from "@stylexjs/stylex";
+import { themeTokens } from "@/styles/variables.stylex";
 
 type Sender = {
 	name: string;
@@ -62,7 +63,7 @@ const itemStyle = stylex.create({
 		width: "fit-content",
 	},
 	textSelf: {
-		backgroundColor: "rgb(from var(--primary) r g b / 0.6)",
+		backgroundColor: `rgb(from ${themeTokens.primaryColor} r g b / 0.6)`,
 		borderTopLeftRadius: "0.5rem",
 		borderTopRightRadius: 0,
 		textAlign: "right",
@@ -85,7 +86,7 @@ const itemStyle = stylex.create({
 		width: "3rem",
 	},
 	avatarDefault: {
-		backgroundColor: "var(--primary)",
+		backgroundColor: themeTokens.primaryColor,
 		color: "white",
 		display: "inline-block",
 		fontSize: "1.5rem",

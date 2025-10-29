@@ -1,13 +1,14 @@
 import { config } from "@/data/site-config";
 import Link from "next/link";
 import * as stylex from "@stylexjs/stylex";
+import { themeTokens } from "@/styles/variables.stylex";
 
 const styles = stylex.create({
 	header: {
-		backgroundColor: "var(--primary)",
+		backgroundColor: themeTokens.primaryColor,
 		backgroundImage: {
-			default: "var(--bg-img)",
-			":is(.dark *)": "var(--bg-img-dark)",
+			default: themeTokens.backgroundImage,
+			":is(.dark *)": themeTokens.backgroundImageDark,
 		},
 		backgroundPosition: "top",
 		backgroundSize: "cover",

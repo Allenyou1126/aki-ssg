@@ -1,3 +1,4 @@
+import { themeTokens } from "@/styles/variables.stylex";
 import * as stylex from "@stylexjs/stylex";
 
 const animation = stylex.keyframes({
@@ -22,7 +23,7 @@ const style = stylex.create({
 		borderRadius: "9999px",
 		boxShadow:
 			"calc(22px) calc(0px) 0 0, calc(15.55px) calc(15.55px) 0 1px, calc(0px) calc(22px) 0 2px, calc(-15.55px) calc(15.55px) 0 3px, calc(-22px) calc(0px) 0 4px, calc(-15.55px) calc(-15.55px) 0 5px, calc(0px) calc(-22px) 0 6px",
-		color: "var(--primary)",
+		color: themeTokens.primaryColor,
 		height: "0.25rem",
 		width: "0.25rem",
 	},

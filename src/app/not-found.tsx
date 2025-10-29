@@ -2,6 +2,7 @@ import { config } from "@/data/site-config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import * as stylex from "@stylexjs/stylex";
+import { themeTokens } from "@/styles/variables.stylex";
 
 export const metadata: Metadata = {
 	title: `404 - ${config.blog.title}`,
@@ -22,7 +23,7 @@ const style = stylex.create({
 		marginBlock: "1rem",
 	},
 	button: {
-		backgroundColor: "var(--primary)",
+		backgroundColor: themeTokens.primaryColor,
 		borderRadius: "1.5rem",
 		color: "lighten(var(--text), 10%)",
 		cursor: "pointer",

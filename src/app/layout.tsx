@@ -9,6 +9,8 @@ import { initCMS } from "@/libs/content-management";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import GoToTop from "@/components/GoToTop/GoToTop";
+import * as stylex from "@stylexjs/stylex";
+import { themeTokens } from "@/styles/variables.stylex";
 
 export const metadata: Metadata = {
 	title: config.blog.title,
@@ -17,6 +19,51 @@ export const metadata: Metadata = {
 		icon: config.blog.favicon,
 	},
 };
+
+type Theme = {
+	primary: string;
+	background: string;
+	background_dark: string;
+};
+
+const styles = stylex.create({
+	html: {
+		fontFamily: "ChillRoundF",
+		scrollBehavior: "smooth",
+	},
+	apply: (theme: Theme) => ({
+		[themeTokens.backgroundImage]: theme.background,
+		[themeTokens.backgroundImageDark]: theme.background_dark,
+		[themeTokens.primaryColor]: theme.primary,
+	}),
+	body: {
+		backgroundColor: "var(--bg)",
+		color: "var(--text)",
+	},
+	main: {
+		display: "flex",
+		gap: "1rem",
+		justifyContent: "center",
+		marginTop: "-8rem",
+		position: "relative",
+		width: "100%",
+		zIndex: 10,
+	},
+	container: {
+		backdropFilter: "blur(16px)",
+		backgroundColor: "rgb(from var(--bg) r g b / 0.8)",
+		borderRadius: "1.5rem",
+		marginBlock: "0",
+		marginInline: "auto",
+		maxWidth: "56rem",
+		minHeight: "12rem",
+		padding: {
+			default: "1.5rem",
+			"@media (min-width: 768px)": "2rem",
+		},
+		width: "100%",
+	},
+});
 
 export default async function RootLayout({
 	children,
@@ -36,16 +83,13 @@ export default async function RootLayout({
 		})
 		.toSpliced(0, 0, { title: "首页", url: "/" })
 		.concat(config.extra_links);
+	const theme = {
+		primary: config.style.primary_color,
+		background: `url("${config.style.header_image.default}")`,
+		background_dark: `url("${config.style.header_image.dark}")`,
+	};
 	return (
-		<html
-			style={
-				{
-					"--primary": config.style.primary_color,
-					"--bg-img": `url(${config.style.header_image.default})`,
-					"--bg-img-dark": `url(${config.style.header_image.dark})`,
-				} as React.CSSProperties
-			}
-			lang="zh-CN">
+		<html {...stylex.props(styles.html, styles.apply(theme))} lang="zh-CN">
 			<head>
 				<script
 					dangerouslySetInnerHTML={{
@@ -54,11 +98,11 @@ export default async function RootLayout({
 				/>
 				<meta name="theme-color" content={config.style.primary_color} />
 			</head>
-			<body>
+			<body {...stylex.props(styles.body)}>
 				<Navigation links={links} />
 				<Header />
-				<main id="main">
-					<div id="page-container">{children}</div>
+				<main id="main" {...stylex.props(styles.main)}>
+					<div {...stylex.props(styles.container)}>{children}</div>
 				</main>
 				<Footer />
 				<CommonLogic />

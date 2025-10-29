@@ -1,5 +1,6 @@
 "use client";
 
+import { themeTokens } from "@/styles/variables.stylex";
 import * as stylex from "@stylexjs/stylex";
 
 const style = stylex.create({
@@ -11,7 +12,7 @@ const style = stylex.create({
 	},
 	tip: {
 		backdropFilter: "blur(24px)",
-		backgroundColor: "rgb(from var(--primary) r g b / 0.8)",
+		backgroundColor: `rgb(from ${themeTokens.primaryColor} r g b / 0.8)`,
 		borderRadius: "1rem",
 		overflow: "hidden",
 		padding: "1rem",

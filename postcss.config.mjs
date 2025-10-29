@@ -4,6 +4,9 @@ const config = {
 		"@stylexswc/postcss-plugin": {
 			include: ["src/**/*.{js,jsx,ts,tsx}"],
 			rsOptions: {
+				aliases: {
+					"@/*": ["./src/*"],
+				},
 				dev: process.env.NODE_ENV === "development",
 			},
 		},

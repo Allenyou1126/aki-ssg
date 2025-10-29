@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
 const stylexConfig = {
 	rsOptions: {
 		dev: !isProd,
+		aliases: {
+			"@/*": ["./src/*"],
+		},
 	},
 } satisfies Parameters<typeof withStylex>[0];
 

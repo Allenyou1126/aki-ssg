@@ -1,21 +1,11 @@
 @stylex;
 
-html {
-	font-family: ChillRoundF;
-	scroll-behavior: smooth;
-}
-
-body {
-	background-color: var(--bg);
-	color: var(--text);
-}
-
 :root {
+	color-scheme: light;
 	--bg: rgb(255 255 255 / 1);
 	--text: rgb(0 0 0 / 1);
 	--border: #e5e7eb;
 	--copyright-bg: rgb(209 213 219 / 0.3);
-	color-scheme: light;
 	--prose-bd: #374151;
 	--prose-h: #111827;
 	--prose-lead: #4b5563;
@@ -34,11 +24,11 @@ body {
 }
 
 .dark {
+	color-scheme: dark;
 	--bg: rgb(3 7 18 / 1);
 	--text: rgb(209 213 219 / 1);
 	--border: #2d2d2d;
 	--copyright-bg: rgb(75 85 99 / 0.3);
-	color-scheme: dark;
 	--prose-bd: rgb(209 213 219 / 0.8);
 	--prose-h: rgb(209 213 219 / 0.8);
 	--prose-lead: rgb(209 213 219 / 0.8);
@@ -59,31 +49,4 @@ body {
 ::view-transition-new(root) {
 	animation: none;
 	mix-blend-mode: normal;
-}
-
-#main {
-	display: flex;
-	justify-content: center;
-	margin-top: -8rem;
-	z-index: 10;
-	position: relative;
-	width: 100%;
-	gap: 1rem;
-}
-
-#page-container {
-	border-radius: 1.5rem;
-	width: 100%;
-	max-width: 56rem;
-	margin: 0 auto;
-	padding: 1.5rem;
-	min-height: 12rem;
-	background-color: rgb(from var(--bg) r g b / 0.8);
-	backdrop-filter: blur(16px);
-}
-
-@media (min-width: 768px) {
-	#page-container {
-		padding: 2rem;
-	}
 }

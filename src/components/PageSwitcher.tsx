@@ -1,3 +1,4 @@
+import { themeTokens } from "@/styles/variables.stylex";
 import * as stylex from "@stylexjs/stylex";
 import type { StyleXStyles } from "@stylexjs/stylex";
 import Link from "next/link";
@@ -11,7 +12,7 @@ export const styles = stylex.create({
 		transform: "translateY(-50%)",
 	},
 	button: {
-		backgroundColor: "var(--primary)",
+		backgroundColor: themeTokens.primaryColor,
 		borderRadius: "1.5rem",
 		color: "rgba(255 255 255 1)",
 		cursor: "pointer",

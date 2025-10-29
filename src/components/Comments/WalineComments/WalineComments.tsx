@@ -34,6 +34,7 @@ import { atomWithStorage } from "jotai/utils";
 import { useAtom } from "jotai";
 import * as stylex from "@stylexjs/stylex";
 import { PageSwitcher } from "@/components/PageSwitcher";
+import { themeTokens } from "@/styles/variables.stylex";
 
 const api_option = {
 	serverURL: (config.comment as WalineCommentConfig).waline_api,
@@ -190,7 +191,7 @@ const inputAreaStyle = stylex.create({
 		width: "100%",
 	},
 	button: {
-		backgroundColor: "var(--primary)",
+		backgroundColor: themeTokens.primaryColor,
 		borderRadius: "0.75rem",
 		color: "rgb(255 255 255 / 1)",
 		fontSize: "0.875rem",
@@ -448,7 +449,7 @@ const cardStyle = stylex.create({
 	},
 	update: {
 		color: {
-			":hover": "var(--primary)",
+			":hover": themeTokens.primaryColor,
 		},
 		opacity: 0.8,
 		position: "absolute",
@@ -478,8 +479,8 @@ const cardStyle = stylex.create({
 		opacity: 0.6,
 	},
 	ownerTag: {
-		backgroundColor: "rgb(var(--primary) / 0.4)",
-		color: "var(--primary)",
+		backgroundColor: `rgb(${themeTokens.primaryColor} / 0.4)`,
+		color: themeTokens.primaryColor,
 		marginLeft: "0.5rem",
 		opacity: 1,
 	},
@@ -507,7 +508,7 @@ function UpdateButton({ c, parent }: { c: WalineComment; parent?: number }) {
 	return (
 		<button
 			style={{
-				color: pid === c.objectId ? "var(--primary)" : undefined,
+				color: pid === c.objectId ? themeTokens.primaryColor : undefined,
 			}}
 			{...stylex.props(cardStyle.update)}
 			onClick={onClick}>
@@ -548,7 +549,7 @@ function WalineCommentCard({
 					(c.link.startsWith("http://") || c.link.startsWith("https://")) ? (
 						<a
 							href={c.link}
-							style={{ color: "var(--primary)" }}
+							style={{ color: themeTokens.primaryColor }}
 							{...stylex.props(cardStyle.nick)}>
 							{c.nick}
 						</a>

@@ -1,6 +1,7 @@
 import { config } from "@/data/site-config";
 import Link from "next/link";
 import * as stylex from "@stylexjs/stylex";
+import { themeTokens } from "@/styles/variables.stylex";
 
 const style = stylex.create({
 	icon: {
@@ -27,7 +28,7 @@ const style = stylex.create({
 		lineHeight: "1.75rem",
 	},
 	link: {
-		color: "var(--primary)",
+		color: themeTokens.primaryColor,
 		textDecoration: "underline",
 	},
 	grid: {

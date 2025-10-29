@@ -4,6 +4,7 @@ import { initCMS } from "@/libs/content-management";
 import getAvatar from "@/utils/getAvatar";
 import Link from "next/link";
 import * as stylex from "@stylexjs/stylex";
+import { themeTokens } from "@/styles/variables.stylex";
 
 const style = stylex.create({
 	grid: {
@@ -31,7 +32,7 @@ const style = stylex.create({
 		width: "80px",
 	},
 	title: {
-		color: "var(--primary)",
+		color: themeTokens.primaryColor,
 		fontSize: "1.25rem",
 		fontWeight: 600,
 		lineHeight: "1.75rem",
