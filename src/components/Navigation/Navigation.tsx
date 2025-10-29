@@ -17,6 +17,7 @@ import {
 import { config } from "@/data/site-config";
 import { darkModeAnimation } from "@/utils/darkModeAnimation";
 import * as stylex from "@stylexjs/stylex";
+import { navigationTokens } from "@/styles/variables.stylex";
 
 const itemStyles = stylex.create({
 	icon: {
@@ -177,6 +178,11 @@ function NavigationItem({ link }: { link: { title: string; url: string } }) {
 	);
 }
 
+type NavigationToken = {
+	height: string;
+	width: string;
+};
+
 const wrapStyles = stylex.create({
 	wrapCommon: {
 		alignItems: "center",
@@ -193,15 +199,19 @@ const wrapStyles = stylex.create({
 	wrap: {
 		borderRadius: "2.5rem",
 		height: {
-			default: "var(--nav-height, 5rem)",
+			default: navigationTokens.height,
 			"@media (min-width: 768px)": "5rem",
 		},
 		top: "1rem",
 		width: {
 			default: "66%",
-			"@media (min-width: 768px)": "var(--nav-width, 10rem)",
+			"@media (min-width: 768px)": navigationTokens.width,
 		},
 	},
+	apply: (tokens: NavigationToken) => ({
+		[navigationTokens.height]: tokens.height,
+		[navigationTokens.width]: tokens.width,
+	}),
 	wrapWide: {
 		borderRadius: 0,
 		top: 0,
@@ -349,13 +359,13 @@ export default function Navigation({
 				toggleExpand();
 			}}>
 			<nav
-				{...stylex.props(wrapStyles.nav)}
-				style={
-					{
-						"--nav-height": `${navHeight}rem`,
-						"--nav-width": `${navWidth}rem`,
-					} as React.CSSProperties
-				}>
+				{...stylex.props(
+					wrapStyles.nav,
+					wrapStyles.apply({
+						height: `${navHeight}rem`,
+						width: `${navWidth}rem`,
+					})
+				)}>
 				<div
 					{...stylex.props(
 						wrapStyles.wrapCommon,
