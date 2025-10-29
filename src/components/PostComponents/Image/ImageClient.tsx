@@ -3,9 +3,9 @@
 import { config } from "@/data/site-config";
 import { getThumbUrl } from "@/utils/getThumbUrl";
 import { useIntersection } from "@/utils/useIntersection";
-import style from "./style.module.css";
+import * as stylex from "@stylexjs/stylex";
 
-import React, {
+import {
 	useRef,
 	useMemo,
 	useLayoutEffect,
@@ -22,6 +22,74 @@ const LOADED_IMAGE_URLS = new Set<string>();
 const SMALLEST_GIF =
 	"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
+const styles = stylex.create({
+	img: {
+		borderWidth: 0,
+		boxSizing: "border-box",
+		cursor: "zoom-in",
+		margin: "auto",
+		padding: 0,
+	},
+	alt: {
+		display: "block",
+		fontSize: "1.125rem",
+		lineHeight: "1.75rem",
+		marginBlock: "0.5rem",
+		marginInline: "0",
+		opacity: 0.8,
+		textAlign: "center",
+		width: "100%",
+	},
+	wrap: {
+		boxSizing: "border-box",
+		display: "inline-block",
+		fontSize: 0,
+		height: "auto",
+		marginBottom: "0.25rem",
+		marginLeft: 0,
+		marginRight: 0,
+		marginTop: 0,
+		maxWidth: "100%",
+		position: "relative",
+		width: "100%",
+	},
+	thumb: {
+		filter:
+			"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='$'%3E%3CfeGaussianBlur stdDeviation='10'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0,0 1 0 0 0,0 0 1 0 0,0 0 0 9 0'/%3E%3CfeComposite in2='SourceGraphic' operator='in'/%3E%3C/filter%3E%3C/svg%3E#$\")",
+	},
+	zoomed: {
+		cursor: "zoom-out",
+		display: "block",
+		maxHeight: "none",
+		maxWidth: "none",
+		objectFit: "contain",
+		position: "fixed",
+		transformOrigin: "top left",
+		transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+		zIndex: 999,
+	},
+	overlay: {
+		backgroundColor: "rgba(0, 0, 0, 0.3)",
+		bottom: 0,
+		cursor: "zoom-out",
+		left: 0,
+		position: "fixed",
+		right: 0,
+		top: 0,
+		transition: "opacity 0.3s ease",
+		zIndex: 40,
+	},
+	hidden: {
+		display: "none",
+	},
+	inline: {
+		display: "inline-block",
+	},
+	block: {
+		display: "block",
+	},
+});
+
 export default function ImageClient(
 	props: JSX.IntrinsicElements["img"] & { inline?: boolean }
 ) {
@@ -32,7 +100,6 @@ export default function ImageClient(
 	const w = typeof width! === "number" ? width! : parseInt(width!);
 	const h = typeof height! === "number" ? height! : parseInt(height!);
 	const ratio = w / h;
-	const imageDisplay = inline ? "inline-block" : "block";
 
 	// 图片懒加载用
 	const rawImageElRef = useRef<HTMLImageElement>(null);
@@ -155,45 +222,47 @@ export default function ImageClient(
 		});
 	}, [transform, isZoomed]);
 	return (
-		<span className={style.wrap}>
+		<span {...stylex.props(styles.wrap)}>
 			<img
 				{...rest}
 				style={{
 					width: w,
 					aspectRatio: ratio,
-					display: isZoomed ? "none" : imageDisplay,
 				}}
 				alt={alt}
 				ref={rawImageElRef}
 				decoding="async"
 				src={srcString}
-				className={[
-					style.img,
-					!config.optimize.thumb_query || isFullyLoaded ? "" : style.thumb,
-				].join(" ")}
+				{...stylex.props(
+					styles.img,
+					config.optimize.thumb_query && isFullyLoaded ? styles.thumb : null,
+					isZoomed ? styles.hidden : inline ? styles.inline : styles.block
+				)}
 				onLoad={config.optimize.thumb_query ? handleLoad : undefined}
 				onClick={openImage}
 			/>
 			{isZoomed && (
 				<span
-					className={style.img}
+					{...stylex.props(
+						styles.img,
+						isZoomed ? styles.hidden : inline ? styles.inline : styles.block
+					)}
 					style={{
 						// eslint-disable-next-line react-hooks/refs
 						width: rawImageElRef.current?.getBoundingClientRect()?.width,
 						// eslint-disable-next-line react-hooks/refs
 						height: rawImageElRef.current?.getBoundingClientRect()?.height,
-						display: imageDisplay,
 					}}
 				/>
 			)}
-			{alt && <span className={style.alt}>{alt}</span>}
+			{alt && <span {...stylex.props(styles.alt)}>{alt}</span>}
 			{isBrowser &&
 				createPortal(
 					isZoomed && (
 						<>
 							<div
 								ref={zoomedOverlayRef}
-								className={style.overlay}
+								{...stylex.props(styles.overlay)}
 								onClick={closeImage}
 							/>
 							<img
@@ -216,7 +285,7 @@ export default function ImageClient(
 								alt={alt}
 								decoding="async"
 								src={src}
-								className={style.zoomed}
+								{...stylex.props(styles.zoomed)}
 								onClick={closeImage}
 							/>
 						</>
