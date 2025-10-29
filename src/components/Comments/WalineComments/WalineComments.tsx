@@ -516,6 +516,20 @@ function UpdateButton({ c, parent }: { c: WalineComment; parent?: number }) {
 	);
 }
 
+function WalineSubCards({ c }: { c: WalineComment }) {
+	const r = c as WalineRootComment;
+	if (r.children === undefined) {
+		return <></>;
+	}
+	return (
+		<div>
+			{r.children.map((v) => (
+				<WalineCommentCard c={v} parent={c.objectId} key={v.objectId} />
+			))}
+		</div>
+	);
+}
+
 function WalineCommentCard({
 	c,
 	parent,
@@ -580,15 +594,7 @@ function WalineCommentCard({
 						}
 					)}
 				</div>
-				{(c as WalineRootComment).children !== undefined && (
-					<div>
-						{(c as WalineRootComment).children.map((v) => {
-							return (
-								<WalineCommentCard c={v} parent={c.objectId} key={v.objectId} />
-							);
-						})}
-					</div>
-				)}
+				<WalineSubCards c={c} />
 			</div>
 		</div>
 	);
