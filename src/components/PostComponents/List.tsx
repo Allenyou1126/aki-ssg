@@ -6,6 +6,10 @@ const styles = stylex.create({
 		marginTop: "1.25em",
 		paddingInlineStart: "1.625em",
 	},
+	subList: {
+		marginBottom: "0.75em",
+		marginTop: "0.75em",
+	},
 	ol1: {
 		listStyleType: "decimal",
 	},
@@ -33,9 +37,11 @@ const styles = stylex.create({
 	},
 });
 
-export function OList(props: React.OlHTMLAttributes<HTMLOListElement>) {
+export function OList(
+	props: React.OlHTMLAttributes<HTMLOListElement> & StyleProps
+) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, type, ...rest } = props;
+	const { className, style, type, parent, first, last, ...rest } = props;
 	return (
 		<ol
 			{...stylex.props(
@@ -44,17 +50,29 @@ export function OList(props: React.OlHTMLAttributes<HTMLOListElement>) {
 				type === "A" && styles.olA,
 				type === "I" && styles.olI,
 				type === "a" && styles.ola,
-				type === "i" && styles.oli
+				type === "i" && styles.oli,
+				parent === "list" && styles.subList
 			)}
 			{...rest}
 		/>
 	);
 }
 
-export function UList(props: React.OlHTMLAttributes<HTMLUListElement>) {
+export function UList(
+	props: React.OlHTMLAttributes<HTMLUListElement> & StyleProps
+) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, ...rest } = props;
-	return <ul {...stylex.props(styles.list, styles.ul)} {...rest} />;
+	const { className, style, parent, first, last, ...rest } = props;
+	return (
+		<ul
+			{...stylex.props(
+				styles.list,
+				styles.ul,
+				parent === "list" && styles.subList
+			)}
+			{...rest}
+		/>
+	);
 }
 
 export function ListItem(props: React.LiHTMLAttributes<HTMLLIElement>) {

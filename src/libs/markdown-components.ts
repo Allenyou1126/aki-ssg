@@ -1,5 +1,6 @@
 import { Hr } from "@/components/PostComponents/Hr";
 import { OList, UList, ListItem } from "@/components/PostComponents/List";
+import { Paragraph } from "@/components/PostComponents/Paragraph";
 import { Components } from "hast-util-to-jsx-runtime";
 import Link from "next/link";
 
@@ -9,4 +10,5 @@ export const html_components = {
 	ul: UList,
 	li: ListItem,
 	hr: Hr,
+	p: Paragraph,
 } satisfies Partial<Components>;
