@@ -30,6 +30,8 @@ import { rehypeTypographyFirstLastChild } from "./rehype-extension/rehype-typogr
 import { rehypeRemoveBreakline } from "./rehype-extension/rehype-remove-breakline";
 import { rehypeListStyle } from "./rehype-extension/rehype-list-style";
 import { rehypeTableStyle } from "./rehype-extension/rehype-table-style";
+import { rehypeCodeStyle } from "./rehype-extension/rehype-code-style";
+import { rehypeHeaderStyle } from "./rehype-extension/rehype-header-style";
 
 export const markdownPipeline = unified()
 	.use(remarkParse)
@@ -76,6 +78,8 @@ export const htmlPipeline = unified()
 	.use(rehypeTypographyFirstLastChild)
 	.use(rehypeTableStyle)
 	.use(rehypeListStyle)
+	.use(rehypeCodeStyle)
+	.use(rehypeHeaderStyle)
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],
 	});

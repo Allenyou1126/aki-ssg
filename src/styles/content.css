@@ -78,52 +78,7 @@
 	[data-prose] :where(h4 strong):not(:where([not-prose], [not-prose] *)) {
 		font-weight: 700;
 	}
-	[data-prose] :where(kbd):not(:where([not-prose], [not-prose] *)) {
-		color: var(--prose-c);
-		background-color: var(--prose-c-bg);
-		font-weight: 600;
-		font-size: 0.875em;
-		padding: 0.2em 0.4em;
-		border-radius: 0.3125rem /* 5px */;
-	}
-	[data-prose] :where(code):not(:where([not-prose], [not-prose] *)) {
-		color: var(--prose-c);
-		background-color: var(--prose-c-bg);
-		font-weight: 600;
-		font-size: 0.875em;
-		padding: 0.2em 0.4em;
-		border-radius: 0.3125rem /* 5px */;
-	}
-	[data-prose] :where(h2 code):not(:where([not-prose], [not-prose] *)) {
-		font-size: 0.875em;
-	}
-	[data-prose] :where(h3 code):not(:where([not-prose], [not-prose] *)) {
-		font-size: 0.9em;
-	}
-	[data-prose] :where(pre):not(:where([not-prose], [not-prose] *)) {
-		color: var(--prose-pc);
-		background-color: var(--prose-p-bg);
-		font-weight: 400;
-		font-size: 0.875em;
-		line-height: 1.75;
-		margin-top: 1.75em;
-		margin-bottom: 1.75em;
-		border-radius: 0.375rem /* 6px */;
-		padding-top: 0.9em;
-		padding-inline-end: 1.25em;
-		padding-bottom: 0.9em;
-		padding-inline-start: 1.25em;
-	}
-	[data-prose] :where(pre code):not(:where([not-prose], [not-prose] *)) {
-		word-wrap: break-word;
-		white-space: pre-wrap;
-		border-width: 0;
-		border-radius: 0;
-		padding: 0;
-		font-weight: inherit;
-		font-size: inherit;
-		line-height: inherit;
-	}
+
 	[data-prose]
 		:where(hr + *, h2 + *, h3 + *, h4 + *):not(
 			:where([not-prose], [not-prose] *)

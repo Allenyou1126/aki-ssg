@@ -11,9 +11,9 @@ export const rehypeTableStyle = () => (tree: Root) => {
 			node.tagName = "tbody";
 		}
 		if (
-			node.tagName !== "thead" ||
-			node.tagName !== "tbody" ||
-			node.tagName !== "tfoot" ||
+			node.tagName !== "thead" &&
+			node.tagName !== "tbody" &&
+			node.tagName !== "tfoot" &&
 			node.tagName !== "tbd"
 		) {
 			return;
