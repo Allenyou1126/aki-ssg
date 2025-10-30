@@ -33,7 +33,7 @@ import * as stylex from "@stylexjs/stylex";
 import { PageSwitcher } from "@/components/PageSwitcher";
 import { themeTokens } from "@/styles/variables.stylex";
 import { MarkdownContent } from "@/components/MarkdownContent";
-import { Link } from "@/components/PostComponents/Link";
+import { html_components } from "@/libs/markdown-components";
 
 function getApiOptions() {
 	const commentConfig = config.comment;
@@ -590,7 +590,7 @@ function WalineCommentCard({
 						{
 							Fragment,
 							components: {
-								a: Link,
+								...html_components,
 							},
 							ignoreInvalidStyle: true,
 							jsx,

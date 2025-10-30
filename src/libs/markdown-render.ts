@@ -32,22 +32,12 @@ import { remarkNeteaseMusic } from "./markdown-extension/remark-netease-music";
 import { remarkFriendLinks } from "./markdown-extension/remark-friend-links";
 import { remarkChat } from "./markdown-extension/remark-chat";
 import { remarkMeme } from "./markdown-extension/remark-meme";
-import BilibiliVideo from "@/components/ExtendedMarkdown/BilibiliVideo/BilibiliVideo";
-import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks/FriendLinks";
-import Image from "@/components/PostComponents/Image/Image";
-import * as Chat from "@/components/ExtendedMarkdown/Chat/Chat";
-import Meme from "@/components/ExtendedMarkdown/Meme/Meme";
 import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
-import { Link } from "@/components/PostComponents/Link";
-
-const extended_components = {
-	bilibili: BilibiliVideo,
-	"friend-links": FriendLinks,
-	chat: Chat.Container,
-	"chat-item": Chat.Item,
-	"chat-sender": Chat.SenderItem,
-	meme: Meme,
-};
+import { html_components } from "./markdown-components";
+import {
+	extended_components,
+	post_components,
+} from "./markdown-extension/extended-markdown-components";
 
 const pipeline = unified()
 	.use(remarkParse)
@@ -131,15 +121,13 @@ export class MarkdownContent implements RenderableContent {
 			toJsxRuntime(this.hastTree, {
 				Fragment,
 				components: {
-					img: Image,
-					a: Link,
+					...post_components,
+					...html_components,
 					...extended_components,
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				} as any,
+				},
 				ignoreInvalidStyle: true,
 				jsx,
 				jsxs,
-				// passNode: true,
 			})
 		);
 	}
