@@ -165,7 +165,7 @@ const toggleExpandContext = createContext<() => void>(() => {});
 function NavigationItem({ link }: { link: { title: string; url: string } }) {
 	const toggleExpand = useContext(toggleExpandContext);
 	return (
-		<li {...stylex.props(itemStyles.item)} key={link.title}>
+		<li {...stylex.props(itemStyles.item)} key={link.url}>
 			<Link
 				{...stylex.props(itemStyles.link)}
 				onClick={() => {
@@ -384,7 +384,7 @@ export default function Navigation({
 						<ul {...stylex.props(wrapStyles.pcList)}>
 							{links.map((ln) => {
 								return (
-									<li key={ln.title}>
+									<li key={ln.url}>
 										<Link href={ln.url}>{ln.title}</Link>
 									</li>
 								);
@@ -448,7 +448,7 @@ export default function Navigation({
 							!expanded && itemStyles.expandedDivider
 						)}>
 						{links.map((ln) => {
-							return <NavigationItem link={ln} key={ln.title} />;
+							return <NavigationItem link={ln} key={ln.url} />;
 						})}
 					</ul>
 				</div>
