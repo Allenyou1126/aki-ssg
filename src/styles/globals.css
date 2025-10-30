@@ -1,5 +1,9 @@
 @stylex;
 
+@layer normalize;
+@layer prose;
+@layer code;
+
 :root {
 	color-scheme: light;
 	--bg: rgb(255 255 255 / 1);
