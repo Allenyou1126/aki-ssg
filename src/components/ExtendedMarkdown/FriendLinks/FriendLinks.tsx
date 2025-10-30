@@ -74,6 +74,9 @@ export default async function FriendLinks() {
 		link.description = link.description ?? "";
 		return <FriendLinkItem link={link} key={index} />;
 	});
-	// TODO: Add not-prose classname
-	return <div {...stylex.props(style.grid)}>{linkList}</div>;
+	return (
+		<div not-prose {...stylex.props(style.grid)}>
+			{linkList}
+		</div>
+	);
 }

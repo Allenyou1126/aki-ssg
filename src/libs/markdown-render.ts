@@ -38,6 +38,7 @@ import Image from "@/components/PostComponents/Image/Image";
 import * as Chat from "@/components/ExtendedMarkdown/Chat/Chat";
 import Meme from "@/components/ExtendedMarkdown/Meme/Meme";
 import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
+import { Link } from "@/components/PostComponents/Link";
 
 const extended_components = {
 	bilibili: BilibiliVideo,
@@ -131,6 +132,7 @@ export class MarkdownContent implements RenderableContent {
 				Fragment,
 				components: {
 					img: Image,
+					a: Link,
 					...extended_components,
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} as any,

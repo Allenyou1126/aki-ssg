@@ -1,7 +1,6 @@
 import { config } from "@/data/site-config";
-import Link from "next/link";
+import { Link } from "@/components/PostComponents/Link";
 import * as stylex from "@stylexjs/stylex";
-import { themeTokens } from "@/styles/variables.stylex";
 
 const style = stylex.create({
 	icon: {
@@ -26,10 +25,6 @@ const style = stylex.create({
 		fontSize: "1.125rem",
 		fontWeight: 500,
 		lineHeight: "1.75rem",
-	},
-	link: {
-		color: themeTokens.primaryColor,
-		textDecoration: "underline",
 	},
 	grid: {
 		display: "flex",
@@ -72,7 +67,6 @@ export default async function Copyright({
 		<div {...stylex.props(style.wrap)}>
 			<p {...stylex.props(style.title)}>{title}</p>
 			<Link
-				{...stylex.props(style.link)}
 				href={`https://${config.blog.hostname}/post/${id}`}>{`https://${config.blog.hostname}/post/${id}`}</Link>
 			<div {...stylex.props(style.grid)}>
 				<div>

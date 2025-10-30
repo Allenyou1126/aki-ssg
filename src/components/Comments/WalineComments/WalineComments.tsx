@@ -1,13 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import proseStyle from "@/styles/content.module.css";
 import "@/components/Comments/WalineComments/style.css";
 import { config } from "@/data/site-config";
 import {
 	createContext,
 	ForwardedRef,
-	Suspense,
 	useCallback,
 	useContext,
 	useImperativeHandle,
@@ -27,7 +25,6 @@ import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { fromHtml } from "hast-util-from-html";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import useSWR from "swr";
-import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import { delay } from "@/utils/delay";
 import { scrollIntoViewById } from "@/utils/scrollIntoView";
 import { atomWithStorage } from "jotai/utils";
@@ -35,11 +32,22 @@ import { useAtom } from "jotai";
 import * as stylex from "@stylexjs/stylex";
 import { PageSwitcher } from "@/components/PageSwitcher";
 import { themeTokens } from "@/styles/variables.stylex";
+import { MarkdownContent } from "@/components/MarkdownContent";
+import { Link } from "@/components/PostComponents/Link";
 
-const api_option = {
-	serverURL: (config.comment as WalineCommentConfig).waline_api,
-	lang: "zh",
-};
+function getApiOptions() {
+	const commentConfig = config.comment;
+	if (commentConfig.type !== "waline") {
+		return {
+			serverURL: "",
+			lang: "zh",
+		};
+	}
+	return {
+		serverURL: commentConfig.waline_api,
+		lang: "zh",
+	};
+}
 
 const pidContext = createContext<number | undefined>(undefined);
 const ridContext = createContext<number | undefined>(undefined);
@@ -58,16 +66,20 @@ const nickStorage = atomWithStorage("waline-nick", "");
 const mailStorage = atomWithStorage("waline-mail", "");
 const urlStorage = atomWithStorage("waline-url", "");
 
+const iconStyle = stylex.create({
+	icon: {
+		display: "inline-block",
+		fill: "currentColor",
+		height: "1em",
+		width: "1em",
+	},
+});
+
 function Reply() {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			style={{
-				width: "1em",
-				height: "1em",
-				display: "inline-block",
-				fill: "currentColor",
-			}}
+			{...stylex.props(iconStyle.icon)}
 			viewBox="0 0 512 512">
 			<path d="M205 34.8c11.5 5.1 19 16.6 19 29.2l0 64 112 0c97.2 0 176 78.8 176 176c0 113.3-81.5 163.9-100.2 174.1c-2.5 1.4-5.3 1.9-8.1 1.9c-10.9 0-19.7-8.9-19.7-19.7c0-7.5 4.3-14.4 9.8-19.5c9.4-8.8 22.2-26.4 22.2-56.7c0-53-43-96-96-96l-96 0 0 64c0 12.6-7.4 24.1-19 29.2s-25 3-34.4-5.4l-160-144C3.9 225.7 0 217.1 0 208s3.9-17.7 10.6-23.8l160-144c9.4-8.5 22.9-10.6 34.4-5.4z" />
 		</svg>
@@ -78,9 +90,7 @@ function Message() {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			width="1em"
-			height="1em"
-			fill="currentColor"
+			{...stylex.props(iconStyle.icon)}
 			viewBox="0 0 512 512">
 			<path d="M160 368c26.5 0 48 21.5 48 48l0 16 72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6L448 368c8.8 0 16-7.2 16-16l0-288c0-8.8-7.2-16-16-16L64 48c-8.8 0-16 7.2-16 16l0 288c0 8.8 7.2 16 16 16l96 0zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3l0-21.3 0-6.4 0-.3 0-4 0-48-48 0-48 0c-35.3 0-64-28.7-64-64L0 64C0 28.7 28.7 0 64 0L448 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64l-138.7 0L208 492z" />
 		</svg>
@@ -134,7 +144,7 @@ const mainStyle = stylex.create({
 	},
 });
 
-const WalineErrorHandler = (props: FallbackProps) => {
+const WalineErrorHandler = (props: { error: Error }) => {
 	console.error(props.error.message);
 	return <p {...stylex.props(mainStyle.error)}>加载评论内容失败。</p>;
 };
@@ -150,11 +160,7 @@ export default function WalineComments() {
 					}}
 				/>
 				<div>
-					<ErrorBoundary fallbackRender={WalineErrorHandler}>
-						<Suspense fallback={<CommentsLoading />}>
-							<WalineCommentCards ref={cardsRef} />
-						</Suspense>
-					</ErrorBoundary>
+					<WalineCommentCards ref={cardsRef} />
 				</div>
 			</div>
 		</WalineCommentsDataProvider>
@@ -284,7 +290,7 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 		}
 		setSubmitAvailable(false);
 		addComment({
-			...api_option,
+			...getApiOptions(),
 			comment: {
 				comment: content,
 				url: pathname,
@@ -522,13 +528,10 @@ function WalineSubCards({ c }: { c: WalineComment }) {
 	if (r.children === undefined) {
 		return <></>;
 	}
-	return (
-		<div>
-			{r.children.map((v) => (
-				<WalineCommentCard c={v} parent={c.objectId} key={v.objectId} />
-			))}
-		</div>
-	);
+	const subComments = r.children.map((v) => {
+		return <WalineCommentCard c={v} parent={c.objectId} key={v.objectId} />;
+	});
+	return <div>{/* subComments */}</div>;
 }
 
 function WalineCommentCard({
@@ -579,22 +582,23 @@ function WalineCommentCard({
 					</span>
 					<UpdateButton c={c} parent={parent} />
 				</div>
-				{/* TODO: Migrate this style to StyleX */}
-				<div className={["comment", proseStyle.prose].join(" ")}>
+				<MarkdownContent comment>
 					{toJsxRuntime(
 						fromHtml(c.comment, {
 							fragment: true,
 						}),
 						{
 							Fragment,
-							components: {},
+							components: {
+								a: Link,
+							},
 							ignoreInvalidStyle: true,
 							jsx,
 							jsxs,
 							passNode: true,
 						}
 					)}
-				</div>
+				</MarkdownContent>
 				<WalineSubCards c={c} />
 			</div>
 		</div>
@@ -608,19 +612,21 @@ function WalineCommentCards({
 }) {
 	const [page, setPage] = useState(1);
 	const pathname = usePathname();
-	const { data, mutate } = useSWR(
+	const {
+		data: comments,
+		error,
+		isLoading,
+		mutate,
+	} = useSWR(
 		{ path: pathname, page: page },
 		({ path, page }: { path: string; page: number }) => {
 			return getComment({
-				...api_option,
-				path: path,
+				...getApiOptions(),
+				path: "/board",
+				page,
 				pageSize: 10,
-				page: page,
 				sortBy: "insertedAt_desc",
 			});
-		},
-		{
-			suspense: true,
 		}
 	);
 	useImperativeHandle(
@@ -634,17 +640,22 @@ function WalineCommentCards({
 		},
 		[mutate]
 	);
-	const ret = data!;
-	const total = ret.totalPages;
+	if (error) {
+		return <WalineErrorHandler error={error} />;
+	}
+	if (isLoading || !comments) {
+		return <CommentsLoading />;
+	}
+	const total = comments.totalPages;
 	return (
 		<>
-			{ret.count === 0 ? (
-				<p {...stylex.props(cardStyle.count)}>没有评论</p>
+			{comments.count ? (
+				<p {...stylex.props(cardStyle.count)}>{comments.count} 条评论</p>
 			) : (
-				<p {...stylex.props(cardStyle.count)}>{ret.count} 条评论</p>
+				<p {...stylex.props(cardStyle.count)}>没有评论</p>
 			)}
 			<div>
-				{ret.data.map((c) => {
+				{comments.data.map((c) => {
 					return <WalineCommentCard key={c.objectId} c={c} />;
 				})}
 			</div>

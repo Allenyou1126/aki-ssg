@@ -6,8 +6,8 @@ import { config } from "@/data/site-config";
 import { initCMS } from "@/libs/content-management";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import "@/styles/code-highlight.css";
-import style from "@/styles/content.module.css";
+import * as stylex from "@stylexjs/stylex";
+import { MarkdownContent } from "@/components/MarkdownContent";
 
 export async function generateStaticParams() {
 	const cms = await initCMS();
@@ -36,6 +36,21 @@ export async function generateMetadata({
 	};
 }
 
+const styles = stylex.create({
+	title: {
+		fontSize: "1.875rem",
+		fontWeight: 700,
+		lineHeight: "2.25rem",
+		marginBlock: "0.5rem",
+		marginInline: "0",
+	},
+	metadata: {
+		marginBlock: "0.5rem",
+		marginInline: "0",
+		opacity: 0.6,
+	},
+});
+
 export default async function PostPage({
 	params,
 }: {
@@ -50,15 +65,15 @@ export default async function PostPage({
 	}
 	return (
 		<>
-			<p className={style.title}>{post.title}</p>
-			<p className={style.metadata}>
+			<p {...stylex.props(styles.title)}>{post.title}</p>
+			<p {...stylex.props(styles.metadata)}>
 				{post.created_at.toLocaleDateString()}
 				{post.created_at.valueOf() - post.modified_at.valueOf() == 0
 					? ""
 					: ` (最后更新于 ${post.modified_at.toLocaleDateString()})`}
 			</p>
 			<OutdateTip created={post.modified_at.toDateString()} />
-			<div className={style.prose}>{post.markdown_content.toReactNode()}</div>
+			<MarkdownContent>{post.markdown_content.toReactNode()}</MarkdownContent>
 			<Copyright title={post.title} id={(await params).id} />
 			<Comments />
 			<Toc toc={post.markdown_content.toToc().map} />
