@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import "@/components/Comments/WalineComments/style.css";
 import { config } from "@/data/site-config";
 import {
 	createContext,
@@ -14,16 +13,9 @@ import {
 } from "react";
 import { usePathname } from "next/navigation";
 import { addComment, getComment } from "@waline/api";
-import type {
-	WalineRootComment,
-	WalineChildComment,
-	WalineComment,
-} from "@waline/api";
+import type { WalineRootComment, WalineComment } from "@waline/api";
 import getAvatar from "@/utils/getAvatar";
 import { CommentsLoading } from "../CommentsLoading";
-import { toJsxRuntime } from "hast-util-to-jsx-runtime";
-import { fromHtml } from "hast-util-from-html";
-import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import useSWR from "swr";
 import { delay } from "@/utils/delay";
 import { scrollIntoViewById } from "@/utils/scrollIntoView";
@@ -33,7 +25,7 @@ import * as stylex from "@stylexjs/stylex";
 import { PageSwitcher } from "@/components/PageSwitcher";
 import { themeTokens } from "@/styles/variables.stylex";
 import { MarkdownContent } from "@/components/MarkdownContent";
-import { html_components } from "@/libs/markdown-components";
+import { fromHtmlToNodes } from "@/libs/markdown-client";
 
 function getApiOptions() {
 	const commentConfig = config.comment;
@@ -609,21 +601,7 @@ function WalineCommentCard({
 					<UpdateButton comment={comment} parentComment={parentComment} />
 				</div>
 				<MarkdownContent comment>
-					{toJsxRuntime(
-						fromHtml(comment.comment, {
-							fragment: true,
-						}),
-						{
-							Fragment,
-							components: {
-								...html_components,
-							},
-							ignoreInvalidStyle: true,
-							jsx,
-							jsxs,
-							passNode: true,
-						}
-					)}
+					{fromHtmlToNodes(comment.comment)}
 				</MarkdownContent>
 				<WalineSubCards comment={comment} />
 			</div>
