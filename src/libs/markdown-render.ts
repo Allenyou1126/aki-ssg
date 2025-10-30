@@ -5,14 +5,7 @@ import type {
 	Node as HastNode,
 	RootContent as HastRootContent,
 } from "hast";
-import { toHtml } from "hast-util-to-html";
-import { toJsxRuntime } from "hast-util-to-jsx-runtime";
-import type { Root as MdashRoot } from "mdast";
-import { toc } from "mdast-util-toc";
-import type { Result } from "mdast-util-toc";
-import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { unified } from "unified";
-import { VFile } from "vfile";
 
 import rehypeMathjax from "rehype-mathjax";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
@@ -33,13 +26,10 @@ import { remarkFriendLinks } from "./markdown-extension/remark-friend-links";
 import { remarkChat } from "./markdown-extension/remark-chat";
 import { remarkMeme } from "./markdown-extension/remark-meme";
 import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
-import { html_components } from "./markdown-components";
-import {
-	extended_components,
-	post_components,
-} from "./markdown-extension/extended-markdown-components";
+import { rehypeTypographyFirstLastChild } from "./rehype-extension/rehype-typography-first-last-child";
+import { rehypeRemoveBreakline } from "./rehype-extension/rehype-remove-breakline";
 
-const pipeline = unified()
+export const markdownPipeline = unified()
 	.use(remarkParse)
 	.use(remarkGithubAlerts)
 	.use(remarkGfm, { singleTilde: false })
@@ -51,13 +41,22 @@ const pipeline = unified()
 	.use(remarkNeteaseMusic)
 	.use(remarkChat)
 	.use(remarkFriendLinks)
-	.use(remarkRehype, { allowDangerousHtml: true })
+	.use(remarkRehype, { allowDangerousHtml: true });
+
+export const htmlPipeline = unified()
 	.use(rehypeSlug, {})
 	.use(rehypeHighlightCodeLines, {
 		showLineNumbers: true,
 	})
 	.use(rehypeSanitize, {
-		tagNames: defaultSchema.tagNames?.concat(Object.keys(extended_components)),
+		tagNames: defaultSchema.tagNames?.concat([
+			"bilibili",
+			"friend-links",
+			"chat",
+			"chat-item",
+			"chat-sender",
+			"meme",
+		]),
 		attributes: {
 			"*": ["className", "id"],
 			chat: [],
@@ -71,6 +70,8 @@ const pipeline = unified()
 	})
 	.use(rehypeMathjax, {})
 	.use(rehypeMathjaxPlus)
+	.use(rehypeRemoveBreakline)
+	.use(rehypeTypographyFirstLastChild)
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],
 	});
@@ -100,47 +101,9 @@ function filterNodes(node: HastNode): HastNode | undefined {
 	}
 }
 
-function generateForRss(tree: HashRoot): HashRoot {
+export function generateForRss(tree: HashRoot): HashRoot {
 	tree.children = tree.children
 		.map((ch) => filterNodes(ch as HastNode) as HastRootContent | undefined)
 		.filter((v) => v !== undefined);
 	return tree;
-}
-
-export class MarkdownContent implements RenderableContent {
-	hastTree: HashRoot;
-	mdastTree: MdashRoot;
-	constructor(original: string) {
-		const file = new VFile(original);
-		this.mdastTree = pipeline.parse(original);
-		this.hastTree = pipeline.runSync(this.mdastTree, file);
-	}
-	toReactNode(): React.ReactNode {
-		return (
-			this.hastTree &&
-			toJsxRuntime(this.hastTree, {
-				Fragment,
-				components: {
-					...post_components,
-					...html_components,
-					...extended_components,
-				},
-				ignoreInvalidStyle: true,
-				jsx,
-				jsxs,
-			})
-		);
-	}
-	toToc(): Result {
-		return (
-			this.mdastTree &&
-			toc(this.mdastTree, {
-				tight: true,
-				ordered: true,
-			})
-		);
-	}
-	toRssFeed(): string {
-		return this.hastTree && toHtml(generateForRss(this.hastTree), {});
-	}
 }

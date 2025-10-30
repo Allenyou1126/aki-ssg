@@ -27,6 +27,9 @@ const styles = stylex.create({
 	li: {
 		color: "var(--prose-cnt)",
 		fontWeight: 400,
+		marginBottom: "0.5em",
+		marginTop: "0.5em",
+		paddingInlineStart: "0.375em",
 	},
 });
 

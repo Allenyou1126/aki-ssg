@@ -3,8 +3,6 @@ import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks/FriendLinks";
 import Meme from "@/components/ExtendedMarkdown/Meme/Meme";
 import * as Chat from "@/components/ExtendedMarkdown/Chat/Chat";
 
-import Image from "@/components/PostComponents/Image/Image";
-
 import { Components } from "hast-util-to-jsx-runtime";
 
 export const extended_components = {
@@ -15,7 +13,3 @@ export const extended_components = {
 	"chat-sender": Chat.SenderItem,
 	meme: Meme,
 } satisfies Partial<Components>;
-
-export const post_components = {
-	img: Image,
-};

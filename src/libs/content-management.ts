@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 import fm from "front-matter";
 import path from "path";
 import { cache } from "react";
-import { MarkdownContent } from "./markdown-render";
+import { MarkdownContent } from "./markdown-server";
 import { isProd } from "./state-management";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
