@@ -12,12 +12,6 @@
 		font-weight: 600;
 		margin-top: 1.25em;
 	}
-	[data-prose] :where(hr):not(:where([not-prose], [not-prose] *)) {
-		border-color: var(--prose-hr);
-		border-top-width: 1px;
-		margin-top: 3em;
-		margin-bottom: 3em;
-	}
 	[data-prose] :where(blockquote):not(:where([not-prose], [not-prose] *)) {
 		font-weight: 500;
 		font-style: italic;
@@ -170,30 +164,6 @@
 	}
 	[data-prose] :where(th, td):not(:where([not-prose], [not-prose] *)) {
 		text-align: start;
-	}
-	[data-prose]
-		:where([data-prose] > ul > li p):not(:where([not-prose], [not-prose] *)) {
-		margin-top: 0.75em;
-		margin-bottom: 0.75em;
-	}
-	[data-prose]
-		:where(
-			[data-prose] > ul > li > p:first-child,
-			[data-prose] > ol > li > p:first-child
-		):not(:where([not-prose], [not-prose] *)) {
-		margin-top: 1.25em;
-	}
-	[data-prose]
-		:where(
-			[data-prose] > ul > li > p:last-child,
-			[data-prose] > ol > li > p:last-child
-		):not(:where([not-prose], [not-prose] *)) {
-		margin-bottom: 1.25em;
-	}
-	[data-prose]
-		:where(ul ul, ul ol, ol ul, ol ol):not(:where([not-prose], [not-prose] *)) {
-		margin-top: 0.75em;
-		margin-bottom: 0.75em;
 	}
 	[data-prose]
 		:where(hr + *, h2 + *, h3 + *, h4 + *):not(

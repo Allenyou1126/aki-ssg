@@ -28,6 +28,7 @@ import { remarkMeme } from "./markdown-extension/remark-meme";
 import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
 import { rehypeTypographyFirstLastChild } from "./rehype-extension/rehype-typography-first-last-child";
 import { rehypeRemoveBreakline } from "./rehype-extension/rehype-remove-breakline";
+import { rehypeListStyle } from "./rehype-extension/rehype-list-style";
 
 export const markdownPipeline = unified()
 	.use(remarkParse)
@@ -72,6 +73,7 @@ export const htmlPipeline = unified()
 	.use(rehypeMathjaxPlus)
 	.use(rehypeRemoveBreakline)
 	.use(rehypeTypographyFirstLastChild)
+	.use(rehypeListStyle)
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],
 	});
