@@ -492,16 +492,22 @@ const cardStyle = stylex.create({
 	},
 });
 
-function UpdateButton({ c, parent }: { c: WalineComment; parent?: number }) {
+function UpdateButton({
+	comment,
+	parentComment,
+}: {
+	comment: WalineComment;
+	parentComment?: number;
+}) {
 	const pid = useContext(pidContext);
 	const setPid = useContext(setPidContext);
 	const setRid = useContext(setRidContext);
 	const setAt = useContext(setAtContext);
 	const onClick = useCallback(() => {
-		if (pid !== c.objectId) {
-			setPid(c.objectId);
-			setRid(parent ?? c.objectId);
-			setAt(c.nick);
+		if (pid !== comment.objectId) {
+			setPid(comment.objectId);
+			setRid(parentComment ?? comment.objectId);
+			setAt(comment.nick);
 			delay(10).then(() => {
 				scrollIntoViewById("comment-area");
 			});
@@ -510,11 +516,19 @@ function UpdateButton({ c, parent }: { c: WalineComment; parent?: number }) {
 		setPid(undefined);
 		setRid(undefined);
 		setAt("");
-	}, [pid, c.objectId, c.nick, setPid, setRid, setAt, parent]);
+	}, [
+		pid,
+		comment.objectId,
+		comment.nick,
+		setPid,
+		setRid,
+		setAt,
+		parentComment,
+	]);
 	return (
 		<button
 			style={{
-				color: pid === c.objectId ? themeTokens.primaryColor : undefined,
+				color: pid === comment.objectId ? themeTokens.primaryColor : undefined,
 			}}
 			{...stylex.props(cardStyle.update)}
 			onClick={onClick}>
@@ -523,68 +537,80 @@ function UpdateButton({ c, parent }: { c: WalineComment; parent?: number }) {
 	);
 }
 
-function WalineSubCards({ c }: { c: WalineComment }) {
-	const r = c as WalineRootComment;
-	if (r.children === undefined) {
+function WalineSubCards({ comment }: { comment: WalineComment }) {
+	const rootComment = comment as WalineRootComment;
+	if (rootComment.children === undefined) {
 		return <></>;
 	}
-	const subComments = r.children.map((v) => {
-		return <WalineCommentCard c={v} parent={c.objectId} key={v.objectId} />;
+	const subComments = rootComment.children.map((currentComment) => {
+		return (
+			<WalineCommentCard
+				comment={currentComment}
+				parentComment={rootComment.objectId}
+				key={currentComment.objectId}
+			/>
+		);
 	});
-	return <div>{/* subComments */}</div>;
+	return <div>{subComments}</div>;
 }
 
 function WalineCommentCard({
-	c,
-	parent,
+	comment,
+	parentComment,
 }: {
-	c: WalineComment;
-	parent?: number;
+	comment: WalineComment;
+	parentComment?: number;
 }) {
 	return (
 		<div {...stylex.props(cardStyle.card)}>
 			<div>
-				<img {...stylex.props(cardStyle.avatar)} src={c.avatar} alt="avatar" />
+				<img
+					{...stylex.props(cardStyle.avatar)}
+					src={comment.avatar}
+					alt="avatar"
+				/>
 			</div>
 			<div {...stylex.props(cardStyle.container)}>
 				<div {...stylex.props(cardStyle.meta)}>
-					{c.link !== null &&
-					(c.link.startsWith("http://") || c.link.startsWith("https://")) ? (
+					{comment.link !== null &&
+					(comment.link.startsWith("http://") ||
+						comment.link.startsWith("https://")) ? (
 						<a
-							href={c.link}
+							href={comment.link}
 							style={{ color: themeTokens.primaryColor }}
 							{...stylex.props(cardStyle.nick)}>
-							{c.nick}
+							{comment.nick}
 						</a>
 					) : (
-						<p {...stylex.props(cardStyle.nick)}>{c.nick}</p>
+						<p {...stylex.props(cardStyle.nick)}>{comment.nick}</p>
 					)}
-					{c.avatar === getAvatar(config.author.email) && (
+					{comment.avatar === getAvatar(config.author.email) && (
 						<span {...stylex.props(cardStyle.tag, cardStyle.ownerTag)}>
 							博主
 						</span>
 					)}
 					<span {...stylex.props(cardStyle.text)}>
-						{new Date(c.time).toLocaleDateString()}
+						{new Date(comment.time).toLocaleDateString()}
 					</span>
-					<span {...stylex.props(cardStyle.text)}>#{c.objectId}</span>
-					{parent && (
+					<span {...stylex.props(cardStyle.text)}>#{comment.objectId}</span>
+					{parentComment && (
 						<span {...stylex.props(cardStyle.text)}>
-							<Reply /> #{(c as WalineChildComment).pid}
+							<Reply /> {"#"}
+							{parentComment}
 						</span>
 					)}
 					<br />
 					<span {...stylex.props(cardStyle.tag, cardStyle.metaTag)}>
-						{c.browser}
+						{comment.browser}
 					</span>
 					<span {...stylex.props(cardStyle.tag, cardStyle.metaTag)}>
-						{c.os}
+						{comment.os}
 					</span>
-					<UpdateButton c={c} parent={parent} />
+					<UpdateButton comment={comment} parentComment={parentComment} />
 				</div>
 				<MarkdownContent comment>
 					{toJsxRuntime(
-						fromHtml(c.comment, {
+						fromHtml(comment.comment, {
 							fragment: true,
 						}),
 						{
@@ -599,7 +625,7 @@ function WalineCommentCard({
 						}
 					)}
 				</MarkdownContent>
-				<WalineSubCards c={c} />
+				<WalineSubCards comment={comment} />
 			</div>
 		</div>
 	);
@@ -622,7 +648,7 @@ function WalineCommentCards({
 		({ path, page }: { path: string; page: number }) => {
 			return getComment({
 				...getApiOptions(),
-				path: "/board",
+				path,
 				page,
 				pageSize: 10,
 				sortBy: "insertedAt_desc",
@@ -655,8 +681,8 @@ function WalineCommentCards({
 				<p {...stylex.props(cardStyle.count)}>没有评论</p>
 			)}
 			<div>
-				{comments.data.map((c) => {
-					return <WalineCommentCard key={c.objectId} c={c} />;
+				{comments.data.map((comment) => {
+					return <WalineCommentCard key={comment.objectId} comment={comment} />;
 				})}
 			</div>
 			<PageSwitcher
