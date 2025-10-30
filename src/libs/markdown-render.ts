@@ -29,6 +29,7 @@ import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
 import { rehypeTypographyFirstLastChild } from "./rehype-extension/rehype-typography-first-last-child";
 import { rehypeRemoveBreakline } from "./rehype-extension/rehype-remove-breakline";
 import { rehypeListStyle } from "./rehype-extension/rehype-list-style";
+import { rehypeTableStyle } from "./rehype-extension/rehype-table-style";
 
 export const markdownPipeline = unified()
 	.use(remarkParse)
@@ -73,6 +74,7 @@ export const htmlPipeline = unified()
 	.use(rehypeMathjaxPlus)
 	.use(rehypeRemoveBreakline)
 	.use(rehypeTypographyFirstLastChild)
+	.use(rehypeTableStyle)
 	.use(rehypeListStyle)
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],

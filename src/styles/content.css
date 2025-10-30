@@ -124,75 +124,10 @@
 		font-size: inherit;
 		line-height: inherit;
 	}
-	[data-prose] :where(table):not(:where([not-prose], [not-prose] *)) {
-		width: 100%;
-		table-layout: auto;
-		margin-top: 2em;
-		margin-bottom: 2em;
-		font-size: 0.875em;
-		line-height: 1.75;
-	}
-	[data-prose] :where(thead):not(:where([not-prose], [not-prose] *)) {
-		border-bottom-width: 1px;
-		border-bottom-color: var(--prose-th-b);
-	}
-	[data-prose] :where(thead th):not(:where([not-prose], [not-prose] *)) {
-		color: var(--prose-h);
-		font-weight: 600;
-		vertical-align: bottom;
-		padding-inline-end: 0.6em;
-		padding-bottom: 0.6em;
-		padding-inline-start: 0.6em;
-	}
-	[data-prose] :where(tbd tr):not(:where([not-prose], [not-prose] *)) {
-		border-bottom-width: 1px;
-		border-bottom-color: var(--prose-td-b);
-	}
-	[data-prose]
-		:where(tbd tr:last-child):not(:where([not-prose], [not-prose] *)) {
-		border-bottom-width: 0;
-	}
-	[data-prose] :where(tbd td):not(:where([not-prose], [not-prose] *)) {
-		vertical-align: baseline;
-	}
-	[data-prose] :where(tfoot):not(:where([not-prose], [not-prose] *)) {
-		border-top-width: 1px;
-		border-top-color: var(--prose-th-b);
-	}
-	[data-prose] :where(tfoot td):not(:where([not-prose], [not-prose] *)) {
-		vertical-align: top;
-	}
-	[data-prose] :where(th, td):not(:where([not-prose], [not-prose] *)) {
-		text-align: start;
-	}
 	[data-prose]
 		:where(hr + *, h2 + *, h3 + *, h4 + *):not(
 			:where([not-prose], [not-prose] *)
 		) {
 		margin-top: 0;
-	}
-	[data-prose]
-		:where(thead th:first-child):not(:where([not-prose], [not-prose] *)) {
-		padding-inline-start: 0;
-	}
-	[data-prose]
-		:where(thead th:last-child):not(:where([not-prose], [not-prose] *)) {
-		padding-inline-end: 0;
-	}
-	[data-prose]
-		:where(tbd td, tfoot td):not(:where([not-prose], [not-prose] *)) {
-		padding: 0.6em;
-	}
-	[data-prose]
-		:where(tbd td:first-child, tfoot td:first-child):not(
-			:where([not-prose], [not-prose] *)
-		) {
-		padding-inline-start: 0;
-	}
-	[data-prose]
-		:where(tbd td:last-child, tfoot td:last-child):not(
-			:where([not-prose], [not-prose] *)
-		) {
-		padding-inline-end: 0;
 	}
 }
