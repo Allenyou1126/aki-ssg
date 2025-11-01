@@ -71,10 +71,10 @@ export const htmlPipeline = unified()
 			meme: ["group", "mid"],
 		},
 	})
+	.use(rehypeTypographyFirstLastChild)
 	.use(rehypeMathjax, {})
 	.use(rehypeMathjaxPlus)
 	.use(rehypeRemoveBreakline)
-	.use(rehypeTypographyFirstLastChild)
 	.use(rehypeTableStyle)
 	.use(rehypeListStyle)
 	.use(rehypeCodeStyle)
