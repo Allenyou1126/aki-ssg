@@ -1,15 +1,4 @@
 @layer prose {
-	[data-prose] :where(blockquote):not(:where([not-prose], [not-prose] *)) {
-		font-weight: 500;
-		font-style: italic;
-		color: var(--prose-q);
-		border-inline-start-width: 0.25rem /* 4px */;
-		border-inline-start-color: var(--prose-q-b);
-		quotes: "\201C""\201D""\2018""\2019";
-		margin-top: 1.6em;
-		margin-bottom: 1.6em;
-		padding-inline-start: 1em;
-	}
 	[data-prose] :where(h1):not(:where([not-prose], [not-prose] *)) {
 		color: var(--prose-h);
 		font-weight: 800;

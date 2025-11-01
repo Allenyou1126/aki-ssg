@@ -1,5 +1,7 @@
+import { Blockquote } from "@/components/PostComponents/Blockquote";
 import { Code, Kbd, Pre } from "@/components/PostComponents/Code";
 import { Hr } from "@/components/PostComponents/Hr";
+import { Link } from "@/components/PostComponents/Link";
 import { OList, UList, ListItem } from "@/components/PostComponents/List";
 import { Paragraph } from "@/components/PostComponents/Paragraph";
 import {
@@ -12,7 +14,6 @@ import {
 	Tr,
 } from "@/components/PostComponents/Table";
 import { Components } from "hast-util-to-jsx-runtime";
-import Link from "next/link";
 
 export const html_components = {
 	a: Link,
@@ -31,4 +32,5 @@ export const html_components = {
 	pre: Pre,
 	code: Code,
 	kbd: Kbd,
+	blockquote: Blockquote,
 } satisfies Partial<Components>;
