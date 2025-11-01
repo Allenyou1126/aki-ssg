@@ -32,6 +32,12 @@ const styles = stylex.create({
 		marginBottom: "0.5em",
 		marginTop: "1.5em",
 	},
+	h5: {
+		fontWeight: 600,
+	},
+	h6: {
+		fontWeight: 600,
+	},
 	noTop: {
 		marginTop: 0,
 	},
@@ -97,6 +103,38 @@ export function H4(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
 			{...stylex.props(
 				styles.h,
 				styles.h4,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
+			)}
+			{...rest}
+		/>
+	);
+}
+export function H5(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
+		props;
+	return (
+		<h4
+			{...stylex.props(
+				styles.h,
+				styles.h5,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
+			)}
+			{...rest}
+		/>
+	);
+}
+export function H6(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
+		props;
+	return (
+		<h4
+			{...stylex.props(
+				styles.h,
+				styles.h6,
 				noTop && styles.noTop,
 				noBottom && styles.noBottom
 			)}
