@@ -38,6 +38,10 @@ const style = stylex.create({
 			"opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), visibility 500ms cubic-bezier(0.4, 0, 0.2, 1);",
 		zIndex: 30,
 	},
+	hidden: {
+		opacity: 0,
+		visibility: "hidden",
+	},
 });
 
 export default function GoToTop() {
@@ -45,11 +49,7 @@ export default function GoToTop() {
 	return (
 		<button
 			title="Go to Top"
-			style={{
-				opacity: scroll <= 500 ? 0 : undefined,
-				visibility: scroll <= 500 ? "hidden" : undefined,
-			}}
-			{...stylex.props(style.top)}
+			{...stylex.props(style.top, scroll <= 500 && style.hidden)}
 			disabled={scroll <= 500}
 			onClick={() => {
 				window.scrollTo({

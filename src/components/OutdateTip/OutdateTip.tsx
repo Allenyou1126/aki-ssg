@@ -37,13 +37,11 @@ export default function OutdateTip({ created }: { created: string }) {
 	const val = Math.ceil(
 		(current.getTime() - created_at.getTime()) / (1000 * 60 * 60 * 24)
 	);
-	const vis = val >= 365;
 	return (
-		<p
-			suppressHydrationWarning
-			style={{ display: vis ? "block" : "none" }}
-			{...stylex.props(style.tip)}>
-			<Icon /> 本文最后修改于 {val} 天前，请注意文章内容的时效性。
-		</p>
+		val >= 365 && (
+			<p {...stylex.props(style.tip)}>
+				<Icon /> 本文最后修改于 {val} 天前，请注意文章内容的时效性。
+			</p>
+		)
 	);
 }

@@ -466,6 +466,9 @@ const cardStyle = stylex.create({
 		verticalAlign: "text-bottom",
 		width: "1em",
 	},
+	selected: {
+		color: themeTokens.primaryColor,
+	},
 	avatar: {
 		aspectRatio: "1 / 1",
 		backgroundColor: themeTokens.primaryColor,
@@ -531,10 +534,10 @@ function UpdateButton({
 	]);
 	return (
 		<button
-			style={{
-				color: pid === comment.objectId ? themeTokens.primaryColor : undefined,
-			}}
-			{...stylex.props(cardStyle.update)}
+			{...stylex.props(
+				cardStyle.update,
+				pid === comment.objectId && cardStyle.selected
+			)}
 			onClick={onClick}>
 			<Message />
 		</button>
