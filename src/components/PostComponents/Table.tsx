@@ -181,9 +181,7 @@ export function Td(
 				parent === "tbody" && styles.tdTbd,
 				parent === "tfoot" && styles.tdTfoot,
 				first && styles.thFirst,
-				last && styles.thLast,
-				noTop && styles.noTop,
-				noBottom && styles.noBottom
+				last && styles.thLast
 			)}
 			{...rest}
 		/>
