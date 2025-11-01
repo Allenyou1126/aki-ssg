@@ -44,6 +44,7 @@ const style = stylex.create({
 
 function TocItem({ item }: { item: Paragraph }) {
 	const link = item.children[0] as Link;
+	const text = link.children[0] as Text;
 	return (
 		<button
 			{...stylex.props(style.item)}
@@ -52,7 +53,7 @@ function TocItem({ item }: { item: Paragraph }) {
 					scrollIntoViewById(`user-content-${link.url.substring(1)}`);
 				});
 			}}>
-			{(link.children[0] as Text).value}
+			{text.value}
 		</button>
 	);
 }
