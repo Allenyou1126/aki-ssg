@@ -15,18 +15,27 @@ const styles = stylex.create({
 	h3Strong: {
 		fontWeight: 700,
 	},
+	noTop: {
+		marginTop: 0,
+	},
+	noBottom: {
+		marginBottom: 0,
+	},
 });
 
 export function Strong(props: JSX.IntrinsicElements["strong"] & StyleProps) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, ...rest } = props;
+	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
+		props;
 	return (
 		<strong
 			{...stylex.props(
 				styles.strong,
 				parent === "h1" && styles.h1Strong,
 				parent === "h2" && styles.h2Strong,
-				(parent === "h3" || parent === "h4") && styles.h3Strong
+				(parent === "h3" || parent === "h4") && styles.h3Strong,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
 			)}
 			{...rest}
 		/>

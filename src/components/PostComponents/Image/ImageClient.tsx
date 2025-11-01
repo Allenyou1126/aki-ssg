@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { config } from "@/data/site-config";
@@ -88,13 +89,32 @@ const styles = stylex.create({
 	block: {
 		display: "block",
 	},
+	noTop: {
+		marginTop: 0,
+	},
+	noBottom: {
+		marginBottom: 0,
+	},
 });
 
 export default function ImageClient(
-	props: JSX.IntrinsicElements["img"] & { inline?: boolean }
+	props: JSX.IntrinsicElements["img"] & { inline?: boolean } & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { src, ref, decoding, width, height, alt, inline, ...rest } = props;
+	const {
+		src,
+		ref,
+		decoding,
+		width,
+		height,
+		alt,
+		inline,
+		parent,
+		first,
+		last,
+		noTop,
+		noBottom,
+		...rest
+	} = props;
 
 	// 图片属性
 	const w = typeof width! === "number" ? width! : parseInt(width!);
@@ -222,7 +242,12 @@ export default function ImageClient(
 		});
 	}, [transform, isZoomed]);
 	return (
-		<span {...stylex.props(styles.wrap)}>
+		<span
+			{...stylex.props(
+				styles.wrap,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
+			)}>
 			<img
 				{...rest}
 				style={{

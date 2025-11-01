@@ -445,6 +445,9 @@ const cardStyle = stylex.create({
 		fontWeight: 700,
 		lineHeight: "1.25rem",
 	},
+	link: {
+		color: themeTokens.primaryColor,
+	},
 	update: {
 		color: {
 			":hover": themeTokens.primaryColor,
@@ -457,6 +460,7 @@ const cardStyle = stylex.create({
 	},
 	avatar: {
 		aspectRatio: "1 / 1",
+		backgroundColor: themeTokens.primaryColor,
 		borderRadius: "9999px",
 		width: {
 			default: "2.75rem",
@@ -569,8 +573,7 @@ function WalineCommentCard({
 						comment.link.startsWith("https://")) ? (
 						<a
 							href={comment.link}
-							style={{ color: themeTokens.primaryColor }}
-							{...stylex.props(cardStyle.nick)}>
+							{...stylex.props(cardStyle.nick, cardStyle.link)}>
 							{comment.nick}
 						</a>
 					) : (

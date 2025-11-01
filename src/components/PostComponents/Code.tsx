@@ -46,32 +46,51 @@ const styles = stylex.create({
 		paddingInlineStart: "1.25em",
 		paddingTop: "0.9em",
 	},
+	noTop: {
+		marginTop: 0,
+	},
+	noBottom: {
+		marginBottom: 0,
+	},
 });
 
-export function Kbd(props: JSX.IntrinsicElements["kbd"]) {
+export function Kbd(props: JSX.IntrinsicElements["kbd"] & StyleProps) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, ...rest } = props;
+	const { className, style, parent, first, last, ...rest } = props;
 	return <kbd {...stylex.props(styles.inlineCode)} {...rest} />;
 }
 
 export function Code(props: JSX.IntrinsicElements["code"] & StyleProps) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, ...rest } = props;
+	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
+		props;
 	return (
 		<code
 			{...stylex.props(
-				parent === "pre" ? styles.inlineCode : styles.preCode,
+				parent === "pre" ? styles.preCode : styles.inlineCode,
 				parent === "h1" && styles.h1Code,
 				parent === "h2" && styles.h2Code,
-				parent === "h3" && styles.h3Code
+				parent === "h3" && styles.h3Code,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
 			)}
 			{...rest}
 		/>
 	);
 }
 
-export function Pre(props: HTMLAttributes<HTMLPreElement>) {
+export function Pre(props: HTMLAttributes<HTMLPreElement> & StyleProps) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, ...rest } = props;
-	return <pre {...stylex.props(styles.pre)} {...rest} />;
+	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
+		props;
+	return (
+		<pre
+			{...stylex.props(
+				styles.pre,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
+			)}
+			{...rest}
+		/>
+	);
 }

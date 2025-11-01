@@ -4,4 +4,6 @@ declare type StyleProps = {
 	first?: boolean;
 	last?: boolean;
 	parent?: string;
+	noTop?: boolean;
+	noBottom?: boolean;
 };

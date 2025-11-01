@@ -1,6 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
 import "@/styles/code-highlight.css";
-import "@/styles/content.css";
 
 const styles = stylex.create({
 	prose: {
@@ -30,10 +29,7 @@ export function MarkdownContent({
 	readonly comment?: boolean;
 }) {
 	return (
-		<div
-			data-prose
-			data-comment={comment}
-			{...stylex.props(styles.prose, comment && styles.comment)}>
+		<div data-prose {...stylex.props(styles.prose, comment && styles.comment)}>
 			{children}
 		</div>
 	);

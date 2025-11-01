@@ -26,13 +26,20 @@ const styles = stylex.create({
 			content: "close-quote",
 		},
 	},
+	noTop: {
+		marginTop: 0,
+	},
+	noBottom: {
+		marginBottom: 0,
+	},
 });
 
 export function Paragraph(
 	props: HTMLAttributes<HTMLParagraphElement> & StyleProps
 ) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, ...rest } = props;
+	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
+		props;
 	return (
 		<p
 			{...stylex.props(
@@ -41,7 +48,9 @@ export function Paragraph(
 				parent === "listItem" && first && styles.firstLiParagraph,
 				parent === "listItem" && last && styles.lastLiParagraph,
 				parent === "blockquote" && first && styles.firstQuoteParagraph,
-				parent === "blockquote" && last && styles.lastQuoteParagraph
+				parent === "blockquote" && last && styles.lastQuoteParagraph,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
 			)}
 			{...rest}
 		/>

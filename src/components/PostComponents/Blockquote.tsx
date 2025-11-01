@@ -13,12 +13,28 @@ const styles = stylex.create({
 		paddingInlineStart: "1em",
 		quotes: '"“" "”" "‘" "’"',
 	},
+	noTop: {
+		marginTop: 0,
+	},
+	noBottom: {
+		marginBottom: 0,
+	},
 });
 
 export function Blockquote(
 	props: BlockquoteHTMLAttributes<HTMLQuoteElement> & StyleProps
 ) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, ...rest } = props;
-	return <blockquote {...stylex.props(styles.quote)} {...rest} />;
+	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
+		props;
+	return (
+		<blockquote
+			{...stylex.props(
+				styles.quote,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
+			)}
+			{...rest}
+		/>
+	);
 }

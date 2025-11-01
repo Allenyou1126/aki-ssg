@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as stylex from "@stylexjs/stylex";
 import { themeTokens } from "@/styles/variables.stylex";
 import NextLink, { LinkProps } from "next/link";
 
-const style = stylex.create({
+const styles = stylex.create({
 	link: {
 		color: {
 			default: themeTokens.primaryColor,
@@ -16,20 +17,40 @@ const style = stylex.create({
 		transition:
 			"text-decoration-color 0.3s ease-in-out, color 0.3s ease-in-out",
 	},
+	noTop: {
+		marginTop: 0,
+	},
+	noBottom: {
+		marginBottom: 0,
+	},
 });
 
 export function Link(
 	props: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> &
 		LinkProps & {
 			children?: React.ReactNode | undefined;
-		} & React.RefAttributes<HTMLAnchorElement>
+		} & React.RefAttributes<HTMLAnchorElement> &
+		StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { children, style: _style, className: _className, ...rest } = props;
+	const {
+		children,
+		style,
+		className,
+		parent,
+		first,
+		last,
+		noTop,
+		noBottom,
+		...rest
+	} = props;
 	return (
 		<NextLink
 			referrerPolicy="no-referrer"
-			{...stylex.props(style.link)}
+			{...stylex.props(
+				styles.link,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
+			)}
 			{...rest}>
 			{children}
 		</NextLink>

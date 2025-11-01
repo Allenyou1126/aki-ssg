@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as stylex from "@stylexjs/stylex";
 
 const styles = stylex.create({
@@ -35,13 +36,28 @@ const styles = stylex.create({
 		marginTop: "0.5em",
 		paddingInlineStart: "0.375em",
 	},
+	noTop: {
+		marginTop: 0,
+	},
+	noBottom: {
+		marginBottom: 0,
+	},
 });
 
 export function OList(
 	props: React.OlHTMLAttributes<HTMLOListElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, type, parent, first, last, ...rest } = props;
+	const {
+		className,
+		style,
+		type,
+		parent,
+		first,
+		last,
+		noTop,
+		noBottom,
+		...rest
+	} = props;
 	return (
 		<ol
 			{...stylex.props(
@@ -51,7 +67,9 @@ export function OList(
 				type === "I" && styles.olI,
 				type === "a" && styles.ola,
 				type === "i" && styles.oli,
-				parent === "list" && styles.subList
+				parent === "list" && styles.subList,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
 			)}
 			{...rest}
 		/>
@@ -61,22 +79,35 @@ export function OList(
 export function UList(
 	props: React.OlHTMLAttributes<HTMLUListElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, ...rest } = props;
+	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
+		props;
 	return (
 		<ul
 			{...stylex.props(
 				styles.list,
 				styles.ul,
-				parent === "list" && styles.subList
+				parent === "list" && styles.subList,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
 			)}
 			{...rest}
 		/>
 	);
 }
 
-export function ListItem(props: React.LiHTMLAttributes<HTMLLIElement>) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, ...rest } = props;
-	return <li {...stylex.props(styles.li)} {...rest} />;
+export function ListItem(
+	props: React.LiHTMLAttributes<HTMLLIElement> & StyleProps
+) {
+	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
+		props;
+	return (
+		<li
+			{...stylex.props(
+				styles.li,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
+			)}
+			{...rest}
+		/>
+	);
 }

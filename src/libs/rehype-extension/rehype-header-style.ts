@@ -14,5 +14,8 @@ export const rehypeHeaderStyle = () => (tree: Root) => {
 	selectAll("h4 strong", tree).forEach((node) => {
 		node.properties.parent = "h4";
 	});
+	selectAll("hr + *, h2 + *, h3 + *, h4 + *", tree).forEach((node) => {
+		node.properties.noTop = true;
+	});
 	return tree;
 };
