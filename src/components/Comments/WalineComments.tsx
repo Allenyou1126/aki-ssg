@@ -15,7 +15,7 @@ import { usePathname } from "next/navigation";
 import { addComment, getComment } from "@waline/api";
 import type { WalineRootComment, WalineComment } from "@waline/api";
 import getAvatar from "@/utils/getAvatar";
-import { CommentsLoading } from "../CommentsLoading";
+import { CommentsLoading } from "@/components/Comments/CommentsLoading";
 import useSWR from "swr";
 import { delay } from "@/utils/delay";
 import { scrollIntoViewById } from "@/utils/scrollIntoView";

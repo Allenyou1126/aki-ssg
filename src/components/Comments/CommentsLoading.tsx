@@ -1,4 +1,4 @@
-import { Loading } from "../Loading/Loading";
+import { Loading } from "@/components/Loading";
 import * as stylex from "@stylexjs/stylex";
 
 const style = stylex.create({

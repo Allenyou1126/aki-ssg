@@ -1,5 +1,5 @@
 import { config } from "@/data/site-config";
-import Image from "../../PostComponents/Image/Image";
+import Image from "@/components/PostComponents/Image/Image";
 import * as stylex from "@stylexjs/stylex";
 
 const style = stylex.create({

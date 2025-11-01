@@ -1,7 +1,7 @@
 import { Comments } from "@/components/Comments/Comments";
-import Copyright from "@/components/Copyright/Copyright";
-import OutdateTip from "@/components/OutdateTip/OutdateTip";
-import Toc from "@/components/Toc/Toc";
+import Copyright from "@/components/Copyright";
+import OutdateTip from "@/components/OutdateTip";
+import Toc from "@/components/Toc";
 import { config } from "@/data/site-config";
 import { initCMS } from "@/libs/content-management";
 import type { Metadata } from "next";

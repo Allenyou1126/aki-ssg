@@ -1,7 +1,7 @@
 import BilibiliVideo from "@/components/ExtendedMarkdown/BilibiliVideo/BilibiliVideo";
-import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks/FriendLinks";
-import Meme from "@/components/ExtendedMarkdown/Meme/Meme";
-import * as Chat from "@/components/ExtendedMarkdown/Chat/Chat";
+import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks";
+import Meme from "@/components/ExtendedMarkdown/Meme";
+import * as Chat from "@/components/ExtendedMarkdown/Chat";
 
 import { Components } from "hast-util-to-jsx-runtime";
 

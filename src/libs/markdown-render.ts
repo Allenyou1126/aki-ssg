@@ -20,19 +20,19 @@ import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 
-import { remarkBilibili } from "./markdown-extension/remark-bilibili";
-import { remarkNeteaseMusic } from "./markdown-extension/remark-netease-music";
-import { remarkFriendLinks } from "./markdown-extension/remark-friend-links";
-import { remarkChat } from "./markdown-extension/remark-chat";
-import { remarkMeme } from "./markdown-extension/remark-meme";
-import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
-import { rehypeTypographyFirstLastChild } from "./rehype-extension/rehype-typography-first-last-child";
-import { rehypeRemoveBreakline } from "./rehype-extension/rehype-remove-breakline";
-import { rehypeListStyle } from "./rehype-extension/rehype-list-style";
-import { rehypeTableStyle } from "./rehype-extension/rehype-table-style";
-import { rehypeCodeStyle } from "./rehype-extension/rehype-code-style";
-import { rehypeHeaderStyle } from "./rehype-extension/rehype-header-style";
-import { rehypeBlockquoteStyle } from "./rehype-extension/rehype-blockquote-style";
+import { remarkBilibili } from "@/libs/markdown-extension/remark-bilibili";
+import { remarkNeteaseMusic } from "@/libs/markdown-extension/remark-netease-music";
+import { remarkFriendLinks } from "@/libs/markdown-extension/remark-friend-links";
+import { remarkChat } from "@/libs/markdown-extension/remark-chat";
+import { remarkMeme } from "@/libs/markdown-extension/remark-meme";
+import { rehypeMathjaxPlus } from "@/libs/rehype-extension/rehype-mathjax-plus";
+import { rehypeTypographyFirstLastChild } from "@/libs/rehype-extension/rehype-typography-first-last-child";
+import { rehypeRemoveBreakline } from "@/libs/rehype-extension/rehype-remove-breakline";
+import { rehypeListStyle } from "@/libs/rehype-extension/rehype-list-style";
+import { rehypeTableStyle } from "@/libs/rehype-extension/rehype-table-style";
+import { rehypeCodeStyle } from "@/libs/rehype-extension/rehype-code-style";
+import { rehypeHeaderStyle } from "@/libs/rehype-extension/rehype-header-style";
+import { rehypeBlockquoteStyle } from "@/libs/rehype-extension/rehype-blockquote-style";
 
 export const markdownPipeline = unified()
 	.use(remarkParse)

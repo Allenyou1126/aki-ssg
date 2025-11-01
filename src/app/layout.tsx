@@ -3,12 +3,12 @@ import "@/styles/fonts/chillroundf.css";
 import "@/styles/globals.css";
 import "@/styles/normalize.css";
 import { config } from "@/data/site-config";
-import Navigation from "@/components/Navigation/Navigation";
+import Navigation from "@/components/Navigation";
 import CommonLogic from "@/components/LogicComponents/CommonLogic";
 import { initCMS } from "@/libs/content-management";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
-import GoToTop from "@/components/GoToTop/GoToTop";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import GoToTop from "@/components/GoToTop";
 import * as stylex from "@stylexjs/stylex";
 import { themeTokens } from "@/styles/variables.stylex";
 

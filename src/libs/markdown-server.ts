@@ -1,13 +1,13 @@
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { VFile } from "vfile";
-import { html_components } from "./markdown-components";
-import { extended_components } from "./markdown-extension/extended-markdown-components";
+import { html_components } from "@/libs/markdown-components";
+import { extended_components } from "@/libs/markdown-extension/extended-markdown-components";
 import {
 	markdownPipeline,
 	generateForRss,
 	htmlPipeline,
-} from "./markdown-render";
+} from "@/libs/markdown-render";
 import type { Root as HashRoot } from "hast";
 import type { Root as MdashRoot } from "mdast";
 import type { Result } from "mdast-util-toc";

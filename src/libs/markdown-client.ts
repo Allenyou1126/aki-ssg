@@ -2,8 +2,8 @@ import type { Root as HashRoot } from "hast";
 
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { html_components } from "./markdown-components";
-import { htmlPipeline } from "./markdown-render";
+import { html_components } from "@/libs/markdown-components";
+import { htmlPipeline } from "@/libs/markdown-render";
 import { fromHtml } from "hast-util-from-html";
 
 export function fromHtmlToNodes(src: string): React.ReactNode {
