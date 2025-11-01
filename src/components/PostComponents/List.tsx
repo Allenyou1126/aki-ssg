@@ -30,11 +30,13 @@ const styles = stylex.create({
 		listStyleType: "disc",
 	},
 	li: {
-		color: "var(--prose-cnt)",
 		fontWeight: 400,
 		marginBottom: "0.5em",
 		marginTop: "0.5em",
 		paddingInlineStart: "0.375em",
+		"::marker": {
+			color: "var(--prose-cnt)",
+		},
 	},
 	noTop: {
 		marginTop: 0,
