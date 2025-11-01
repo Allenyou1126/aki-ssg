@@ -1,43 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { visit } from "unist-util-visit";
 import type { Root } from "hast";
+import { selectAll } from "hast-util-select";
 
 export const rehypeListStyle = () => (tree: Root) => {
-	visit(tree, "element", (node: any) => {
-		if (node.tagName !== "ul" && node.tagName !== "ol") {
-			return;
-		}
-		if (!node.children) {
-			return;
-		}
-		const len = node.children.length;
-		for (let i = 0; i < len; i++) {}
-		node.children?.forEach((child: any) => {
-			if (child.type !== "element") {
-				return;
-			}
-			child.properties.parent = "list";
-			if (child.tagName !== "li") {
-				return;
-			}
-			if (!child.children) {
-				return;
-			}
-			child.children.forEach((p: any) => {
-				if (p.type !== "element") {
-					return;
-				}
-				p.properties.parent = "listItem";
-			});
-			const first = child.children.at(0);
-			const last = child.children.at(-1);
-			if (first && first.type === "element") {
-				first.properties.first = true;
-			}
-			if (last && last.type === "element") {
-				last.properties.last = true;
-			}
-		});
+	selectAll("ul ol, ul ul, ol ul, ol ol", tree).forEach((node) => {
+		node.properties.parent = "list";
 	});
+	selectAll("ul > li > p, ol > li > p", tree).forEach((node) => {
+		node.properties.parent = "listItem";
+	});
+	selectAll("ul > li > p:first-child, ol > li > p:first-child", tree).forEach(
+		(node) => {
+			node.properties.first = true;
+		}
+	);
+	selectAll("ul > li > p:last-child, ol > li > p:last-child", tree).forEach(
+		(node) => {
+			node.properties.last = true;
+		}
+	);
 	return tree;
 };

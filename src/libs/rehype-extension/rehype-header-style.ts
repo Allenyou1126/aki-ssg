@@ -1,26 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { visit } from "unist-util-visit";
 import type { Root } from "hast";
+import { selectAll } from "hast-util-select";
 
 export const rehypeHeaderStyle = () => (tree: Root) => {
-	visit(tree, "element", (node: any) => {
-		if (!node.children) {
-			return;
-		}
-		if (
-			node.tagName !== "h1" &&
-			node.tagName !== "h2" &&
-			node.tagName !== "h3" &&
-			node.tagName !== "h4"
-		) {
-			return;
-		}
-		node.children?.forEach((child: any) => {
-			if (child.type !== "element") {
-				return;
-			}
-			child.properties.parent = node.tagName;
-		});
+	selectAll("h1 strong", tree).forEach((node) => {
+		node.properties.parent = "h1";
+	});
+	selectAll("h2 strong", tree).forEach((node) => {
+		node.properties.parent = "h2";
+	});
+	selectAll("h3 strong", tree).forEach((node) => {
+		node.properties.parent = "h3";
+	});
+	selectAll("h4 strong", tree).forEach((node) => {
+		node.properties.parent = "h4";
 	});
 	return tree;
 };

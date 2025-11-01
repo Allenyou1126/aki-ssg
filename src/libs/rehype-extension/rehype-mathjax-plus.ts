@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { visit } from "unist-util-visit";
 import type { Root } from "hast";
 import * as stylex from "@stylexjs/stylex";
+import { selectAll } from "hast-util-select";
 
 const style = stylex.create({
 	math: {
@@ -11,15 +10,8 @@ const style = stylex.create({
 });
 
 export const rehypeMathjaxPlus = () => (tree: Root) => {
-	visit(tree, "element", (node: any) => {
-		if (node.tagName !== "mjx-container") {
-			return;
-		}
-		node.children?.forEach((child: any) => {
-			if (child.type === "element" && child.tagName === "svg") {
-				child.properties.className = stylex.props(style.math).className;
-			}
-		});
+	selectAll("mjx-container > svg", tree).forEach((node) => {
+		node.properties.className = stylex.props(style.math).className;
 	});
 	return tree;
 };

@@ -1,37 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { visit } from "unist-util-visit";
 import type { Root } from "hast";
+import { selectAll } from "hast-util-select";
 
 export const rehypeTableStyle = () => (tree: Root) => {
-	visit(tree, "element", (node: any) => {
-		if (!node.children) {
-			return;
-		}
-		if (node.tagName === "tbd") {
-			node.tagName = "tbody";
-		}
-		if (
-			node.tagName !== "thead" &&
-			node.tagName !== "tbody" &&
-			node.tagName !== "tfoot" &&
-			node.tagName !== "tbd"
-		) {
-			return;
-		}
-		node.children?.forEach((child: any) => {
-			if (child.type !== "element") {
-				return;
-			}
-			child.properties.parent = node.tagName;
-		});
-		const first = node.children.at(0);
-		const last = node.children.at(-1);
-		if (first && first.type === "element") {
-			first.properties.first = true;
-		}
-		if (last && last.type === "element") {
-			last.properties.last = true;
-		}
+	selectAll("tbody tr", tree).forEach((node) => {
+		node.properties.parent = "tbody";
 	});
+	selectAll("tfoot tr", tree).forEach((node) => {
+		node.properties.parent = "tfoot";
+	});
+	selectAll("thead th:first-child, tbody td:first-child", tree).forEach(
+		(node) => {
+			node.properties.first = true;
+		}
+	);
+	selectAll("thead th:last-child, tbody td:last-child", tree).forEach(
+		(node) => {
+			node.properties.last = true;
+		}
+	);
 	return tree;
 };

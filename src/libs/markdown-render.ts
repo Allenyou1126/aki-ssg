@@ -32,6 +32,7 @@ import { rehypeListStyle } from "./rehype-extension/rehype-list-style";
 import { rehypeTableStyle } from "./rehype-extension/rehype-table-style";
 import { rehypeCodeStyle } from "./rehype-extension/rehype-code-style";
 import { rehypeHeaderStyle } from "./rehype-extension/rehype-header-style";
+import { rehypeBlockquoteStyle } from "./rehype-extension/rehype-blockquote-style";
 
 export const markdownPipeline = unified()
 	.use(remarkParse)
@@ -80,6 +81,7 @@ export const htmlPipeline = unified()
 	.use(rehypeListStyle)
 	.use(rehypeCodeStyle)
 	.use(rehypeHeaderStyle)
+	.use(rehypeBlockquoteStyle)
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],
 	});
