@@ -432,6 +432,11 @@ const cardStyle = stylex.create({
 		position: "relative",
 		width: "100%",
 	},
+	metaInner: {
+		alignItems: "center",
+		display: "flex",
+		justifyContent: "space-between",
+	},
 	text: {
 		display: "inline-block",
 		fontSize: "0.75rem",
@@ -452,11 +457,14 @@ const cardStyle = stylex.create({
 		color: {
 			":hover": themeTokens.primaryColor,
 		},
+		display: "inline-block",
+		height: "1em",
+		marginLeft: "auto",
+		marginRight: "0.5rem",
 		opacity: 0.8,
-		position: "absolute",
-		right: "0.5rem",
-		top: 0,
 		transition: "color 0.5s ease",
+		verticalAlign: "text-bottom",
+		width: "1em",
 	},
 	avatar: {
 		aspectRatio: "1 / 1",
@@ -568,40 +576,43 @@ function WalineCommentCard({
 			</div>
 			<div {...stylex.props(cardStyle.container)}>
 				<div {...stylex.props(cardStyle.meta)}>
-					{comment.link !== null &&
-					(comment.link.startsWith("http://") ||
-						comment.link.startsWith("https://")) ? (
-						<a
-							href={comment.link}
-							{...stylex.props(cardStyle.nick, cardStyle.link)}>
-							{comment.nick}
-						</a>
-					) : (
-						<p {...stylex.props(cardStyle.nick)}>{comment.nick}</p>
-					)}
-					{comment.avatar === getAvatar(config.author.email) && (
-						<span {...stylex.props(cardStyle.tag, cardStyle.ownerTag)}>
-							博主
-						</span>
-					)}
-					<span {...stylex.props(cardStyle.text)}>
-						{new Date(comment.time).toLocaleDateString()}
-					</span>
-					<span {...stylex.props(cardStyle.text)}>#{comment.objectId}</span>
-					{parentComment && (
-						<span {...stylex.props(cardStyle.text)}>
-							<Reply /> {"#"}
-							{parentComment}
-						</span>
-					)}
-					<br />
+					<div {...stylex.props(cardStyle.metaInner)}>
+						<div>
+							{comment.link !== null &&
+							(comment.link.startsWith("http://") ||
+								comment.link.startsWith("https://")) ? (
+								<a
+									href={comment.link}
+									{...stylex.props(cardStyle.nick, cardStyle.link)}>
+									{comment.nick}
+								</a>
+							) : (
+								<p {...stylex.props(cardStyle.nick)}>{comment.nick}</p>
+							)}
+							{comment.avatar === getAvatar(config.author.email) && (
+								<span {...stylex.props(cardStyle.tag, cardStyle.ownerTag)}>
+									博主
+								</span>
+							)}
+							<span {...stylex.props(cardStyle.text)}>
+								{new Date(comment.time).toLocaleDateString()}
+							</span>
+							<span {...stylex.props(cardStyle.text)}>#{comment.objectId}</span>
+							{parentComment && (
+								<span {...stylex.props(cardStyle.text)}>
+									<Reply /> {"#"}
+									{parentComment}
+								</span>
+							)}
+						</div>
+						<UpdateButton comment={comment} parentComment={parentComment} />
+					</div>
 					<span {...stylex.props(cardStyle.tag, cardStyle.metaTag)}>
 						{comment.browser}
 					</span>
 					<span {...stylex.props(cardStyle.tag, cardStyle.metaTag)}>
 						{comment.os}
 					</span>
-					<UpdateButton comment={comment} parentComment={parentComment} />
 				</div>
 				<MarkdownContent comment>
 					{fromHtmlToNodes(comment.comment)}
