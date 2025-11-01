@@ -30,8 +30,7 @@ export const remarkBilibili: Plugin<[], Root> =
 				file.fail("Container directives for `bilibili` not supported", node);
 			}
 			if (!bvid) {
-				file.fail("Missing video bvid", node)(data as any).hName =
-					"div" as string;
+				file.fail("Missing video bvid", node);
 			}
 			data.hName = "bilibili";
 			data.hProperties = {

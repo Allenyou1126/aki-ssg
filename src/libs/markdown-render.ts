@@ -21,7 +21,6 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 
 import { remarkBilibili } from "@/libs/markdown-extension/remark-bilibili";
-import { remarkNeteaseMusic } from "@/libs/markdown-extension/remark-netease-music";
 import { remarkFriendLinks } from "@/libs/markdown-extension/remark-friend-links";
 import { remarkChat } from "@/libs/markdown-extension/remark-chat";
 import { remarkMeme } from "@/libs/markdown-extension/remark-meme";
@@ -43,7 +42,6 @@ export const markdownPipeline = unified()
 	.use(remarkDirectiveRehype)
 	.use(remarkBilibili)
 	.use(remarkMeme)
-	.use(remarkNeteaseMusic)
 	.use(remarkChat)
 	.use(remarkFriendLinks)
 	.use(remarkRehype, { allowDangerousHtml: true });
@@ -89,7 +87,8 @@ export const htmlPipeline = unified()
 function filterNodes(node: HastNode): HastNode | undefined {
 	switch (node.type) {
 		case "element":
-			if ((node as HastElement).tagName === "mjx-container") {
+			const ele = node as HastElement;
+			if (ele.tagName === "mjx-container") {
 				return {
 					type: "element",
 					tagName: "span",
@@ -97,10 +96,10 @@ function filterNodes(node: HastNode): HastNode | undefined {
 					children: [{ type: "text", value: "[MathJax Expression]" }],
 				} as HastElement as HastNode;
 			}
-			if ((node as HastElement).tagName === "style") {
+			if (ele.tagName === "style") {
 				return undefined;
 			}
-			(node as HastElement).children = (node as HastElement).children
+			ele.children = ele.children
 				.map(
 					(ch) => filterNodes(ch as HastNode) as HastElementContent | undefined
 				)
