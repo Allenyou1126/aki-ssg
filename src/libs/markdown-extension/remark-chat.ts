@@ -32,12 +32,9 @@ export const remarkChat: Plugin<[], Root> = () => (tree: Root, file: any) => {
 			if (node.type === "containerDirective") {
 				file.fail("Container directives for `chat_item` not supported", node);
 			}
-			if (
-				(node as LeafDirective).children.length === 0 ||
-				(node as LeafDirective).children[0].type !== "text"
-			) {
-				file.fail("Missing chat content", node)(data as any).hName =
-					"div" as string;
+			const leaf = node as LeafDirective;
+			if (leaf.children.length === 0 || leaf.children[0].type !== "text") {
+				file.fail("Missing chat content", node);
 			}
 			const name = attributes.name;
 			const avatar = attributes.avatar;
@@ -48,7 +45,7 @@ export const remarkChat: Plugin<[], Root> = () => (tree: Root, file: any) => {
 				sender_avatar: avatar,
 				align_right: self,
 			};
-			data.hChildren = [(node as LeafDirective).children[0] as Text];
+			data.hChildren = [leaf.children[0] as Text];
 		} else if (node.name === "chat_sender") {
 			const data = node.data || (node.data = {});
 			const attributes = node.attributes || {};
@@ -60,8 +57,7 @@ export const remarkChat: Plugin<[], Root> = () => (tree: Root, file: any) => {
 			}
 			const name = attributes.name;
 			if (!name) {
-				file.fail("Missing sender name", node)(data as any).hName =
-					"div" as string;
+				file.fail("Missing sender name", node);
 			}
 			const avatar = attributes.avatar;
 			const self = attributes.self !== undefined;

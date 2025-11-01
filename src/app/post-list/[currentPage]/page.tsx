@@ -2,8 +2,9 @@ import { config } from "@/data/site-config";
 import { initCMS } from "@/libs/content-management";
 import type { Metadata } from "next";
 import Link from "next/link";
-import pageSwitcher from "@/styles/utils/page-switcher.module.css";
-import postlist from "./style.module.css";
+import * as stylex from "@stylexjs/stylex";
+import { PageSwitcher } from "@/components/PageSwitcher";
+import { themeTokens } from "@/styles/variables.stylex";
 
 export async function generateStaticParams() {
 	const cms = await initCMS();
@@ -31,19 +32,45 @@ export async function generateMetadata({
 	};
 }
 
+const style = stylex.create({
+	item: {
+		marginBottom: "2rem",
+	},
+	link: {
+		color: themeTokens.primaryColor,
+		fontSize: "1.5rem",
+		fontWeight: 700,
+		lineHeight: "2rem",
+		marginBlock: "1rem",
+		marginInline: "0",
+		opacity: {
+			":hover": 0.8,
+		},
+	},
+	metadata: {
+		marginBlock: "1rem",
+		marginInline: "0",
+		opacity: 0.6,
+	},
+	description: {
+		marginBlock: "1rem",
+		marginInline: "0",
+	},
+});
+
 function PostListItem({ post }: { post: Post }) {
 	return (
-		<div className={postlist.item}>
-			<Link className={postlist.link} href={`/post/${post.id}`}>
+		<div {...stylex.props(style.item)}>
+			<Link {...stylex.props(style.link)} href={`/post/${post.id}`}>
 				{post.title}
 			</Link>
-			<p className={postlist.metadata}>
+			<p {...stylex.props(style.metadata)}>
 				{post.created_at.toLocaleDateString()}
 				{post.created_at.valueOf() - post.modified_at.valueOf() == 0
 					? ""
 					: ` (最后更新于 ${post.modified_at.toLocaleDateString()})`}
 			</p>
-			<p className={postlist.description}>{post.description}</p>
+			<p {...stylex.props(style.description)}>{post.description}</p>
 		</div>
 	);
 }
@@ -65,33 +92,16 @@ export default async function PostListPage({
 	return (
 		<>
 			{postList}
-			<div
-				style={{
-					display: total_page <= 1 ? "none" : undefined,
+			<PageSwitcher
+				total={total_page}
+				current={current_page}
+				navigation={{
+					type: "link",
+					getLink: (target: number) => {
+						return `/post-list/${target}`;
+					},
 				}}
-				className={pageSwitcher.wrap}>
-				<p className={pageSwitcher.page}>
-					第{current_page}页，共{total_page}页
-				</p>
-				<Link
-					style={{
-						left: 0,
-						display: current_page <= 1 ? "none" : undefined,
-					}}
-					className={pageSwitcher.button}
-					href={`/post-list/${parseInt(current_page.toString()) - 1}`}>
-					上一页
-				</Link>
-				<Link
-					style={{
-						right: 0,
-						display: current_page >= total_page ? "none" : undefined,
-					}}
-					className={pageSwitcher.button}
-					href={`/post-list/${parseInt(current_page.toString()) + 1}`}>
-					下一页
-				</Link>
-			</div>
+			/>
 		</>
 	);
 }

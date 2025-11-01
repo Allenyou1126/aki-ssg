@@ -29,11 +29,10 @@ export const remarkMeme: Plugin<[], Root> = () => (tree: Root, file: any) => {
 			file.fail("Container directives for `meme` not supported", node);
 		}
 		if (!group) {
-			file.fail("Missing Meme group.", node)(data as any).hName =
-				"div" as string;
+			file.fail("Missing Meme group.", node);
 		}
 		if (!mid) {
-			file.fail("Missing Meme mid.", node)(data as any).hName = "div" as string;
+			file.fail("Missing Meme mid.", node);
 		}
 		data.hName = "meme";
 		data.hProperties = {

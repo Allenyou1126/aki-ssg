@@ -1,5 +1,15 @@
 "use client";
-import style from "./style.module.css";
+import * as stylex from "@stylexjs/stylex";
+
+const style = stylex.create({
+	video: {
+		borderWidth: 0,
+		height: "500px",
+		maxWidth: "100%",
+		overflow: "hidden",
+		width: "100%",
+	},
+});
 
 export default function BilibiliVideoClient({
 	bvid,
@@ -16,7 +26,7 @@ export default function BilibiliVideoClient({
 				cid == undefined ? "" : `&cid=${cid}`
 			}&page=1&high_quality=1&danmaku=0`}
 			allowFullScreen={true}
-			className={style.video}
+			{...stylex.props(style.video)}
 			sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
 	);
 }

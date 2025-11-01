@@ -3,8 +3,8 @@ import { config } from "@/data/site-config";
 import { initCMS } from "@/libs/content-management";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import "@/styles/code-highlight.css";
-import style from "@/styles/content.module.css";
+import * as stylex from "@stylexjs/stylex";
+import { MarkdownContent } from "@/components/MarkdownContent";
 
 export async function generateStaticParams() {
 	const cms = await initCMS();
@@ -30,6 +30,16 @@ export async function generateMetadata({
 	};
 }
 
+const styles = stylex.create({
+	title: {
+		fontSize: "1.875rem",
+		fontWeight: 700,
+		lineHeight: "2.25rem",
+		marginBlock: "0.5rem",
+		marginInline: "0",
+	},
+});
+
 export default async function CustomPage({
 	params,
 }: {
@@ -42,8 +52,8 @@ export default async function CustomPage({
 	}
 	return (
 		<>
-			<p className={style.title}>{page.title}</p>
-			<div className={style.prose}>{page.markdown_content.toReactNode()}</div>
+			<p {...stylex.props(styles.title)}>{page.title}</p>
+			<MarkdownContent>{page.markdown_content.toReactNode()}</MarkdownContent>
 			{page.enable_comment && <Comments />}
 		</>
 	);

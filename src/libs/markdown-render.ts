@@ -5,14 +5,7 @@ import type {
 	Node as HastNode,
 	RootContent as HastRootContent,
 } from "hast";
-import { toHtml } from "hast-util-to-html";
-import { toJsxRuntime } from "hast-util-to-jsx-runtime";
-import type { Root as MdashRoot } from "mdast";
-import { toc } from "mdast-util-toc";
-import type { Result } from "mdast-util-toc";
-import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { unified } from "unified";
-import { VFile } from "vfile";
 
 import rehypeMathjax from "rehype-mathjax";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
@@ -27,28 +20,20 @@ import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 
-import { remarkBilibili } from "./markdown-extension/remark-bilibili";
-import { remarkNeteaseMusic } from "./markdown-extension/remark-netease-music";
-import { remarkFriendLinks } from "./markdown-extension/remark-friend-links";
-import { remarkChat } from "./markdown-extension/remark-chat";
-import { remarkMeme } from "./markdown-extension/remark-meme";
-import BilibiliVideo from "@/components/ExtendedMarkdown/BilibiliVideo/BilibiliVideo";
-import FriendLinks from "@/components/ExtendedMarkdown/FriendLinks/FriendLinks";
-import Image from "@/components/PostComponents/Image/Image";
-import * as Chat from "@/components/ExtendedMarkdown/Chat/Chat";
-import Meme from "@/components/ExtendedMarkdown/Meme/Meme";
-import { rehypeMathjaxPlus } from "./rehype-extension/rehype-mathjax-plus";
+import { remarkBilibili } from "@/libs/markdown-extension/remark-bilibili";
+import { remarkFriendLinks } from "@/libs/markdown-extension/remark-friend-links";
+import { remarkChat } from "@/libs/markdown-extension/remark-chat";
+import { remarkMeme } from "@/libs/markdown-extension/remark-meme";
+import { rehypeMathjaxPlus } from "@/libs/rehype-extension/rehype-mathjax-plus";
+import { rehypeTypographyFirstLastChild } from "@/libs/rehype-extension/rehype-typography-first-last-child";
+import { rehypeRemoveBreakline } from "@/libs/rehype-extension/rehype-remove-breakline";
+import { rehypeListStyle } from "@/libs/rehype-extension/rehype-list-style";
+import { rehypeTableStyle } from "@/libs/rehype-extension/rehype-table-style";
+import { rehypeCodeStyle } from "@/libs/rehype-extension/rehype-code-style";
+import { rehypeHeaderStyle } from "@/libs/rehype-extension/rehype-header-style";
+import { rehypeBlockquoteStyle } from "@/libs/rehype-extension/rehype-blockquote-style";
 
-const extended_components = {
-	bilibili: BilibiliVideo,
-	"friend-links": FriendLinks,
-	chat: Chat.Container,
-	"chat-item": Chat.Item,
-	"chat-sender": Chat.SenderItem,
-	meme: Meme,
-};
-
-const pipeline = unified()
+export const markdownPipeline = unified()
 	.use(remarkParse)
 	.use(remarkGithubAlerts)
 	.use(remarkGfm, { singleTilde: false })
@@ -57,16 +42,24 @@ const pipeline = unified()
 	.use(remarkDirectiveRehype)
 	.use(remarkBilibili)
 	.use(remarkMeme)
-	.use(remarkNeteaseMusic)
 	.use(remarkChat)
 	.use(remarkFriendLinks)
-	.use(remarkRehype, { allowDangerousHtml: true })
+	.use(remarkRehype, { allowDangerousHtml: true });
+
+export const htmlPipeline = unified()
 	.use(rehypeSlug, {})
 	.use(rehypeHighlightCodeLines, {
 		showLineNumbers: true,
 	})
 	.use(rehypeSanitize, {
-		tagNames: defaultSchema.tagNames?.concat(Object.keys(extended_components)),
+		tagNames: defaultSchema.tagNames?.concat([
+			"bilibili",
+			"friend-links",
+			"chat",
+			"chat-item",
+			"chat-sender",
+			"meme",
+		]),
 		attributes: {
 			"*": ["className", "id"],
 			chat: [],
@@ -78,8 +71,15 @@ const pipeline = unified()
 			meme: ["group", "mid"],
 		},
 	})
+	.use(rehypeTypographyFirstLastChild)
 	.use(rehypeMathjax, {})
 	.use(rehypeMathjaxPlus)
+	.use(rehypeRemoveBreakline)
+	.use(rehypeTableStyle)
+	.use(rehypeListStyle)
+	.use(rehypeCodeStyle)
+	.use(rehypeHeaderStyle)
+	.use(rehypeBlockquoteStyle)
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],
 	});
@@ -87,7 +87,8 @@ const pipeline = unified()
 function filterNodes(node: HastNode): HastNode | undefined {
 	switch (node.type) {
 		case "element":
-			if ((node as HastElement).tagName === "mjx-container") {
+			const ele = node as HastElement;
+			if (ele.tagName === "mjx-container") {
 				return {
 					type: "element",
 					tagName: "span",
@@ -95,10 +96,10 @@ function filterNodes(node: HastNode): HastNode | undefined {
 					children: [{ type: "text", value: "[MathJax Expression]" }],
 				} as HastElement as HastNode;
 			}
-			if ((node as HastElement).tagName === "style") {
+			if (ele.tagName === "style") {
 				return undefined;
 			}
-			(node as HastElement).children = (node as HastElement).children
+			ele.children = ele.children
 				.map(
 					(ch) => filterNodes(ch as HastNode) as HastElementContent | undefined
 				)
@@ -109,48 +110,9 @@ function filterNodes(node: HastNode): HastNode | undefined {
 	}
 }
 
-function generateForRss(tree: HashRoot): HashRoot {
+export function generateForRss(tree: HashRoot): HashRoot {
 	tree.children = tree.children
 		.map((ch) => filterNodes(ch as HastNode) as HastRootContent | undefined)
 		.filter((v) => v !== undefined);
 	return tree;
-}
-
-export class MarkdownContent implements RenderableContent {
-	hastTree: HashRoot;
-	mdastTree: MdashRoot;
-	constructor(original: string) {
-		const file = new VFile(original);
-		this.mdastTree = pipeline.parse(original);
-		this.hastTree = pipeline.runSync(this.mdastTree, file);
-	}
-	toReactNode(): React.ReactNode {
-		return (
-			this.hastTree &&
-			toJsxRuntime(this.hastTree, {
-				Fragment,
-				components: {
-					img: Image,
-					...extended_components,
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				} as any,
-				ignoreInvalidStyle: true,
-				jsx,
-				jsxs,
-				// passNode: true,
-			})
-		);
-	}
-	toToc(): Result {
-		return (
-			this.mdastTree &&
-			toc(this.mdastTree, {
-				tight: true,
-				ordered: true,
-			})
-		);
-	}
-	toRssFeed(): string {
-		return this.hastTree && toHtml(generateForRss(this.hastTree), {});
-	}
 }
