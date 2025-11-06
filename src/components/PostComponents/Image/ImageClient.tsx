@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/refs */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 "use client";
@@ -273,9 +274,7 @@ export default function ImageClient(
 						isZoomed ? styles.hidden : inline ? styles.inline : styles.block
 					)}
 					style={{
-						// eslint-disable-next-line react-hooks/refs
 						width: rawImageElRef.current?.getBoundingClientRect()?.width,
-						// eslint-disable-next-line react-hooks/refs
 						height: rawImageElRef.current?.getBoundingClientRect()?.height,
 					}}
 				/>
@@ -294,14 +293,10 @@ export default function ImageClient(
 								{...rest}
 								style={{
 									aspectRatio: ratio,
-									// eslint-disable-next-line react-hooks/refs
 									left: rawImageElRef.current?.getBoundingClientRect()?.left,
-									// eslint-disable-next-line react-hooks/refs
 									top: rawImageElRef.current?.getBoundingClientRect()?.top,
-									// eslint-disable-next-line react-hooks/refs
 									width: rawImageElRef.current?.getBoundingClientRect()?.width,
 									height:
-										// eslint-disable-next-line react-hooks/refs
 										rawImageElRef.current?.getBoundingClientRect()?.height,
 									transform: "none",
 									opacity: 1,
