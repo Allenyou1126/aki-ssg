@@ -1,7 +1,6 @@
 @stylex;
 
 @layer normalize;
-@layer prose;
 @layer code;
 
 :root {

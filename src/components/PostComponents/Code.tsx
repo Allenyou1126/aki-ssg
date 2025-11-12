@@ -55,19 +55,11 @@ const styles = stylex.create({
 });
 
 export function Kbd(props: JSX.IntrinsicElements["kbd"] & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, ...rest } = props;
-	return <kbd {...stylex.props(styles.inlineCode)} {...rest} />;
-}
-
-export function Code(props: JSX.IntrinsicElements["code"] & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { parent, noTop, noBottom, ...rest } = props;
 	return (
-		<code
+		<kbd
 			{...stylex.props(
-				parent === "pre" ? styles.preCode : styles.inlineCode,
+				styles.inlineCode,
 				parent === "h1" && styles.h1Code,
 				parent === "h2" && styles.h2Code,
 				parent === "h3" && styles.h3Code,
@@ -79,10 +71,30 @@ export function Code(props: JSX.IntrinsicElements["code"] & StyleProps) {
 	);
 }
 
+export function Code(props: JSX.IntrinsicElements["code"] & StyleProps) {
+	const { className, parent, noTop, noBottom, ...rest } = props;
+	return (
+		<code
+			{...stylex.props(
+				parent === "pre" ? styles.preCode : styles.inlineCode,
+				parent === "h1" && styles.h1Code,
+				parent === "h2" && styles.h2Code,
+				parent === "h3" && styles.h3Code,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
+			)}
+			{...rest}
+			data-language={
+				className && className.startsWith("language-")
+					? className.substring(9)
+					: undefined
+			}
+		/>
+	);
+}
+
 export function Pre(props: HTMLAttributes<HTMLPreElement> & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<pre
 			{...stylex.props(

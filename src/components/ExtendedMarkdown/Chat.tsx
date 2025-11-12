@@ -193,9 +193,7 @@ function SenderItem(props: {
 function Container(props: { readonly children?: React.ReactNode }) {
 	return (
 		<sender_context.Provider value={new SenderManager(true)}>
-			<div not-prose {...stylex.props(itemStyle.container)}>
-				{props.children}
-			</div>
+			<div {...stylex.props(itemStyle.container)}>{props.children}</div>
 		</sender_context.Provider>
 	);
 }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as stylex from "@stylexjs/stylex";
 
 const styles = stylex.create({
@@ -49,17 +48,7 @@ const styles = stylex.create({
 export function OList(
 	props: React.OlHTMLAttributes<HTMLOListElement> & StyleProps
 ) {
-	const {
-		className,
-		style,
-		type,
-		parent,
-		first,
-		last,
-		noTop,
-		noBottom,
-		...rest
-	} = props;
+	const { type, parent, noTop, noBottom, ...rest } = props;
 	return (
 		<ol
 			{...stylex.props(
@@ -81,8 +70,7 @@ export function OList(
 export function UList(
 	props: React.OlHTMLAttributes<HTMLUListElement> & StyleProps
 ) {
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { parent, noTop, noBottom, ...rest } = props;
 	return (
 		<ul
 			{...stylex.props(
@@ -100,8 +88,7 @@ export function UList(
 export function ListItem(
 	props: React.LiHTMLAttributes<HTMLLIElement> & StyleProps
 ) {
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<li
 			{...stylex.props(

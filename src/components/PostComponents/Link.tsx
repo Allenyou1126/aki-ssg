@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as stylex from "@stylexjs/stylex";
 import { themeTokens } from "@/styles/variables.stylex";
 import NextLink, { LinkProps } from "next/link";
@@ -32,17 +31,7 @@ export function Link(
 		} & React.RefAttributes<HTMLAnchorElement> &
 		StyleProps
 ) {
-	const {
-		children,
-		style,
-		className,
-		parent,
-		first,
-		last,
-		noTop,
-		noBottom,
-		...rest
-	} = props;
+	const { children, noTop, noBottom, ...rest } = props;
 	return (
 		<NextLink
 			referrerPolicy="no-referrer"

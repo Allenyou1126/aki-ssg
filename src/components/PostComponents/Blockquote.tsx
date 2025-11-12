@@ -24,9 +24,7 @@ const styles = stylex.create({
 export function Blockquote(
 	props: BlockquoteHTMLAttributes<HTMLQuoteElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<blockquote
 			{...stylex.props(

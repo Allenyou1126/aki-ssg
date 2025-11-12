@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/refs */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { config } from "@/data/site-config";
@@ -101,21 +100,7 @@ const styles = stylex.create({
 export default function ImageClient(
 	props: JSX.IntrinsicElements["img"] & { inline?: boolean } & StyleProps
 ) {
-	const {
-		src,
-		ref,
-		decoding,
-		width,
-		height,
-		alt,
-		inline,
-		parent,
-		first,
-		last,
-		noTop,
-		noBottom,
-		...rest
-	} = props;
+	const { src, width, height, alt, inline, noTop, noBottom, ...rest } = props;
 
 	// 图片属性
 	const w = typeof width! === "number" ? width! : parseInt(width!);

@@ -60,9 +60,7 @@ const styles = stylex.create({
 export function Table(
 	props: React.TableHTMLAttributes<HTMLTableElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<table
 			{...stylex.props(
@@ -78,9 +76,7 @@ export function Table(
 export function THead(
 	props: React.HTMLAttributes<HTMLTableSectionElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<thead
 			{...stylex.props(
@@ -96,9 +92,7 @@ export function THead(
 export function TFoot(
 	props: React.HTMLAttributes<HTMLTableSectionElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<tfoot
 			{...stylex.props(
@@ -114,9 +108,7 @@ export function TFoot(
 export function TBody(
 	props: React.HTMLAttributes<HTMLTableSectionElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<tbody
 			{...stylex.props(
@@ -132,9 +124,7 @@ export function TBody(
 export function Th(
 	props: React.ThHTMLAttributes<HTMLTableCellElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, noTop, noBottom, parent, ...rest } =
-		props;
+	const { first, last, noTop, noBottom, ...rest } = props;
 	return (
 		<th
 			{...stylex.props(
@@ -152,9 +142,7 @@ export function Th(
 export function Tr(
 	props: React.HTMLAttributes<HTMLTableRowElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, noTop, noBottom, parent, ...rest } =
-		props;
+	const { last, noTop, noBottom, ...rest } = props;
 	return (
 		<tr
 			{...stylex.props(
@@ -171,9 +159,7 @@ export function Tr(
 export function Td(
 	props: React.TdHTMLAttributes<HTMLTableCellElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, noTop, noBottom, parent, ...rest } =
-		props;
+	const { first, last, parent, noTop, noBottom, ...rest } = props;
 	return (
 		<td
 			{...stylex.props(
@@ -181,7 +167,9 @@ export function Td(
 				parent === "tbody" && styles.tdTbd,
 				parent === "tfoot" && styles.tdTfoot,
 				first && styles.thFirst,
-				last && styles.thLast
+				last && styles.thLast,
+				noTop && styles.noTop,
+				noBottom && styles.noBottom
 			)}
 			{...rest}
 		/>

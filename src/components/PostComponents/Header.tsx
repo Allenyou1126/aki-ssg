@@ -47,9 +47,7 @@ const styles = stylex.create({
 });
 
 export function H1(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<h1
 			{...stylex.props(
@@ -63,9 +61,7 @@ export function H1(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
 	);
 }
 export function H2(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<h2
 			{...stylex.props(
@@ -79,9 +75,7 @@ export function H2(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
 	);
 }
 export function H3(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<h3
 			{...stylex.props(
@@ -95,9 +89,7 @@ export function H3(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
 	);
 }
 export function H4(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<h4
 			{...stylex.props(
@@ -111,9 +103,7 @@ export function H4(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
 	);
 }
 export function H5(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<h4
 			{...stylex.props(
@@ -127,9 +117,7 @@ export function H5(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
 	);
 }
 export function H6(props: HTMLAttributes<HTMLHeadingElement> & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<h4
 			{...stylex.props(

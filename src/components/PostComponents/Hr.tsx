@@ -18,9 +18,7 @@ const styles = stylex.create({
 export function Hr(
 	props: React.HtmlHTMLAttributes<HTMLHRElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { noTop, noBottom, ...rest } = props;
 	return (
 		<hr
 			{...stylex.props(

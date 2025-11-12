@@ -37,9 +37,7 @@ const styles = stylex.create({
 export function Paragraph(
 	props: HTMLAttributes<HTMLParagraphElement> & StyleProps
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, first, last, parent, noTop, noBottom, ...rest } =
-		props;
+	const { first, last, parent, noTop, noBottom, ...rest } = props;
 	return (
 		<p
 			{...stylex.props(

@@ -24,9 +24,7 @@ const styles = stylex.create({
 });
 
 export function Strong(props: JSX.IntrinsicElements["strong"] & StyleProps) {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { className, style, parent, first, last, noTop, noBottom, ...rest } =
-		props;
+	const { parent, noTop, noBottom, ...rest } = props;
 	return (
 		<strong
 			{...stylex.props(

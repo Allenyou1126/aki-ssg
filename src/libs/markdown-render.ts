@@ -10,7 +10,6 @@ import { unified } from "unified";
 import rehypeMathjax from "rehype-mathjax";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeHighlight from "rehype-highlight";
-import rehypeHighlightCodeLines from "rehype-highlight-code-lines";
 import rehypeSlug from "rehype-slug";
 import remarkDirective from "remark-directive";
 import remarkDirectiveRehype from "remark-directive-rehype";
@@ -48,29 +47,6 @@ export const markdownPipeline = unified()
 
 export const htmlPipeline = unified()
 	.use(rehypeSlug, {})
-	.use(rehypeHighlightCodeLines, {
-		showLineNumbers: true,
-	})
-	.use(rehypeSanitize, {
-		tagNames: defaultSchema.tagNames?.concat([
-			"bilibili",
-			"friend-links",
-			"chat",
-			"chat-item",
-			"chat-sender",
-			"meme",
-		]),
-		attributes: {
-			"*": ["className", "id"],
-			chat: [],
-			"chat-item": ["sender_name", "sender_avatar", "align_right"],
-			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
-			bilibili: ["bvid", "cid"],
-			img: ["src", "width", "height", "alt", "inline"],
-			a: ["href"],
-			meme: ["group", "mid"],
-		},
-	})
 	.use(rehypeTypographyFirstLastChild)
 	.use(rehypeMathjax, {})
 	.use(rehypeMathjaxPlus)
@@ -80,6 +56,38 @@ export const htmlPipeline = unified()
 	.use(rehypeCodeStyle)
 	.use(rehypeHeaderStyle)
 	.use(rehypeBlockquoteStyle)
+	.use(rehypeSanitize, {
+		tagNames: [
+			"bilibili",
+			"friend-links",
+			"chat",
+			"chat-item",
+			"chat-sender",
+			"meme",
+			...(defaultSchema.tagNames ?? []),
+		],
+		attributes: {
+			// HTML Components
+			"*": ["noTop", "noBottom", "id"],
+			a: ["href"],
+			img: ["src", "width", "height", "alt", "inline"],
+			code: [["className", /^language-/], "parent"],
+			kbd: ["parent"],
+			p: ["parent", "first", "last"],
+			strong: ["parent"],
+			th: ["first", "last"],
+			tr: ["last"],
+			td: ["first", "last", "parent"],
+			ol: ["type", "parent"],
+			ul: ["parent"],
+			// Custom elements
+			chat: [],
+			"chat-item": ["sender_name", "sender_avatar", "align_right"],
+			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
+			bilibili: ["bvid", "cid"],
+			meme: ["group", "mid"],
+		},
+	})
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],
 	});
