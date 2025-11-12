@@ -18,7 +18,7 @@ export async function darkModeAnimation(
 			execute();
 		});
 	});
-	await vt.ready;
+	await vt.ready.catch(() => {});
 	const frameConfig = {
 		clipPath: [
 			`circle(0 at ${x}px ${y}px)`,
