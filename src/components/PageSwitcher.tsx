@@ -135,13 +135,13 @@ export function PageSwitcher({
 			<PageSwitcherNavigation
 				stylexProp={[styles.left, current <= 1 && styles.hide]}
 				navigation={navigation}
-				target={current - 1}>
+				target={Number(current) - 1}>
 				上一页
 			</PageSwitcherNavigation>
 			<PageSwitcherNavigation
 				stylexProp={[styles.right, current >= total && styles.hide]}
 				navigation={navigation}
-				target={current + 1}>
+				target={Number(current) + 1}>
 				下一页
 			</PageSwitcherNavigation>
 		</div>
