@@ -48,8 +48,6 @@ export const markdownPipeline = unified()
 export const htmlPipeline = unified()
 	.use(rehypeSlug, {})
 	.use(rehypeTypographyFirstLastChild)
-	.use(rehypeMathjax, {})
-	.use(rehypeMathjaxPlus)
 	.use(rehypeRemoveBreakline)
 	.use(rehypeTableStyle)
 	.use(rehypeListStyle)
@@ -64,6 +62,11 @@ export const htmlPipeline = unified()
 			"chat-item",
 			"chat-sender",
 			"meme",
+			"mjx-container",
+			"svg",
+			"path",
+			"g",
+			"defs",
 			...(defaultSchema.tagNames ?? []),
 		],
 		attributes: {
@@ -88,6 +91,8 @@ export const htmlPipeline = unified()
 			meme: ["group", "mid"],
 		},
 	})
+	.use(rehypeMathjax, {})
+	.use(rehypeMathjaxPlus)
 	.use(rehypeHighlight, {
 		plainText: ["plain", "txt", "plaintext"],
 	});
