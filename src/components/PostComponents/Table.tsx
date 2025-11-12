@@ -159,7 +159,7 @@ export function Tr(
 export function Td(
 	props: React.TdHTMLAttributes<HTMLTableCellElement> & StyleProps
 ) {
-	const { first, last, parent, noTop, noBottom, ...rest } = props;
+	const { first, last, parent, ...rest } = props;
 	return (
 		<td
 			{...stylex.props(
@@ -167,9 +167,7 @@ export function Td(
 				parent === "tbody" && styles.tdTbd,
 				parent === "tfoot" && styles.tdTfoot,
 				first && styles.thFirst,
-				last && styles.thLast,
-				noTop && styles.noTop,
-				noBottom && styles.noBottom
+				last && styles.thLast
 			)}
 			{...rest}
 		/>
