@@ -12,7 +12,6 @@ import {
 	useContext,
 	useEffect,
 	useState,
-	useTransition,
 } from "react";
 import { config } from "@/data/site-config";
 import { darkModeAnimation } from "@/utils/darkModeAnimation";
@@ -143,8 +142,8 @@ function DarkModeSwitcher() {
 		});
 	}, [theme, setTheme]);
 	const handler: MouseEventHandler<HTMLButtonElement> = useCallback(
-		async (e) => {
-			await darkModeAnimation(e.clientX, e.clientY, () => {
+		(e) => {
+			darkModeAnimation(e.clientX, e.clientY, () => {
 				toggleDarkMode();
 			});
 		},
@@ -325,7 +324,6 @@ export default function Navigation({
 	const [navHeight, setNavHeight] = useState(5);
 	const [navWidth, setNavWidth] = useState(Math.max(10, 5 * links.length + 10));
 	const [menuStep, setMenuStep] = useState<1 | 2 | 3>(1);
-	const [, startTransistion] = useTransition();
 	useEffect(() => {
 		setNavWidth(Math.max(10, 5 * links.length + 10));
 	}, [links]);
@@ -333,21 +331,21 @@ export default function Navigation({
 		setExpanded(!expanded);
 		if (!expanded) {
 			setNavHeight(5 + 3.5 * links.length + 0.25);
-			startTransistion(() => {
+			startTransition(() => {
 				setMenuStep(2);
 			});
 			setTimeout(() => {
-				startTransistion(() => {
+				startTransition(() => {
 					setMenuStep(3);
 				});
 			}, 200);
 		} else {
 			setNavHeight(5);
-			startTransistion(() => {
+			startTransition(() => {
 				setMenuStep(2);
 			});
 			setTimeout(() => {
-				startTransistion(() => {
+				startTransition(() => {
 					setMenuStep(1);
 				});
 			}, 200);
