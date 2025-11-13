@@ -3,21 +3,6 @@ Copyed from highlight.js/styles/night-owl.css
 */
 
 @layer code {
-	@font-face {
-		font-family: "Cascadia Mono";
-		font-style: normal;
-		font-display: swap;
-		src: local("Cascadia Mono") local("CascadiaMono"),
-			url("/fonts/CascadiaMono/CascadiaMono.woff2") format("woff2");
-	}
-	@font-face {
-		font-family: "Cascadia Mono";
-		font-style: italic;
-		font-display: swap;
-		src: local("Cascadia Mono Italic"), local("CascadiaMono-Italic"),
-			url("/fonts/CascadiaMono/CascadiaMonoItalic.woff2") format("woff2");
-	}
-
 	.hljs-comment,
 	.hljs-quote {
 		color: #5c6370;

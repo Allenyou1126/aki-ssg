@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/fonts/chillroundf.css";
+import "@/styles/fonts/cascadiamono.css";
 import "@/styles/globals.css";
 import "@/styles/normalize.css";
 import { config } from "@/data/site-config";
