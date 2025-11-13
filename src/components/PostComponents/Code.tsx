@@ -25,9 +25,13 @@ const styles = stylex.create({
 	preCode: {
 		borderRadius: 0,
 		borderWidth: 0,
+		color: "#abb2bf",
+		display: "block",
+		fontFamily: "Cascadia Mono",
 		fontSize: "inherit",
 		fontWeight: "inherit",
 		lineHeight: "inherit",
+		overflowX: "auto",
 		padding: 0,
 		whiteSpace: "pre-wrap",
 		wordWrap: "break-word",

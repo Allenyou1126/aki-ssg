@@ -25,7 +25,7 @@ import * as stylex from "@stylexjs/stylex";
 import { PageSwitcher } from "@/components/PageSwitcher";
 import { themeTokens } from "@/styles/variables.stylex";
 import { MarkdownContent } from "@/components/MarkdownContent";
-import { fromHtmlToNodes } from "@/libs/markdown-client";
+import { fromHtmlToNodes } from "./markdownRender";
 
 function getApiOptions() {
 	const commentConfig = config.comment;
