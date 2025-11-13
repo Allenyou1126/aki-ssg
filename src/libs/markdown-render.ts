@@ -43,7 +43,7 @@ export const markdownPipeline = unified()
 	.use(remarkMeme)
 	.use(remarkChat)
 	.use(remarkFriendLinks)
-	.use(remarkRehype, { allowDangerousHtml: true });
+	.use(remarkRehype);
 
 export const htmlPipeline = unified()
 	.use(rehypeSlug, {})
