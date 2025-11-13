@@ -1,5 +1,4 @@
 import * as stylex from "@stylexjs/stylex";
-import "@/styles/code-highlight.css";
 
 const styles = stylex.create({
 	prose: {

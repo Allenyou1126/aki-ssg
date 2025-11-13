@@ -47,11 +47,14 @@ export const markdownPipeline = unified()
 
 export const htmlPipeline = unified()
 	.use(rehypeSlug, {})
+	.use(rehypeShiki, {
+		theme: "night-owl",
+	})
+	.use(rehypeCodeStyle)
 	.use(rehypeTypographyFirstLastChild)
 	.use(rehypeRemoveBreakline)
 	.use(rehypeTableStyle)
 	.use(rehypeListStyle)
-	.use(rehypeCodeStyle)
 	.use(rehypeHeaderStyle)
 	.use(rehypeBlockquoteStyle)
 	.use(rehypeSanitize, {
@@ -67,6 +70,7 @@ export const htmlPipeline = unified()
 			"path",
 			"g",
 			"defs",
+			"shiki-span",
 			...(defaultSchema.tagNames ?? []),
 		],
 		attributes: {
@@ -83,6 +87,7 @@ export const htmlPipeline = unified()
 			td: ["first", "last", "parent"],
 			ol: ["type", "parent"],
 			ul: ["parent"],
+			"shiki-span": ["style"],
 			// Custom elements
 			chat: [],
 			"chat-item": ["sender_name", "sender_avatar", "align_right"],
@@ -92,10 +97,7 @@ export const htmlPipeline = unified()
 		},
 	})
 	.use(rehypeMathjax, {})
-	.use(rehypeMathjaxPlus)
-	.use(rehypeShiki, {
-		theme: "night-owl",
-	});
+	.use(rehypeMathjaxPlus);
 
 function filterNodes(node: HastNode): HastNode | undefined {
 	switch (node.type) {

@@ -23,6 +23,7 @@ const styles = stylex.create({
 		fontSize: "0.875em",
 	},
 	preCode: {
+		backgroundColor: "transparent",
 		borderRadius: 0,
 		borderWidth: 0,
 		color: "#abb2bf",

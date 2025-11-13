@@ -15,9 +15,11 @@ import { toc } from "mdast-util-toc";
 import { toHtml } from "hast-util-to-html";
 
 import Image from "@/components/PostComponents/Image/Image";
+import { ShikiSpan } from "@/components/PostComponents/ShikiSpan";
 
 export const post_components = {
 	img: Image,
+	"shiki-span": ShikiSpan,
 };
 
 export class MarkdownContent implements RenderableContent {

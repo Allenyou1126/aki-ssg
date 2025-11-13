@@ -170,6 +170,9 @@ importers:
       '@shikijs/rehype':
         specifier: ^3.15.0
         version: 3.15.0
+      '@shikijs/transformers':
+        specifier: ^3.15.0
+        version: 3.15.0
       '@stylexjs/eslint-plugin':
         specifier: ^0.16.3
         version: 0.16.3
@@ -738,6 +741,9 @@ packages:
 
   '@shikijs/themes@3.15.0':
     resolution: {integrity: sha512-8ow2zWb1IDvCKjYb0KiLNrK4offFdkfNVPXb1OZykpLCzRU6j+efkY+Y7VQjNlNFXonSw+4AOdGYtmqykDbRiQ==}
+
+  '@shikijs/transformers@3.15.0':
+    resolution: {integrity: sha512-Hmwip5ovvSkg+Kc41JTvSHHVfCYF+C8Cp1omb5AJj4Xvd+y9IXz2rKJwmFRGsuN0vpHxywcXJ1+Y4B9S7EG1/A==}
 
   '@shikijs/types@3.15.0':
     resolution: {integrity: sha512-BnP+y/EQnhihgHy4oIAN+6FFtmfTekwOLsQbRw9hOKwqgNy8Bdsjq8B05oAt/ZgvIWWFrshV71ytOrlPfYjIJw==}
@@ -3109,6 +3115,11 @@ snapshots:
 
   '@shikijs/themes@3.15.0':
     dependencies:
+      '@shikijs/types': 3.15.0
+
+  '@shikijs/transformers@3.15.0':
+    dependencies:
+      '@shikijs/core': 3.15.0
       '@shikijs/types': 3.15.0
 
   '@shikijs/types@3.15.0':
