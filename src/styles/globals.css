@@ -1,7 +1,6 @@
 @stylex;
 
 @layer normalize;
-@layer code;
 
 :root {
 	color-scheme: light;
