@@ -110,12 +110,14 @@ class CMS {
 			.then((file) => {
 				return fm(file.toString());
 			})
-			.then((data) => {
+			.then(async (data) => {
 				const metadata = metadata_parser(data.attributes);
+				const content = new MarkdownContent(data.body);
+				await content.render();
 				return {
 					...metadata,
 					original_content: data.body,
-					markdown_content: new MarkdownContent(data.body),
+					markdown_content: content,
 				};
 			});
 	}

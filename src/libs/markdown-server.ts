@@ -21,40 +21,47 @@ export const post_components = {
 };
 
 export class MarkdownContent implements RenderableContent {
-	hastTree: HashRoot;
-	mdastTree: MdashRoot;
+	hastTree: HashRoot | null = null;
+	mdastTree: MdashRoot | null = null;
+	original: string;
 	constructor(original: string) {
-		const file = new VFile(original);
-		this.mdastTree = markdownPipeline.parse(original);
-		const rawHastTree = markdownPipeline.runSync(this.mdastTree, file);
-		this.hastTree = htmlPipeline.runSync(rawHastTree, file);
+		this.original = original;
+	}
+	async render() {
+		const file = new VFile(this.original);
+		this.mdastTree = markdownPipeline.parse(this.original);
+		const rawHastTree = await markdownPipeline.run(this.mdastTree, file);
+		this.hastTree = await htmlPipeline.run(rawHastTree, file);
 	}
 	toReactNode(): React.ReactNode {
-		return (
-			this.hastTree &&
-			toJsxRuntime(this.hastTree, {
-				Fragment,
-				components: {
-					...post_components,
-					...html_components,
-					...extended_components,
-				},
-				ignoreInvalidStyle: true,
-				jsx,
-				jsxs,
-			})
-		);
+		if (!this.hastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toJsxRuntime(this.hastTree, {
+			Fragment,
+			components: {
+				...post_components,
+				...html_components,
+				...extended_components,
+			},
+			ignoreInvalidStyle: true,
+			jsx,
+			jsxs,
+		});
 	}
 	toToc(): Result {
-		return (
-			this.mdastTree &&
-			toc(this.mdastTree, {
-				tight: true,
-				ordered: true,
-			})
-		);
+		if (!this.mdastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toc(this.mdastTree, {
+			tight: true,
+			ordered: true,
+		});
 	}
 	toRssFeed(): string {
-		return this.hastTree && toHtml(generateForRss(this.hastTree), {});
+		if (!this.hastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toHtml(generateForRss(this.hastTree), {});
 	}
 }
