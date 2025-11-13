@@ -55,6 +55,7 @@
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.37.0",
 		"@next/eslint-plugin-next": "^16.0.0",
+		"@shikijs/rehype": "^3.15.0",
 		"@stylexjs/eslint-plugin": "^0.16.3",
 		"@stylexswc/nextjs-plugin": "0.13.0-rc.1",
 		"@stylexswc/postcss-plugin": "0.13.0-rc.1",
@@ -70,6 +71,7 @@
 		"eslint-config-next": "16.0.0",
 		"eslint-plugin-react-hooks": "^7.0.0",
 		"postcss": "^8.5.6",
+		"shiki": "^3.15.0",
 		"typescript": "^5.9.3"
 	},
 	"pnpm": {

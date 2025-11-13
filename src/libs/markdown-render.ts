@@ -9,7 +9,7 @@ import { unified } from "unified";
 
 import rehypeMathjax from "rehype-mathjax";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
-import rehypeHighlight from "rehype-highlight";
+import rehypeShiki from "@shikijs/rehype";
 import rehypeSlug from "rehype-slug";
 import remarkDirective from "remark-directive";
 import remarkDirectiveRehype from "remark-directive-rehype";
@@ -93,8 +93,8 @@ export const htmlPipeline = unified()
 	})
 	.use(rehypeMathjax, {})
 	.use(rehypeMathjaxPlus)
-	.use(rehypeHighlight, {
-		plainText: ["plain", "txt", "plaintext"],
+	.use(rehypeShiki, {
+		theme: "night-owl",
 	});
 
 function filterNodes(node: HastNode): HastNode | undefined {
