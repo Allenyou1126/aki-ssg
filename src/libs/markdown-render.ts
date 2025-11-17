@@ -1,10 +1,4 @@
-import type {
-	Element as HastElement,
-	ElementContent as HastElementContent,
-	Root as HashRoot,
-	Node as HastNode,
-	RootContent as HastRootContent,
-} from "hast";
+import type { Root as HashRoot } from "hast";
 import { unified } from "unified";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
@@ -125,39 +119,6 @@ const rssPipeline = unified()
 			code: [["className", /^language-/]],
 		},
 	});
-
-function filterNodes(node: HastNode): HastNode | undefined {
-	switch (node.type) {
-		case "element":
-			const ele = node as HastElement;
-			if (ele.tagName === "mjx-container") {
-				return {
-					type: "element",
-					tagName: "span",
-					properties: {},
-					children: [{ type: "text", value: "[MathJax Expression]" }],
-				} as HastElement as HastNode;
-			}
-			if (ele.tagName === "style") {
-				return undefined;
-			}
-			ele.children = ele.children
-				.map(
-					(ch) => filterNodes(ch as HastNode) as HastElementContent | undefined
-				)
-				.filter((v) => v !== undefined);
-			return node;
-		default:
-			return node;
-	}
-}
-
-export function generateForRss(tree: HashRoot): HashRoot {
-	tree.children = tree.children
-		.map((ch) => filterNodes(ch as HastNode) as HastRootContent | undefined)
-		.filter((v) => v !== undefined);
-	return tree;
-}
 
 const post_components = {
 	img: Image,
