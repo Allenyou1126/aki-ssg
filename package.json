@@ -73,7 +73,8 @@
 		"eslint-plugin-react-hooks": "^7.0.0",
 		"postcss": "^8.5.6",
 		"shiki": "^3.15.0",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"unist-util-remove-position": "^5.0.0"
 	},
 	"pnpm": {
 		"overrides": {

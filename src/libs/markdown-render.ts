@@ -2,7 +2,6 @@ import type { Root as HashRoot } from "hast";
 import { unified } from "unified";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import { VFile } from "vfile";
 import { html_components } from "@/libs/markdown-components";
 import { extended_components } from "@/libs/markdown-extension/extended-markdown-components";
 import type { Root as MdashRoot } from "mdast";
@@ -12,6 +11,8 @@ import { toHtml } from "hast-util-to-html";
 
 import Image from "@/components/PostComponents/Image/Image";
 import { ShikiSpan } from "@/components/PostComponents/ShikiSpan";
+
+import { removePosition } from "unist-util-remove-position";
 
 import rehypeMathjax from "rehype-mathjax";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
@@ -134,11 +135,17 @@ export class MarkdownContent implements RenderableContent {
 		this.original = original;
 	}
 	async render() {
-		const file = new VFile(this.original);
 		this.mdastTree = markdownPipeline.parse(this.original);
-		const rawHastTree = await markdownPipeline.run(this.mdastTree, file);
-		this.hastTree = await htmlPipeline.run(rawHastTree, file);
-		this.rssHastTree = await rssPipeline.run(rawHastTree, file);
+		const rawHastTree = await markdownPipeline.run(this.mdastTree);
+		removePosition(rawHastTree, {
+			force: true,
+		});
+		this.hastTree = await htmlPipeline.run(
+			JSON.parse(JSON.stringify(rawHastTree))
+		);
+		this.rssHastTree = await rssPipeline.run(
+			JSON.parse(JSON.stringify(rawHastTree))
+		);
 	}
 	toReactNode(): React.ReactNode {
 		if (!this.hastTree) {
