@@ -15,3 +15,17 @@ export const rehypeMathjaxPlus = () => (tree: Root) => {
 	});
 	return tree;
 };
+
+export const rehypeMathjaxRss = () => (tree: Root) => {
+	selectAll("mjx-container", tree).forEach((node) => {
+		node.tagName = "span";
+		node.children = [
+			{
+				type: "text",
+				value: "[MathJax Expression]",
+			},
+		];
+		node.properties = {};
+	});
+	return tree;
+};

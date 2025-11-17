@@ -6,6 +6,18 @@ import type {
 	RootContent as HastRootContent,
 } from "hast";
 import { unified } from "unified";
+import { toJsxRuntime } from "hast-util-to-jsx-runtime";
+import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+import { VFile } from "vfile";
+import { html_components } from "@/libs/markdown-components";
+import { extended_components } from "@/libs/markdown-extension/extended-markdown-components";
+import type { Root as MdashRoot } from "mdast";
+import type { Result } from "mdast-util-toc";
+import { toc } from "mdast-util-toc";
+import { toHtml } from "hast-util-to-html";
+
+import Image from "@/components/PostComponents/Image/Image";
+import { ShikiSpan } from "@/components/PostComponents/ShikiSpan";
 
 import rehypeMathjax from "rehype-mathjax";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
@@ -23,7 +35,10 @@ import { remarkBilibili } from "@/libs/markdown-extension/remark-bilibili";
 import { remarkFriendLinks } from "@/libs/markdown-extension/remark-friend-links";
 import { remarkChat } from "@/libs/markdown-extension/remark-chat";
 import { remarkMeme } from "@/libs/markdown-extension/remark-meme";
-import { rehypeMathjaxPlus } from "@/libs/rehype-extension/rehype-mathjax-plus";
+import {
+	rehypeMathjaxPlus,
+	rehypeMathjaxRss,
+} from "@/libs/rehype-extension/rehype-mathjax-plus";
 import { rehypeTypographyFirstLastChild } from "@/libs/rehype-extension/rehype-typography-first-last-child";
 import { rehypeRemoveBreakline } from "@/libs/rehype-extension/rehype-remove-breakline";
 import { rehypeListStyle } from "@/libs/rehype-extension/rehype-list-style";
@@ -32,7 +47,7 @@ import { rehypeCodeStyle } from "@/libs/rehype-extension/rehype-code-style";
 import { rehypeHeaderStyle } from "@/libs/rehype-extension/rehype-header-style";
 import { rehypeBlockquoteStyle } from "@/libs/rehype-extension/rehype-blockquote-style";
 
-export const markdownPipeline = unified()
+const markdownPipeline = unified()
 	.use(remarkParse)
 	.use(remarkGithubAlerts)
 	.use(remarkGfm, { singleTilde: false })
@@ -45,7 +60,7 @@ export const markdownPipeline = unified()
 	.use(remarkFriendLinks)
 	.use(remarkRehype);
 
-export const htmlPipeline = unified()
+const htmlPipeline = unified()
 	.use(rehypeSlug, {})
 	.use(rehypeShiki, {
 		theme: "night-owl",
@@ -99,6 +114,18 @@ export const htmlPipeline = unified()
 	.use(rehypeMathjax, {})
 	.use(rehypeMathjaxPlus);
 
+const rssPipeline = unified()
+	.use(rehypeSlug, {})
+	.use(rehypeMathjaxRss)
+	.use(rehypeSanitize, {
+		attributes: {
+			"*": ["id"],
+			a: ["href"],
+			img: ["src", "width", "height", "alt"],
+			code: [["className", /^language-/]],
+		},
+	});
+
 function filterNodes(node: HastNode): HastNode | undefined {
 	switch (node.type) {
 		case "element":
@@ -130,4 +157,57 @@ export function generateForRss(tree: HashRoot): HashRoot {
 		.map((ch) => filterNodes(ch as HastNode) as HastRootContent | undefined)
 		.filter((v) => v !== undefined);
 	return tree;
+}
+
+const post_components = {
+	img: Image,
+	"shiki-span": ShikiSpan,
+};
+
+export class MarkdownContent implements RenderableContent {
+	hastTree: HashRoot | null = null;
+	mdastTree: MdashRoot | null = null;
+	rssHastTree: HashRoot | null = null;
+	original: string;
+	constructor(original: string) {
+		this.original = original;
+	}
+	async render() {
+		const file = new VFile(this.original);
+		this.mdastTree = markdownPipeline.parse(this.original);
+		const rawHastTree = await markdownPipeline.run(this.mdastTree, file);
+		this.hastTree = await htmlPipeline.run(rawHastTree, file);
+		this.rssHastTree = await rssPipeline.run(rawHastTree, file);
+	}
+	toReactNode(): React.ReactNode {
+		if (!this.hastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toJsxRuntime(this.hastTree, {
+			Fragment,
+			components: {
+				...post_components,
+				...html_components,
+				...extended_components,
+			},
+			ignoreInvalidStyle: true,
+			jsx,
+			jsxs,
+		});
+	}
+	toToc(): Result {
+		if (!this.mdastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toc(this.mdastTree, {
+			tight: true,
+			ordered: true,
+		});
+	}
+	toRssFeed(): string {
+		if (!this.rssHastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toHtml(this.rssHastTree, {});
+	}
 }
