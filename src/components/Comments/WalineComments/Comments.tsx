@@ -492,7 +492,7 @@ const cardStyle = stylex.create({
 		opacity: 0.6,
 	},
 	ownerTag: {
-		backgroundColor: `rgb(from(${themeTokens.primaryColor}) r g b / 0.4)`,
+		backgroundColor: `rgb(from ${themeTokens.primaryColor}  r g b / 0.4)`,
 		color: themeTokens.primaryColor,
 		marginLeft: "0.5rem",
 		opacity: 1,
