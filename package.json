@@ -106,9 +106,12 @@
 			"string.prototype.trimend": "npm:@nolyfill/string.prototype.trimend@^1",
 			"safe-buffer": "npm:@nolyfill/safe-buffer@^1",
 			"@eslint/plugin-kit": "npm:@eslint/plugin-kit@0.3.4",
-			"form-data": "npm:form-data@4.0.4"
+			"form-data": "npm:form-data@4.0.4",
+			"mdast-util-to-hast": "npm:mdast-util-to-hast@13.2.1",
+			"js-yaml": "npm:js-yaml@4.1.1"
 		},
 		"onlyBuiltDependencies": [
+			"@swc/core",
 			"sharp",
 			"unrs-resolver"
 		]
