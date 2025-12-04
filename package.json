@@ -9,6 +9,8 @@
 		"lint": "eslint"
 	},
 	"dependencies": {
+		"@shikijs/langs": "^3.19.0",
+		"@shikijs/themes": "^3.19.0",
 		"@stylexjs/stylex": "^0.16.3",
 		"@types/hast": "^3.0.4",
 		"@types/mdast": "^4.0.4",
@@ -55,8 +57,9 @@
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.37.0",
 		"@next/eslint-plugin-next": "^16.0.0",
-		"@shikijs/rehype": "^3.15.0",
-		"@shikijs/transformers": "^3.15.0",
+		"@shikijs/rehype": "^3.19.0",
+		"@shikijs/transformers": "^3.19.0",
+		"@shikijs/types": "^3.19.0",
 		"@stylexjs/eslint-plugin": "^0.16.3",
 		"@stylexswc/nextjs-plugin": "0.13.0-rc.1",
 		"@stylexswc/postcss-plugin": "0.13.0-rc.1",
@@ -72,10 +75,13 @@
 		"eslint-config-next": "16.0.0",
 		"eslint-plugin-react-hooks": "^7.0.0",
 		"postcss": "^8.5.6",
-		"shiki": "^3.15.0",
+		"shiki": "^3.19.0",
 		"typescript": "^5.9.3",
 		"unist-util-remove-position": "^5.0.0"
 	},
+	"browserslist": [
+		"fully supports es6-module and fully supports view-transitions"
+	],
 	"pnpm": {
 		"overrides": {
 			"array-includes": "npm:@nolyfill/array-includes@^1",
@@ -103,9 +109,6 @@
 			"@eslint/plugin-kit": "npm:@eslint/plugin-kit@0.3.4",
 			"form-data": "npm:form-data@4.0.4"
 		},
-		"browserslist": [
-			"fully supports es6-module and fully supports view-transitions"
-		],
 		"onlyBuiltDependencies": [
 			"sharp",
 			"unrs-resolver"
