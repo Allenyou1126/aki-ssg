@@ -13,6 +13,8 @@ import Image from "@/components/PostComponents/Image/Image";
 import { ShikiSpan } from "@/components/PostComponents/ShikiSpan";
 
 import { removePosition } from "unist-util-remove-position";
+import { remove } from "unist-util-remove";
+import { find } from "unist-util-find";
 
 import rehypeMathjax from "rehype-mathjax";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
@@ -25,6 +27,7 @@ import remarkGithubAlerts from "remark-github-alerts";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import remarkFrontmatter from "remark-frontmatter";
 
 import { remarkBilibili } from "@/libs/markdown-extension/remark-bilibili";
 import { remarkFriendLinks } from "@/libs/markdown-extension/remark-friend-links";
@@ -41,9 +44,13 @@ import { rehypeTableStyle } from "@/libs/rehype-extension/rehype-table-style";
 import { rehypeCodeStyle } from "@/libs/rehype-extension/rehype-code-style";
 import { rehypeHeaderStyle } from "@/libs/rehype-extension/rehype-header-style";
 import { rehypeBlockquoteStyle } from "@/libs/rehype-extension/rehype-blockquote-style";
+import jsYaml from "js-yaml";
+
+import * as zc from "zod/v4/core";
 
 const markdownPipeline = unified()
 	.use(remarkParse)
+	.use(remarkFrontmatter, ["yaml"])
 	.use(remarkGithubAlerts)
 	.use(remarkGfm, { singleTilde: false })
 	.use(remarkMath)
@@ -52,8 +59,9 @@ const markdownPipeline = unified()
 	.use(remarkBilibili)
 	.use(remarkMeme)
 	.use(remarkChat)
-	.use(remarkFriendLinks)
-	.use(remarkRehype);
+	.use(remarkFriendLinks);
+
+const remarkRehypePipeline = unified().use(remarkRehype);
 
 const htmlPipeline = unified()
 	.use(rehypeSlug, {})
@@ -130,23 +138,6 @@ export class MarkdownContent implements RenderableContent {
 	hastTree: HashRoot | null = null;
 	mdastTree: MdashRoot | null = null;
 	rssHastTree: HashRoot | null = null;
-	original: string;
-	constructor(original: string) {
-		this.original = original;
-	}
-	async render() {
-		this.mdastTree = markdownPipeline.parse(this.original);
-		const rawHastTree = await markdownPipeline.run(this.mdastTree);
-		removePosition(rawHastTree, {
-			force: true,
-		});
-		this.hastTree = await htmlPipeline.run(
-			JSON.parse(JSON.stringify(rawHastTree))
-		);
-		this.rssHastTree = await rssPipeline.run(
-			JSON.parse(JSON.stringify(rawHastTree))
-		);
-	}
 	toReactNode(): React.ReactNode {
 		if (!this.hastTree) {
 			throw new Error("Markdown content has not been rendered yet.");
@@ -178,4 +169,41 @@ export class MarkdownContent implements RenderableContent {
 		}
 		return toHtml(this.rssHastTree, {});
 	}
+}
+
+export async function renderMarkdownContent<T extends zc.$ZodObject>(
+	src: string,
+	metadataSchema: T
+): Promise<zc.output<T> & Content> {
+	const content = new MarkdownContent();
+	const mdastTree = await markdownPipeline.run(markdownPipeline.parse(src));
+	const fmNode = find<{ type: "yaml"; value?: string }>(mdastTree, {
+		type: "yaml",
+	});
+	if (!fmNode) {
+		throw new Error("Frontmatter not found.");
+	}
+	const fmData = fmNode.value;
+	if (!fmData) {
+		throw new Error("Frontmatter data is empty.");
+	}
+	const rawFmData = jsYaml.load(fmData);
+	const metadata = await zc.parseAsync(metadataSchema, rawFmData);
+	remove(mdastTree, { type: "yaml" });
+	content.mdastTree = mdastTree;
+	const rawHastTree = await remarkRehypePipeline.run(mdastTree);
+	removePosition(rawHastTree, {
+		force: true,
+	});
+	content.hastTree = await htmlPipeline.run(
+		JSON.parse(JSON.stringify(rawHastTree))
+	);
+	content.rssHastTree = await rssPipeline.run(
+		JSON.parse(JSON.stringify(rawHastTree))
+	);
+	return {
+		...metadata,
+		original_content: src,
+		markdown_content: content,
+	};
 }

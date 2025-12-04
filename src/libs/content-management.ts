@@ -1,134 +1,97 @@
 import { friend_link_list } from "@/data/friend-link";
 import { promises as fs } from "fs";
-import fm from "front-matter";
 import path from "path";
 import { cache } from "react";
-import { MarkdownContent } from "@/libs/markdown-render";
+import { renderMarkdownContent } from "@/libs/markdown-render";
 import { isProd } from "@/libs/state-management";
+import * as z from "zod";
+import * as zc from "zod/v4/core";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type MetadataParser<MetadataType> = (attr: any) => MetadataType;
+const date = z.union([
+	z.date("Date must be a date string or date object"),
+	z
+		.string("Date must be a date string or date object")
+		.refine((val) => !isNaN(Date.parse(val)), {
+			message: "Invalid date string",
+		})
+		.transform((val) => new Date(val)),
+]);
 
-function defineMetadataParser<MetadataType>(
-	parser: (attr: unknown) => MetadataType
-) {
-	return (attr: unknown) => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		return parser(attr as any);
-	};
-}
+const PostMetadataSchema = z
+	.object({
+		id: z
+			.number("id must be a number")
+			.int("id must be an integer")
+			.nonnegative("id cannot be negative"),
+		title: z.string("Require title").min(1, "Title cannot be empty"),
+		description: z
+			.string("Description must be a string")
+			.optional()
+			.default("暂无描述"),
+		created_at: date.optional(),
+		modified_at: date.optional(),
+		draft: z.boolean("draft must be a boolean").optional().default(false),
+	})
+	.refine((data) => {
+		if (data.modified_at !== undefined && data.created_at !== undefined) {
+			return data.modified_at >= data.created_at;
+		}
+		return true;
+	}, "modified_at must be greater than or equal to created_at")
+	.refine((data) => {
+		return data.created_at !== undefined || data.modified_at !== undefined;
+	}, "Either created_at or modified_at must be provided");
 
-const post_metadata_parser = defineMetadataParser<PostMetadata>(
-	(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		attr: any
-	) => {
-		const id_str = attr.id;
-		if (id_str === undefined) {
-			throw new Error(`Please specify an ID for post!`);
-		}
-		const id = parseInt(id_str);
-		if (isNaN(id)) {
-			throw new Error(`Invalid post ID ${id_str}`);
-		}
-		const title = attr.title;
-		if (title === undefined) {
-			throw new Error(`Please specify a title for post!`);
-		}
-		return {
-			id,
-			title,
-			description: attr.description ?? "暂无描述",
-			created_at: new Date(
-				attr.created_at ?? attr.modified_at ?? "1919-08-10T11:45:14Z"
-			),
-			modified_at: new Date(
-				attr.modified_at ?? attr.created_at ?? "1919-08-10T11:45:14Z"
-			),
-			draft:
-				attr.draft === undefined || typeof attr.draft !== "boolean"
-					? false
-					: attr.draft,
-		};
-	}
-);
-const page_metadata_parser = defineMetadataParser<PageMetadata>(
-	(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		attr: any
-	) => {
-		const slug = attr.slug;
-		if (slug === undefined) {
-			throw new Error(`Please specify a slug for page!`);
-		}
-		const title = attr.title;
-		if (title === undefined) {
-			throw new Error(`Please specify a title for page!`);
-		}
-		return {
-			slug,
-			title,
-			enable_comment:
-				attr.enable_comment === undefined ||
-				typeof attr.enable_comment !== "boolean"
-					? false
-					: attr.enable_comment,
-			allow_index:
-				attr.allow_index === undefined || typeof attr.allow_index !== "boolean"
-					? false
-					: attr.allow_index,
-			navigation_title: attr.navigation_title,
-			navigation_index:
-				attr.navigation_index === undefined
-					? 0
-					: ((v) => {
-							const id = parseInt(v);
-							if (isNaN(id)) {
-								throw new Error();
-							}
-							return id;
-					  })(attr.navigation_index),
-			draft:
-				attr.draft === undefined || typeof attr.draft !== "boolean"
-					? false
-					: attr.draft,
-		};
-	}
-);
+const PageMetadataSchema = z.object({
+	slug: z.string("Require slug").min(1, "Slug cannot be empty"),
+	title: z.string("Require title").min(1, "Title cannot be empty"),
+	enable_comment: z
+		.boolean("enable_comment must be a boolean")
+		.optional()
+		.default(false),
+	allow_index: z
+		.boolean("allow_index must be a boolean")
+		.optional()
+		.default(false),
+	navigation_title: z
+		.string("Navigation title must be a string")
+		.min(1, "Navigation title cannot be empty")
+		.optional(),
+	navigation_index: z
+		.number("Navigation index must be a number")
+		.int("Navigation index must be an integer")
+		.nonnegative("Navigation index cannot be negative")
+		.optional()
+		.default(0),
+	draft: z.boolean("draft must be a boolean").optional().default(false),
+});
 
 class CMS {
 	private friend_links: FriendLink[] = [];
 	private posts: Post[] = [];
 	private pages: Page[] = [];
 
-	private async parseMarkdownFile<MetadataType>(
+	private async parseMarkdownFile<T extends zc.$ZodObject>(
 		path: string,
-		metadata_parser: MetadataParser<MetadataType>
-	): Promise<MetadataType & Content> {
+		metadataSchema: T
+	): Promise<zc.output<T> & Content> {
 		return await fs
-			.readFile(path)
-			.then((file) => {
-				return fm(file.toString());
+			.readFile(path, {
+				encoding: "utf-8",
+				flag: "r",
 			})
-			.then(async (data) => {
-				const metadata = metadata_parser(data.attributes);
-				const content = new MarkdownContent(data.body);
-				await content.render();
-				return {
-					...metadata,
-					original_content: data.body,
-					markdown_content: content,
-				};
+			.then((data) => {
+				return renderMarkdownContent(data, metadataSchema);
 			});
 	}
-	private async processAllFile<T>(
+	private async processAllFile<T extends zc.$ZodObject>(
 		files: string[],
-		metadata_parser: MetadataParser<T>
+		metadataSchema: T
 	) {
 		return Promise.all(
 			files
 				.filter((filename) => filename.endsWith(".md"))
-				.map((filename) => this.parseMarkdownFile(filename, metadata_parser))
+				.map((filename) => this.parseMarkdownFile(filename, metadataSchema))
 		);
 	}
 	private async loadPosts() {
@@ -136,7 +99,25 @@ class CMS {
 		await fs
 			.readdir(posts_path)
 			.then((files) => files.map((file) => path.join(posts_path, file)))
-			.then((paths) => this.processAllFile(paths, post_metadata_parser))
+			.then((paths) => this.processAllFile(paths, PostMetadataSchema))
+			.then((posts) =>
+				posts.map((post) => {
+					if (!post.created_at && post.modified_at) {
+						post.created_at = post.modified_at;
+					}
+					if (!post.modified_at && post.created_at) {
+						post.modified_at = post.created_at;
+					}
+					return post as Omit<
+						z.infer<typeof PostMetadataSchema>,
+						"created_at" | "modified_at"
+					> &
+						Content & {
+							created_at: Date;
+							modified_at: Date;
+						};
+				})
+			)
 			.then((list) => {
 				this.posts = list
 					.filter((v) => !isProd || !v.draft)
@@ -150,7 +131,7 @@ class CMS {
 		await fs
 			.readdir(pages_path)
 			.then((files) => files.map((file) => path.join(pages_path, file)))
-			.then((paths) => this.processAllFile(paths, page_metadata_parser))
+			.then((paths) => this.processAllFile(paths, PageMetadataSchema))
 			.then((list) => {
 				this.pages = list.filter((v) => !isProd || !v.draft);
 			});
