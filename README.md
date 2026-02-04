@@ -6,7 +6,7 @@
 
 ## Introduction
 
-Aki-SSG is a static site generator that transforms your markdown contents into a site based on Next.js, using Tailwind CSS as CSS Framework.
+Aki-SSG is a static site generator that transforms your markdown contents into a site based on Next.js, with StyleX as Atomic CSS Framework.
 
 ## Quick start
 
