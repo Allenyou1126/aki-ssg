@@ -25,6 +25,7 @@ declare interface RenderableContent {
 	toReactNode(): React.ReactNode;
 	toToc(): Result;
 	toRssFeed(): string;
+	serialize(): string;
 }
 declare type TocItem = {
 	display: string;

@@ -1,12 +1,23 @@
 import { friend_link_list } from "@/data/friend-link";
-import { promises as fs } from "fs";
+import fs from "fs";
 import path from "path";
 import { cache } from "react";
-import { renderMarkdownContent } from "@/libs/markdown-render";
+import {
+	deserializeMarkdownContent,
+	renderMarkdownContent,
+} from "@/libs/markdown-render";
 import { isProd } from "@/libs/state-management";
 import * as z from "zod";
 import * as zc from "zod/v4/core";
 import { config } from "@/data/site-config";
+import { tryObtainLock, waitingForLockRelease } from "@/utils/fileLock";
+
+const MASTER_LOCK_FILE = path.join(process.cwd(), ".master.cms.lock");
+const LOADING_LOCK_FILE = path.join(process.cwd(), ".loading.cms.lock");
+
+const FRIEND_LINK_FILE = path.join(process.cwd(), ".friend-link.cms.json");
+const POST_DATA_FILE = path.join(process.cwd(), ".post-data.cms.json");
+const PAGE_DATA_FILE = path.join(process.cwd(), ".page-data.cms.json");
 
 const date = z.union([
 	z.date("Date must be a date string or date object"),
@@ -76,7 +87,7 @@ class CMS {
 		path: string,
 		metadataSchema: T,
 	): Promise<zc.output<T> & Content> {
-		return await fs
+		return await fs.promises
 			.readFile(path, {
 				encoding: "utf-8",
 				flag: "r",
@@ -97,7 +108,7 @@ class CMS {
 	}
 	private async loadPosts() {
 		const posts_path = path.join(process.cwd(), "src", "data", "posts");
-		await fs
+		await fs.promises
 			.readdir(posts_path)
 			.then((files) => files.map((file) => path.join(posts_path, file)))
 			.then((paths) => this.processAllFile(paths, PostMetadataSchema))
@@ -129,7 +140,7 @@ class CMS {
 	}
 	private async loadPages() {
 		const pages_path = path.join(process.cwd(), "src", "data", "pages");
-		await fs
+		await fs.promises
 			.readdir(pages_path)
 			.then((files) => files.map((file) => path.join(pages_path, file)))
 			.then((paths) => this.processAllFile(paths, PageMetadataSchema))
@@ -138,6 +149,17 @@ class CMS {
 			});
 	}
 	async init() {
+		// Try to get master Lock
+		const masterLock = await tryObtainLock(MASTER_LOCK_FILE);
+		if (masterLock === null) {
+			await this.initSlave();
+			return;
+		}
+		const loadingLock = await tryObtainLock(LOADING_LOCK_FILE);
+		if (loadingLock === null) {
+			return;
+		}
+		// Load data
 		this.friend_links = friend_link_list;
 		if (config.enhanced_markdown.shuffle_friend_links) {
 			this.friend_links = this.friend_links
@@ -149,6 +171,121 @@ class CMS {
 				.map((v) => v.value);
 		}
 		await Promise.all([this.loadPosts(), this.loadPages()]);
+		// Save to FS-based database
+		const friendLinkSavePromise = fs.promises.writeFile(
+			FRIEND_LINK_FILE,
+			JSON.stringify(this.friend_links),
+			{
+				encoding: "utf-8",
+				flag: "w",
+			},
+		);
+		const postSavePromise = fs.promises.writeFile(
+			POST_DATA_FILE,
+			JSON.stringify(
+				this.posts.map(({ markdown_content, ...rest }) => {
+					return {
+						...rest,
+						markdown_content: markdown_content.serialize(),
+					};
+				}),
+			),
+			{
+				encoding: "utf-8",
+				flag: "w",
+			},
+		);
+		const pageSavePromise = fs.promises.writeFile(
+			PAGE_DATA_FILE,
+			JSON.stringify(
+				this.pages.map(({ markdown_content, ...rest }) => {
+					return {
+						...rest,
+						markdown_content: markdown_content.serialize(),
+					};
+				}),
+			),
+			{
+				encoding: "utf-8",
+				flag: "w",
+			},
+		);
+		await Promise.all([
+			friendLinkSavePromise,
+			postSavePromise,
+			pageSavePromise,
+		]);
+		// Release loading lock
+		await loadingLock();
+	}
+	async initSlave() {
+		// Wait for loading lock release
+		await waitingForLockRelease(LOADING_LOCK_FILE);
+		// Load data from FS-based database
+		const friendLinkLoadPromise = fs.promises
+			.readFile(FRIEND_LINK_FILE, {
+				encoding: "utf-8",
+				flag: "r",
+			})
+			.then((data) => JSON.parse(data))
+			.then((data) => {
+				this.friend_links = data;
+			});
+		const postLoadPromise = fs.promises
+			.readFile(POST_DATA_FILE, {
+				encoding: "utf-8",
+				flag: "r",
+			})
+			.then((data) => JSON.parse(data))
+			.then((data) => {
+				this.posts = data.map(
+					(
+						post: Omit<
+							Post,
+							"markdown_content" | "created_at" | "modified_at"
+						> & {
+							markdown_content: string;
+							created_at: string;
+							modified_at: string;
+						},
+					) => ({
+						...post,
+						created_at: new Date(post.created_at),
+						modified_at: new Date(post.modified_at),
+						markdown_content: deserializeMarkdownContent(post.markdown_content),
+					}),
+				);
+			});
+		const pageLoadPromise = fs.promises
+			.readFile(PAGE_DATA_FILE, {
+				encoding: "utf-8",
+				flag: "r",
+			})
+			.then((data) => JSON.parse(data))
+			.then((data) => {
+				this.pages = data.map(
+					(
+						page: Omit<
+							Page,
+							"markdown_content" | "created_at" | "modified_at"
+						> & {
+							markdown_content: string;
+							created_at: string;
+							modified_at: string;
+						},
+					) => ({
+						...page,
+						created_at: new Date(page.created_at),
+						modified_at: new Date(page.modified_at),
+						markdown_content: deserializeMarkdownContent(page.markdown_content),
+					}),
+				);
+			});
+		await Promise.all([
+			friendLinkLoadPromise,
+			postLoadPromise,
+			pageLoadPromise,
+		]);
 	}
 	getFriendLinks() {
 		return this.friend_links;

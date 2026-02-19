@@ -134,7 +134,26 @@ const post_components = {
 	"shiki-span": ShikiSpan,
 };
 
+export function deserializeMarkdownContent(
+	serialized: string,
+): MarkdownContent {
+	const obj = JSON.parse(serialized);
+	const content = new MarkdownContent();
+	content.hastTree = obj.hastTree;
+	content.mdastTree = obj.mdastTree;
+	content.rssHastTree = obj.rssHastTree;
+	return content;
+}
+
 export class MarkdownContent implements RenderableContent {
+	serialize(): string {
+		const newObj = {
+			hastTree: this.hastTree,
+			mdastTree: this.mdastTree,
+			rssHastTree: this.rssHastTree,
+		};
+		return JSON.stringify(newObj);
+	}
 	hastTree: HashRoot | null = null;
 	mdastTree: MdashRoot | null = null;
 	rssHastTree: HashRoot | null = null;
@@ -173,7 +192,7 @@ export class MarkdownContent implements RenderableContent {
 
 export async function renderMarkdownContent<T extends zc.$ZodObject>(
 	src: string,
-	metadataSchema: T
+	metadataSchema: T,
 ): Promise<zc.output<T> & Content> {
 	const content = new MarkdownContent();
 	const mdastTree = await markdownPipeline.run(markdownPipeline.parse(src));
@@ -196,10 +215,10 @@ export async function renderMarkdownContent<T extends zc.$ZodObject>(
 		force: true,
 	});
 	content.hastTree = await htmlPipeline.run(
-		JSON.parse(JSON.stringify(rawHastTree))
+		JSON.parse(JSON.stringify(rawHastTree)),
 	);
 	content.rssHastTree = await rssPipeline.run(
-		JSON.parse(JSON.stringify(rawHastTree))
+		JSON.parse(JSON.stringify(rawHastTree)),
 	);
 	return {
 		...metadata,
