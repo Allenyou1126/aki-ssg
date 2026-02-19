@@ -81,7 +81,14 @@ export const config: SiteConfig = createConfig({
 							// 当文章中图片没有完全加载时，将显示缩略图代替。
 							// 如果该项没有配置，将不显示缩略图。
 		},
-		external_link: [ // 向导航栏添加的外部链接
+		enhanced_markdown: { // 增强 Markdown 配置
+			shuffle_friend_links: true, // 是否在每次构建时随机打乱好友链接顺序
+		},
+		follow: { // Folo 相关配置，配置后将在 RSS 中输出 Folo 订阅源认证相关信息
+			user_id: "xxxxx"; // Folo 订阅源认证时使用的用户 ID
+			feed_id: "xxxxx"; // Folo 订阅源认证时使用的 Feed ID
+		},
+		extra_links: [ // 向导航栏添加的外部链接
 			{
 				title: "Example", // 链接标题
 				url: "https://example.com" // 链接 URL

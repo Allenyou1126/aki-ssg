@@ -6,6 +6,7 @@ import { renderMarkdownContent } from "@/libs/markdown-render";
 import { isProd } from "@/libs/state-management";
 import * as z from "zod";
 import * as zc from "zod/v4/core";
+import { config } from "@/data/site-config";
 
 const date = z.union([
 	z.date("Date must be a date string or date object"),
@@ -73,7 +74,7 @@ class CMS {
 
 	private async parseMarkdownFile<T extends zc.$ZodObject>(
 		path: string,
-		metadataSchema: T
+		metadataSchema: T,
 	): Promise<zc.output<T> & Content> {
 		return await fs
 			.readFile(path, {
@@ -86,12 +87,12 @@ class CMS {
 	}
 	private async processAllFile<T extends zc.$ZodObject>(
 		files: string[],
-		metadataSchema: T
+		metadataSchema: T,
 	) {
 		return Promise.all(
 			files
 				.filter((filename) => filename.endsWith(".md"))
-				.map((filename) => this.parseMarkdownFile(filename, metadataSchema))
+				.map((filename) => this.parseMarkdownFile(filename, metadataSchema)),
 		);
 	}
 	private async loadPosts() {
@@ -116,7 +117,7 @@ class CMS {
 							created_at: Date;
 							modified_at: Date;
 						};
-				})
+				}),
 			)
 			.then((list) => {
 				this.posts = list
@@ -138,6 +139,15 @@ class CMS {
 	}
 	async init() {
 		this.friend_links = friend_link_list;
+		if (config.enhanced_markdown.shuffle_friend_links) {
+			this.friend_links = this.friend_links
+				.map((value) => ({
+					value,
+					index: Math.floor(Math.random() * 1000000) % this.friend_links.length,
+				}))
+				.sort((a, b) => a.index - b.index)
+				.map((v) => v.value);
+		}
 		await Promise.all([this.loadPosts(), this.loadPages()]);
 	}
 	getFriendLinks() {

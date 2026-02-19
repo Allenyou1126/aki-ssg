@@ -46,6 +46,10 @@ declare type OptimizeConfig = {
 	meme_base_url?: string;
 };
 
+declare type EnhancedMarkdownConfig = {
+	shuffle_friend_links: boolean;
+};
+
 declare type SiteConfig = {
 	author: AuthorConfig;
 	blog: BlogConfig;
@@ -53,6 +57,7 @@ declare type SiteConfig = {
 	comment: CommentConfig;
 	follow?: FollowConfig;
 	optimize: OptimizeConfig;
+	enhanced_markdown: EnhancedMarkdownConfig;
 	extra_links: { title: string; url: string }[];
 };
 
@@ -63,5 +68,6 @@ declare type PartialSiteConfig = {
 	comment?: CommentConfig;
 	follow?: FollowConfig;
 	optimize?: Partial<OptimizeConfig>;
+	enhanced_markdown?: Partial<EnhancedMarkdownConfig>;
 	extra_links?: { title: string; url: string }[];
 };

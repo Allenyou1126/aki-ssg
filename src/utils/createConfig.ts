@@ -29,6 +29,9 @@ export function createConfig(c: PartialSiteConfig): SiteConfig {
 			thumb_query: c?.optimize?.thumb_query,
 			meme_base_url: c?.optimize?.meme_base_url,
 		},
+		enhanced_markdown: {
+			shuffle_friend_links: c?.enhanced_markdown?.shuffle_friend_links ?? false,
+		},
 		follow: c?.follow,
 		extra_links: c?.extra_links ?? [],
 	};

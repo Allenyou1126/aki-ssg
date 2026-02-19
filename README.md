@@ -81,7 +81,14 @@ export const config: SiteConfig = createConfig({
 							// When the image is not fully loaded, the low resolution thumbnails will be displayed.
 							// If not set, none of thumb will be displayed.
 		},
-		external_link: [ // External links added to navigation bar
+		enhanced_markdown: { // Some enhanced markdown features.
+			shuffle_friend_links: true, // Whether to shuffle friend links on each build time.
+		},
+		follow: { // Folo configurations. Informations for Folo subscription claim will be included in RSS.
+			user_id: "xxxxx"; // User ID used during Folo subscription claim.
+			feed_id: "xxxxx"; // Feed ID used during Folo subscription claim.
+		},
+		extra_links: [ // External links added to navigation bar
 			{
 				title: "Example", // Title of external link
 				url: "https://example.com" // URL of external link
