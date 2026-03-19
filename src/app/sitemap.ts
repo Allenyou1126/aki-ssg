@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			};
 		});
 	// 由于Next没有提供合适的Hook，所以在这里生成RSS
-	generateRssFeed();
+	await generateRssFeed();
 	return [
 		{
 			url: `https://${config.blog.hostname}/`,
