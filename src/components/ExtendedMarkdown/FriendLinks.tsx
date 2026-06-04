@@ -9,7 +9,8 @@ import { themeTokens } from "@/styles/variables.stylex";
 const style = stylex.create({
 	grid: {
 		display: "grid",
-		gap: "1rem",
+		rowGap: '1rem',
+		columnGap: '1rem',
 		gridTemplateColumns: {
 			default: "repeat(1, minmax(0, 1fr))",
 			"@media (min-width: 768px)": "repeat(2, minmax(0, 1fr))",
@@ -19,8 +20,10 @@ const style = stylex.create({
 		alignItems: "center",
 		display: "flex",
 		flexWrap: "nowrap",
-		gap: "1rem",
-		gridColumn: "span 1 / span 1",
+		rowGap: '1rem',
+		columnGap: '1rem',
+		gridColumnEnd: 'span 1',
+		gridColumnStart: 'span 1',
 		opacity: {
 			":hover": 0.9,
 		},
@@ -38,7 +41,8 @@ const style = stylex.create({
 		lineHeight: "1.75rem",
 	},
 	description: {
-		gridRow: "span 2 / span 2",
+		gridRowEnd: 'span 2',
+		gridRowStart: 'span 2',
 		opacity: 0.6,
 	},
 	metadata: {

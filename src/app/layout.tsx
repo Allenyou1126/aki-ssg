@@ -43,7 +43,8 @@ const styles = stylex.create({
 	},
 	main: {
 		display: "flex",
-		gap: "1rem",
+		rowGap: '1rem',
+		columnGap: '1rem',
 		justifyContent: "center",
 		marginTop: "-8rem",
 		position: "relative",
@@ -52,7 +53,9 @@ const styles = stylex.create({
 	},
 	container: {
 		backdropFilter: "blur(16px)",
-		backgroundColor: "rgb(from var(--bg) r g b / 0.8)",
+		// 由于 SWC 的 Bug，使用 `rgb()` 会导致 Expected 'none' value of an ident token 错误，这里使用 `oklch()` 临时规避
+		// TODO: SWC Bug 修复后更换回 `rgb()`
+		backgroundColor: "oklch(from var(--bg) l c h / 0.8)",
 		borderRadius: "1.5rem",
 		marginBlock: "0",
 		marginInline: "auto",

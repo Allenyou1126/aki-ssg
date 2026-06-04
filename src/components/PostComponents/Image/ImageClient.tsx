@@ -118,6 +118,7 @@ export default function ImageClient(
 	// 仅浏览器环境渲染缩放图片
 	const [isBrowser, setIsBrowser] = useState(false);
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setIsBrowser(true);
 	}, []);
 

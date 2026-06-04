@@ -22,12 +22,16 @@ const styles = stylex.create({
 		zIndex: 0,
 	},
 	wrap: {
-		flex: "1 1 auto",
+		flexGrow: '1',
+		flexShrink: '1',
+		flexBasis: 'auto',
 		position: "relative",
 	},
 	gradient: {
 		backgroundImage: "linear-gradient(to bottom, transparent, var(--bg))",
-		flex: "none",
+		flexGrow: '0',
+		flexShrink: '0',
+		flexBasis: 'auto',
 		height: "8rem",
 		width: "100%",
 	},

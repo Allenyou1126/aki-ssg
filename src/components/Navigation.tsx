@@ -45,7 +45,9 @@ const itemStyles = stylex.create({
 		borderRadius: "9999px",
 	},
 	divider: {
-		borderColor: "rgb(from var(--text) r g b / 0.3)",
+		// 由于 SWC 的 Bug，使用 `rgb()` 会导致 Expected 'none' value of an ident token 错误，这里使用 `oklch()` 临时规避
+		// TODO: SWC Bug 修复后更换回 `rgb()`
+		borderColor: "oklch(from var(--text) l c h / 0.3)",
 		display: {
 			"@media (min-width: 768px)": "none",
 		},
@@ -186,7 +188,9 @@ const wrapStyles = stylex.create({
 	wrapCommon: {
 		alignItems: "center",
 		backdropFilter: "blur(16px)",
-		backgroundColor: "rgb(from var(--bg) r g b / 0.8)",
+		// 由于 SWC 的 Bug，使用 `rgb()` 会导致 Expected 'none' value of an ident token 错误，这里使用 `oklch()` 临时规避
+		// TODO: SWC Bug 修复后更换回 `rgb()`
+		backgroundColor: "oklch(from var(--bg) l c h / 0.8)",
 		display: "flex",
 		flexDirection: "column",
 		flexShrink: 0,
@@ -221,7 +225,8 @@ const wrapStyles = stylex.create({
 			default: "none",
 			"@media (min-width: 768px)": "flex",
 		},
-		gap: "2rem",
+		rowGap: '2rem',
+		columnGap: '2rem',
 		justifyContent: "center",
 	},
 	mobileList: {
@@ -246,7 +251,8 @@ const wrapStyles = stylex.create({
 		alignItems: "center",
 		display: "flex",
 		flexShrink: 0,
-		gap: "2rem",
+		rowGap: '2rem',
+		columnGap: '2rem',
 		height: "5rem",
 		justifyContent: "space-between",
 		paddingBottom: "0.5rem",
@@ -260,7 +266,8 @@ const wrapStyles = stylex.create({
 const toolsStyles = stylex.create({
 	wrap: {
 		display: "flex",
-		gap: "0.25rem",
+		rowGap: '0.25rem',
+		columnGap: '0.25rem',
 	},
 	toggleIcon: {
 		display: "block",
@@ -325,6 +332,7 @@ export default function Navigation({
 	const [navWidth, setNavWidth] = useState(Math.max(10, 5 * links.length + 10));
 	const [menuStep, setMenuStep] = useState<1 | 2 | 3>(1);
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setNavWidth(Math.max(10, 5 * links.length + 10));
 	}, [links]);
 	const toggleExpand = useCallback(() => {

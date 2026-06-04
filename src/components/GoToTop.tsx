@@ -19,7 +19,9 @@ function Icon() {
 const style = stylex.create({
 	top: {
 		backgroundColor: "var(--bg)",
-		borderColor: "rgb(from var(--border) r g b / 0.8)",
+		// 由于 SWC 的 Bug，使用 `rgb()` 会导致 Expected 'none' value of an ident token 错误，这里使用 `oklch()` 临时规避
+		// TODO: SWC Bug 修复后更换回 `rgb()`
+		borderColor: "oklch(from var(--border) l c h / 0.8)",
 		borderRadius: "1rem",
 		borderWidth: "2px",
 		bottom: "1rem",

@@ -30,16 +30,19 @@ const style = stylex.create({
 		display: "flex",
 		flexDirection: "row",
 		flexWrap: "nowrap",
-		gap: "1rem",
+		rowGap: '1rem',
+		columnGap: '1rem',
 		justifyContent: "flex-start",
 		marginTop: "1rem",
 	},
 	label: {
 		fontWeight: 700,
-		gridRow: "span 1 / span 1",
+		gridRowEnd: 'span 1',
+		gridRowStart: 'span 1',
 	},
 	text: {
-		gridRow: "span 2 / span 2",
+		gridRowEnd: 'span 2',
+		gridRowStart: 'span 2',
 	},
 });
 

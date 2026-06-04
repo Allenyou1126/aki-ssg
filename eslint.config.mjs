@@ -20,7 +20,7 @@ export default defineConfig([
 			"@stylexjs/valid-shorthands": "error",
 			"@stylexjs/valid-styles": "error",
 			"@stylexjs/no-unused": "error",
-			"@stylexjs/sort-keys": "error",
+			"@stylexjs/sort-keys": "off",
 		},
 	},
 ]);

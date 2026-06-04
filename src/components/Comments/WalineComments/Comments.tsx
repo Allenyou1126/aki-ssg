@@ -162,7 +162,9 @@ export default function WalineComments() {
 const inputAreaStyle = stylex.create({
 	area: {
 		backgroundColor: "var(--bg)",
-		borderColor: "rgb(from var(--border) r g b / 10)",
+		// 由于 SWC 的 Bug，使用 `rgb()` 会导致 Expected 'none' value of an ident token 错误，这里使用 `oklch()` 临时规避
+		// TODO: SWC Bug 修复后更换回 `rgb()`
+		borderColor: "oklch(from var(--border) l c h / 10)",
 		borderRadius: "0.5rem",
 		borderStyle: "solid",
 		borderWidth: "1.5px",
@@ -203,7 +205,8 @@ const inputAreaStyle = stylex.create({
 	part: {
 		alignItems: "center",
 		display: "flex",
-		gap: "1rem",
+		rowGap: '1rem',
+		columnGap: '1rem',
 	},
 	text: {
 		fontSize: "0.75rem",
@@ -211,7 +214,9 @@ const inputAreaStyle = stylex.create({
 		opacity: 0.6,
 	},
 	metadata: {
-		borderBottomColor: "rgb(from var(--border) r g b / 10)",
+		// 由于 SWC 的 Bug，使用 `rgb()` 会导致 Expected 'none' value of an ident token 错误，这里使用 `oklch()` 临时规避
+		// TODO: SWC Bug 修复后更换回 `rgb()`
+		borderBottomColor: "oklch(from var(--border) l c h / 10)",
 		borderBottomStyle: "solid",
 		borderBottomWidth: "2px",
 		display: "flex",
@@ -223,7 +228,9 @@ const inputAreaStyle = stylex.create({
 	item: {
 		alignItems: "center",
 		display: "flex",
-		flex: "1 1 0%",
+		flexGrow: '1',
+		flexShrink: '1',
+		flexBasis: '0%',
 		fontSize: "0.75rem",
 		lineHeight: 1.75,
 	},
@@ -235,7 +242,9 @@ const inputAreaStyle = stylex.create({
 	input: {
 		backgroundColor: "transparent",
 		borderStyle: "none",
-		flex: "1 1 0%",
+		flexGrow: '1',
+		flexShrink: '1',
+		flexBasis: '0%',
 		maxWidth: "100%",
 		outlineStyle: "none",
 		padding: "0.5rem",
@@ -408,9 +417,12 @@ function WalineCommentArea({ updateFunction }: { updateFunction: () => void }) {
 const cardStyle = stylex.create({
 	container: {
 		display: "flex",
-		flex: "1 1 0%",
+		flexGrow: '1',
+		flexShrink: '1',
+		flexBasis: '0%',
 		flexDirection: "column",
-		gap: "0.25rem",
+		rowGap: '0.25rem',
+		columnGap: '0.25rem',
 		paddingBottom: "0.5rem",
 	},
 	count: {
@@ -422,7 +434,8 @@ const cardStyle = stylex.create({
 	},
 	card: {
 		display: "flex",
-		gap: "0.75rem",
+		rowGap: '0.75rem',
+		columnGap: '0.75rem',
 		padding: "0.5rem",
 		position: "relative",
 	},
@@ -492,7 +505,9 @@ const cardStyle = stylex.create({
 		opacity: 0.6,
 	},
 	ownerTag: {
-		backgroundColor: `rgb(from ${themeTokens.primaryColor}  r g b / 0.4)`,
+		// 由于 SWC 的 Bug，使用 `rgb()` 会导致 Expected 'none' value of an ident token 错误，这里使用 `oklch()` 临时规避
+		// TODO: SWC Bug 修复后更换回 `rgb()`
+		backgroundColor: `oklch(from ${themeTokens.primaryColor} l c h / 0.4)`,
 		color: themeTokens.primaryColor,
 		marginLeft: "0.5rem",
 		opacity: 1,

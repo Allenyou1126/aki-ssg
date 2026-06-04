@@ -44,7 +44,8 @@ const itemStyle = stylex.create({
 		alignItems: "start",
 		display: "flex",
 		flexDirection: "column",
-		gap: "0.125rem",
+		rowGap: '0.125rem',
+		columnGap: '0.125rem',
 	},
 	contentSelf: {
 		alignItems: "end",
@@ -63,7 +64,9 @@ const itemStyle = stylex.create({
 		width: "fit-content",
 	},
 	textSelf: {
-		backgroundColor: `rgb(from ${themeTokens.primaryColor} r g b / 0.6)`,
+		// 由于 SWC 的 Bug，使用 `rgb()` 会导致 Expected 'none' value of an ident token 错误，这里使用 `oklch()` 临时规避
+		// TODO: SWC Bug 修复后更换回 `rgb()`
+		backgroundColor: `oklch(from ${themeTokens.primaryColor} l c h / 0.6)`,
 		borderTopLeftRadius: "0.5rem",
 		borderTopRightRadius: 0,
 		textAlign: "right",
@@ -72,7 +75,8 @@ const itemStyle = stylex.create({
 		alignItems: "flex-start",
 		display: "flex",
 		flexDirection: "row",
-		gap: "0.5rem",
+		rowGap: '0.5rem',
+		columnGap: '0.5rem',
 		maxWidth: "90%",
 	},
 	itemSelf: {
@@ -99,7 +103,8 @@ const itemStyle = stylex.create({
 		borderRadius: "0.375rem",
 		display: "flex",
 		flexDirection: "column",
-		gap: "0.5rem",
+		rowGap: '0.5rem',
+		columnGap: '0.5rem',
 		marginBlock: "0",
 		marginInline: "auto",
 		paddingBlock: "1rem",
