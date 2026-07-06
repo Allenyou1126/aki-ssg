@@ -2,7 +2,7 @@
 
 import * as stylex from "@stylexjs/stylex";
 import { useAtomValue } from "jotai";
-import { useCallback, useEffect, useState } from "react";
+import { startTransition, useCallback, useEffect, useState } from "react";
 import mermaid from "mermaid";
 import { MermaidLoading } from "./MermaidLoading";
 import { Paragraph } from "@/components/PostComponents/Paragraph";
@@ -37,41 +37,62 @@ export default function MermaidClient({ children }: { children: string }) {
     const [renderResult, setRenderResult] = useState<string>("");
     const [renderResultDark, setRenderResultDark] = useState<string>("");
 
-    const renderMermaid = useCallback(async () => {
+    const renderMermaid = useCallback(async (): Promise<
+        | { succeed: true; res: string; resDark: string }
+        | { succeed: false; err: unknown }
+    > => {
         try {
             mermaid.initialize({
                 startOnLoad: false,
                 suppressErrorRendering: true,
                 theme: "default",
             });
-            await mermaid.render("mermaid", children).then((res) => {
-                setRenderResult(res.svg);
-            });
+            const res = await mermaid.render("mermaid", children);
             mermaid.initialize({
                 startOnLoad: false,
                 suppressErrorRendering: true,
                 theme: "dark",
             });
-            await mermaid.render("mermaid-dark", children).then((res) => {
-                setRenderResultDark(res.svg);
-            });
-            setRenderState("success");
+            const resDark = await mermaid.render("mermaid-dark", children);
+            return { succeed: true, res: res.svg, resDark: resDark.svg };
         } catch (err) {
-            setRenderState("failed");
-            console.error(err);
+            return { succeed: false, err };
         }
     }, [children]);
 
+    const updateRenderResult = useCallback(
+        (
+            res:
+                | { succeed: true; res: string; resDark: string }
+                | { succeed: false; err: unknown },
+        ) => {
+            if (res.succeed) {
+                setRenderState("success");
+                setRenderResult(res.res);
+                setRenderResultDark(res.resDark);
+            } else {
+                setRenderState("failed");
+                console.log(res.err);
+            }
+        },
+        [],
+    );
+
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        renderMermaid();
+        renderMermaid().then((res) => {
+            startTransition(() => {
+                updateRenderResult(res);
+            });
+        });
 
         return () => {
-            setRenderState("rendering");
-            setRenderResult("");
-            setRenderResultDark("");
+            startTransition(() => {
+                setRenderState("rendering");
+                setRenderResult("");
+                setRenderResultDark("");
+            });
         };
-    }, [children, renderMermaid]);
+    }, [children, renderMermaid, updateRenderResult]);
 
     if (renderState === "rendering") {
         return <MermaidLoading />;
