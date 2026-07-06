@@ -284,6 +284,10 @@ Aki-SSG 支持[通用指令/插件语法](https://talk.commonmark.org/t/generic-
 
 表情包将被显示为一张尺寸为原图 20% 的行内图片，加载地址为 `${optimize.meme_base_url}${group}/${mid}`。
 
+#### Mermaid 图表
+
+使用语言类型为 `mermaid` 的代码块包裹的代码将被渲染为 Mermaid 图表。
+
 ## 其他
 
 RSS Feed 文件将保存在 `/feed.xml`。  

@@ -286,6 +286,10 @@ If the `optimize.meme_base_url` item in config is not set, a warning will be dis
 
 The meme will be displayed as an inline image with 20% scale, loaded from `${optimize.meme_base_url}${group}/${mid}`.
 
+#### Mermaid Graph
+
+Use language type of `mermaid` to wrap a code block as a Mermaid graph.
+
 ## Other
 
 The RSS Feed file will be saved in `/feed.xml`.
