@@ -34,8 +34,8 @@ import { remarkFriendLinks } from "@/libs/markdown-extension/remark-friend-links
 import { remarkChat } from "@/libs/markdown-extension/remark-chat";
 import { remarkMeme } from "@/libs/markdown-extension/remark-meme";
 import {
-    rehypeMathjaxPlus,
-    rehypeMathjaxRss,
+	rehypeMathjaxPlus,
+	rehypeMathjaxRss,
 } from "@/libs/rehype-extension/rehype-mathjax-plus";
 import { rehypeTypographyFirstLastChild } from "@/libs/rehype-extension/rehype-typography-first-last-child";
 import { rehypeRemoveBreakline } from "@/libs/rehype-extension/rehype-remove-breakline";
@@ -44,189 +44,207 @@ import { rehypeTableStyle } from "@/libs/rehype-extension/rehype-table-style";
 import { rehypeCodeStyle } from "@/libs/rehype-extension/rehype-code-style";
 import { rehypeHeaderStyle } from "@/libs/rehype-extension/rehype-header-style";
 import { rehypeBlockquoteStyle } from "@/libs/rehype-extension/rehype-blockquote-style";
-import { rehypeMermaid } from "@/libs/rehype-extension/rehype-mermaid";
+import {
+	rehypeMermaid,
+	clearMermaidSources,
+	getMermaidSources,
+} from "@/libs/rehype-extension/rehype-mermaid";
 import jsYaml from "js-yaml";
 
 import * as zc from "zod/v4/core";
 
 const markdownPipeline = unified()
-    .use(remarkParse)
-    .use(remarkFrontmatter, ["yaml"])
-    .use(remarkGithubAlerts)
-    .use(remarkGfm, { singleTilde: false })
-    .use(remarkMath)
-    .use(remarkDirective)
-    .use(remarkDirectiveRehype)
-    .use(remarkBilibili)
-    .use(remarkMeme)
-    .use(remarkChat)
-    .use(remarkFriendLinks);
+	.use(remarkParse)
+	.use(remarkFrontmatter, ["yaml"])
+	.use(remarkGithubAlerts)
+	.use(remarkGfm, { singleTilde: false })
+	.use(remarkMath)
+	.use(remarkDirective)
+	.use(remarkDirectiveRehype)
+	.use(remarkBilibili)
+	.use(remarkMeme)
+	.use(remarkChat)
+	.use(remarkFriendLinks);
 
 const remarkRehypePipeline = unified().use(remarkRehype);
 
 const htmlPipeline = unified()
-    .use(rehypeSlug, {})
-    .use(rehypeMermaid)
-    .use(rehypeShiki, {
-        theme: "night-owl",
-    })
-    .use(rehypeCodeStyle)
-    .use(rehypeTypographyFirstLastChild)
-    .use(rehypeRemoveBreakline)
-    .use(rehypeTableStyle)
-    .use(rehypeListStyle)
-    .use(rehypeHeaderStyle)
-    .use(rehypeBlockquoteStyle)
-    .use(rehypeSanitize, {
-        tagNames: [
-            "bilibili",
-            "friend-links",
-            "chat",
-            "chat-item",
-            "chat-sender",
-            "meme",
-            "mermaid",
-            "mjx-container",
-            "svg",
-            "path",
-            "g",
-            "defs",
-            "shiki-span",
-            ...(defaultSchema.tagNames ?? []),
-        ],
-        attributes: {
-            // HTML Components
-            "*": ["noTop", "noBottom", "id"],
-            a: ["href"],
-            img: ["src", "width", "height", "alt", "inline"],
-            code: [["className", /^language-/], "parent"],
-            kbd: ["parent"],
-            p: ["parent", "first", "last"],
-            strong: ["parent"],
-            th: ["first", "last"],
-            tr: ["last"],
-            td: ["first", "last", "parent"],
-            ol: ["type", "parent"],
-            ul: ["parent"],
-            "shiki-span": ["style"],
-            // Custom elements
-            chat: [],
-            "chat-item": ["sender_name", "sender_avatar", "align_right"],
-            "chat-sender": ["sender_name", "sender_avatar", "align_right"],
-            mermaid: ["className"],
-            bilibili: ["bvid", "cid"],
-            meme: ["group", "mid"],
-        },
-    })
-    .use(rehypeMathjax, {})
-    .use(rehypeMathjaxPlus);
+	.use(rehypeSlug, {})
+	.use(rehypeMermaid)
+	.use(rehypeShiki, {
+		theme: "night-owl",
+	})
+	.use(rehypeCodeStyle)
+	.use(rehypeTypographyFirstLastChild)
+	.use(rehypeRemoveBreakline)
+	.use(rehypeTableStyle)
+	.use(rehypeListStyle)
+	.use(rehypeHeaderStyle)
+	.use(rehypeBlockquoteStyle)
+	.use(rehypeSanitize, {
+		tagNames: [
+			"bilibili",
+			"friend-links",
+			"chat",
+			"chat-item",
+			"chat-sender",
+			"meme",
+			"mermaid",
+			"mjx-container",
+			"svg",
+			"path",
+			"g",
+			"defs",
+			"shiki-span",
+			...(defaultSchema.tagNames ?? []),
+		],
+		attributes: {
+			// HTML Components
+			"*": ["noTop", "noBottom", "id"],
+			a: ["href"],
+			img: ["src", "width", "height", "alt", "inline"],
+			code: [["className", /^language-/], "parent"],
+			kbd: ["parent"],
+			p: ["parent", "first", "last"],
+			strong: ["parent"],
+			th: ["first", "last"],
+			tr: ["last"],
+			td: ["first", "last", "parent"],
+			ol: ["type", "parent"],
+			ul: ["parent"],
+			"shiki-span": ["style"],
+			// Custom elements
+			chat: [],
+			"chat-item": ["sender_name", "sender_avatar", "align_right"],
+			"chat-sender": ["sender_name", "sender_avatar", "align_right"],
+			mermaid: ["data-mermaid-id"],
+			bilibili: ["bvid", "cid"],
+			meme: ["group", "mid"],
+		},
+	})
+	.use(rehypeMathjax, {})
+	.use(rehypeMathjaxPlus);
 
 const rssPipeline = unified()
-    .use(rehypeSlug, {})
-    .use(rehypeMathjaxRss)
-    .use(rehypeSanitize, {
-        attributes: {
-            "*": ["id"],
-            a: ["href"],
-            img: ["src", "width", "height", "alt"],
-            code: [["className", /^language-/]],
-        },
-    });
+	.use(rehypeSlug, {})
+	.use(rehypeMathjaxRss)
+	.use(rehypeSanitize, {
+		attributes: {
+			"*": ["id"],
+			a: ["href"],
+			img: ["src", "width", "height", "alt"],
+			code: [["className", /^language-/]],
+		},
+	});
 
 const post_components = {
-    img: Image,
-    "shiki-span": ShikiSpan,
+	img: Image,
+	"shiki-span": ShikiSpan,
 };
 
 export function deserializeMarkdownContent(
-    serialized: string,
+	serialized: string,
 ): MarkdownContent {
-    const obj = JSON.parse(serialized);
-    const content = new MarkdownContent();
-    content.hastTree = obj.hastTree;
-    content.mdastTree = obj.mdastTree;
-    content.rssHastTree = obj.rssHastTree;
-    return content;
+	const obj = JSON.parse(serialized);
+	const content = new MarkdownContent();
+	content.hastTree = obj.hastTree;
+	content.mdastTree = obj.mdastTree;
+	content.rssHastTree = obj.rssHastTree;
+	content.mermaidSources = obj.mermaidSources ?? [];
+	return content;
 }
 
 export class MarkdownContent implements RenderableContent {
-    serialize(): string {
-        const newObj = {
-            hastTree: this.hastTree,
-            mdastTree: this.mdastTree,
-            rssHastTree: this.rssHastTree,
-        };
-        return JSON.stringify(newObj);
-    }
-    hastTree: HashRoot | null = null;
-    mdastTree: MdashRoot | null = null;
-    rssHastTree: HashRoot | null = null;
-    toReactNode(): React.ReactNode {
-        if (!this.hastTree) {
-            throw new Error("Markdown content has not been rendered yet.");
-        }
-        return toJsxRuntime(this.hastTree, {
-            Fragment,
-            components: {
-                ...post_components,
-                ...html_components,
-                ...extended_components,
-            },
-            ignoreInvalidStyle: true,
-            jsx,
-            jsxs,
-        });
-    }
-    toToc(): Result {
-        if (!this.mdastTree) {
-            throw new Error("Markdown content has not been rendered yet.");
-        }
-        return toc(this.mdastTree, {
-            tight: true,
-            ordered: true,
-        });
-    }
-    toRssFeed(): string {
-        if (!this.rssHastTree) {
-            throw new Error("Markdown content has not been rendered yet.");
-        }
-        return toHtml(this.rssHastTree, {});
-    }
+	hastTree: HashRoot | null = null;
+	mdastTree: MdashRoot | null = null;
+	rssHastTree: HashRoot | null = null;
+	mermaidSources: { id: string; source: string }[] = [];
+
+	get hasMermaid(): boolean {
+		return this.mermaidSources.length > 0;
+	}
+
+	serialize(): string {
+		const newObj = {
+			hastTree: this.hastTree,
+			mdastTree: this.mdastTree,
+			rssHastTree: this.rssHastTree,
+			mermaidSources: this.mermaidSources,
+		};
+		return JSON.stringify(newObj);
+	}
+
+	toReactNode(): React.ReactNode {
+		if (!this.hastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toJsxRuntime(this.hastTree, {
+			Fragment,
+			components: {
+				...post_components,
+				...html_components,
+				...extended_components,
+			},
+			ignoreInvalidStyle: true,
+			jsx,
+			jsxs,
+		});
+	}
+
+	toToc(): Result {
+		if (!this.mdastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toc(this.mdastTree, {
+			tight: true,
+			ordered: true,
+		});
+	}
+
+	toRssFeed(): string {
+		if (!this.rssHastTree) {
+			throw new Error("Markdown content has not been rendered yet.");
+		}
+		return toHtml(this.rssHastTree, {});
+	}
 }
 
 export async function renderMarkdownContent<T extends zc.$ZodObject>(
-    src: string,
-    metadataSchema: T,
+	src: string,
+	metadataSchema: T,
 ): Promise<zc.output<T> & Content> {
-    const content = new MarkdownContent();
-    const mdastTree = await markdownPipeline.run(markdownPipeline.parse(src));
-    const fmNode = find<{ type: "yaml"; value?: string }>(mdastTree, {
-        type: "yaml",
-    });
-    if (!fmNode) {
-        throw new Error("Frontmatter not found.");
-    }
-    const fmData = fmNode.value;
-    if (!fmData) {
-        throw new Error("Frontmatter data is empty.");
-    }
-    const rawFmData = jsYaml.load(fmData);
-    const metadata = await zc.parseAsync(metadataSchema, rawFmData);
-    remove(mdastTree, { type: "yaml" });
-    content.mdastTree = mdastTree;
-    const rawHastTree = await remarkRehypePipeline.run(mdastTree);
-    removePosition(rawHastTree, {
-        force: true,
-    });
-    content.hastTree = await htmlPipeline.run(
-        JSON.parse(JSON.stringify(rawHastTree)),
-    );
-    content.rssHastTree = await rssPipeline.run(
-        JSON.parse(JSON.stringify(rawHastTree)),
-    );
-    return {
-        ...metadata,
-        original_content: src,
-        markdown_content: content,
-    };
+	const content = new MarkdownContent();
+	const mdastTree = await markdownPipeline.run(markdownPipeline.parse(src));
+	const fmNode = find<{ type: "yaml"; value?: string }>(mdastTree, {
+		type: "yaml",
+	});
+	if (!fmNode) {
+		throw new Error("Frontmatter not found.");
+	}
+	const fmData = fmNode.value;
+	if (!fmData) {
+		throw new Error("Frontmatter data is empty.");
+	}
+	const rawFmData = jsYaml.load(fmData);
+	const metadata = await zc.parseAsync(metadataSchema, rawFmData);
+	remove(mdastTree, { type: "yaml" });
+	content.mdastTree = mdastTree;
+	const rawHastTree = await remarkRehypePipeline.run(mdastTree);
+	removePosition(rawHastTree, {
+		force: true,
+	});
+	clearMermaidSources();
+	content.hastTree = await htmlPipeline.run(
+		JSON.parse(JSON.stringify(rawHastTree)),
+	);
+	content.mermaidSources = getMermaidSources();
+	clearMermaidSources();
+	content.rssHastTree = await rssPipeline.run(
+		JSON.parse(JSON.stringify(rawHastTree)),
+	);
+	return {
+		...metadata,
+		original_content: src,
+		markdown_content: content,
+	};
 }

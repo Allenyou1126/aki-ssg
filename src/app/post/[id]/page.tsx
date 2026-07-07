@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import * as stylex from "@stylexjs/stylex";
 import { MarkdownContent } from "@/components/MarkdownContent";
+import MermaidManager from "@/components/ExtendedMarkdown/Mermaid/MermaidManager";
 
 export async function generateStaticParams() {
 	const cms = await initCMS();
@@ -73,7 +74,11 @@ export default async function PostPage({
 					: ` (最后更新于 ${post.modified_at.toLocaleDateString()})`}
 			</p>
 			<OutdateTip created={post.modified_at.toDateString()} />
-			<MarkdownContent>{post.markdown_content.toReactNode()}</MarkdownContent>
+			<MermaidManager sources={post.markdown_content.mermaidSources}>
+				<MarkdownContent>
+					{post.markdown_content.toReactNode()}
+				</MarkdownContent>
+			</MermaidManager>
 			<Copyright title={post.title} id={(await params).id} />
 			<Comments />
 			<Toc toc={post.markdown_content.toToc().map} />

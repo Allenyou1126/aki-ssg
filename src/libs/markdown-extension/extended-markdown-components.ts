@@ -7,11 +7,11 @@ import { Components } from "hast-util-to-jsx-runtime";
 import { Mermaid } from "@/components/ExtendedMarkdown/Mermaid/Mermaid";
 
 export const extended_components = {
-    bilibili: BilibiliVideo,
-    "friend-links": FriendLinks,
-    chat: Chat.Container,
-    "chat-item": Chat.Item,
-    "chat-sender": Chat.SenderItem,
-    meme: Meme,
-    mermaid: Mermaid,
+	bilibili: BilibiliVideo,
+	"friend-links": FriendLinks,
+	chat: Chat.Container,
+	"chat-item": Chat.Item,
+	"chat-sender": Chat.SenderItem,
+	meme: Meme,
+	mermaid: Mermaid,
 } satisfies Partial<Components>;

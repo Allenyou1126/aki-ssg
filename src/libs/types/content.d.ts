@@ -26,6 +26,8 @@ declare interface RenderableContent {
 	toToc(): Result;
 	toRssFeed(): string;
 	serialize(): string;
+	mermaidSources: { id: string; source: string }[];
+	readonly hasMermaid: boolean;
 }
 declare type TocItem = {
 	display: string;

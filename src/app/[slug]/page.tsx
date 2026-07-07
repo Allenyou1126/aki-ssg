@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import * as stylex from "@stylexjs/stylex";
 import { MarkdownContent } from "@/components/MarkdownContent";
+import MermaidManager from "@/components/ExtendedMarkdown/Mermaid/MermaidManager";
 
 export async function generateStaticParams() {
 	const cms = await initCMS();
@@ -53,7 +54,11 @@ export default async function CustomPage({
 	return (
 		<>
 			<p {...stylex.props(styles.title)}>{page.title}</p>
-			<MarkdownContent>{page.markdown_content.toReactNode()}</MarkdownContent>
+			<MermaidManager sources={page.markdown_content.mermaidSources}>
+				<MarkdownContent>
+					{page.markdown_content.toReactNode()}
+				</MarkdownContent>
+			</MermaidManager>
 			{page.enable_comment && <Comments />}
 		</>
 	);
