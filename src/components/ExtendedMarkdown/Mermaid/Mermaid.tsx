@@ -6,7 +6,7 @@ import useSWR from "swr";
 import { MermaidLoading } from "./MermaidLoading";
 import { Paragraph } from "@/components/PostComponents/Paragraph";
 import { isDarkMode } from "@/libs/state-management";
-import { mermaidRenderPromise } from "./mermaidPromise";
+import { getMermaidRenderPromise } from "./mermaidPromise";
 import type { MermaidResult } from "./mermaidPromise";
 
 const MERMAID_KEY_PREFIX = "mermaid:";
@@ -33,7 +33,7 @@ const style = stylex.create({
 });
 
 const mermaidFetcher = async (key: string): Promise<MermaidResult> => {
-    const results = await mermaidRenderPromise;
+	const results = await getMermaidRenderPromise();
     const id = key.slice(MERMAID_KEY_PREFIX.length);
     const result = results.get(id);
     if (!result || !result.succeed) {
