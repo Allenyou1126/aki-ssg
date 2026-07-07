@@ -16,7 +16,6 @@ export default function MermaidManagerClient({
 	useEffect(() => {
 		if (hasRendered.current) return;
 		hasRendered.current = true;
-		console.log("[MermaidManagerClient] effect firing, sources:", sources.length);
 		renderMermaidGraphs(sources).catch((err) => {
 			console.error("[MermaidManagerClient] renderMermaidGraphs rejected:", err);
 		});

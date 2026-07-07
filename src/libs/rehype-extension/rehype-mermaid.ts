@@ -2,21 +2,6 @@ import type { Root, Element } from "hast";
 import { visitParents } from "unist-util-visit-parents";
 import { toText } from "hast-util-to-text";
 
-const mermaidSourceMap = new Map<string, string>();
-let mermaidCounter = 0;
-
-export function clearMermaidSources() {
-	mermaidSourceMap.clear();
-	mermaidCounter = 0;
-}
-
-export function getMermaidSources(): { id: string; source: string }[] {
-	return Array.from(mermaidSourceMap.entries()).map(([id, source]) => ({
-		id,
-		source,
-	}));
-}
-
 function isMermaidElement(element: Element): boolean {
 	let mermaidClassName: string;
 
@@ -43,12 +28,9 @@ function isMermaidElement(element: Element): boolean {
 	return className.includes(mermaidClassName);
 }
 
-function extractAndReplace(node: Element): Element {
-	const source = toText(node, {
-		whitespace: "pre",
-	});
-	const id = `mermaid-${mermaidCounter++}`;
-	mermaidSourceMap.set(id, source);
+function extractAndReplace(node: Element, counter: number): Element {
+	const source = toText(node, { whitespace: "pre" });
+	const id = `mermaid-${counter}`;
 
 	return {
 		type: "element",
@@ -56,11 +38,17 @@ function extractAndReplace(node: Element): Element {
 		properties: {
 			"data-mermaid-id": id,
 		},
-		children: [],
+		children: [
+			{
+				type: "text",
+				value: source,
+			},
+		],
 	};
 }
 
 export const rehypeMermaid = () => (tree: Root) => {
+	let counter = 0;
 	visitParents(tree, "element", (node, ancestors) => {
 		if (!isMermaidElement(node)) {
 			return;
@@ -71,7 +59,7 @@ export const rehypeMermaid = () => (tree: Root) => {
 				return;
 			}
 			parent.children[parent.children.indexOf(node)] =
-				extractAndReplace(node);
+				extractAndReplace(node, counter++);
 			return;
 		}
 		if (node.tagName === "code") {
@@ -81,7 +69,7 @@ export const rehypeMermaid = () => (tree: Root) => {
 				return;
 			}
 			parent.children[parent.children.indexOf(pre)] =
-				extractAndReplace(node);
+				extractAndReplace(node, counter++);
 			return;
 		}
 	});

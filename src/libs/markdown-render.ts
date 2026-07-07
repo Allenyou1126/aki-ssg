@@ -15,6 +15,8 @@ import { ShikiSpan } from "@/components/PostComponents/ShikiSpan";
 import { removePosition } from "unist-util-remove-position";
 import { remove } from "unist-util-remove";
 import { find } from "unist-util-find";
+import { visit } from "unist-util-visit";
+import { toText } from "hast-util-to-text";
 
 import rehypeMathjax from "rehype-mathjax";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
@@ -46,8 +48,6 @@ import { rehypeHeaderStyle } from "@/libs/rehype-extension/rehype-header-style";
 import { rehypeBlockquoteStyle } from "@/libs/rehype-extension/rehype-blockquote-style";
 import {
 	rehypeMermaid,
-	clearMermaidSources,
-	getMermaidSources,
 } from "@/libs/rehype-extension/rehype-mermaid";
 import jsYaml from "js-yaml";
 
@@ -209,6 +209,25 @@ export class MarkdownContent implements RenderableContent {
 	}
 }
 
+function collectMermaidSources(
+	tree: HashRoot,
+): { id: string; source: string }[] {
+	const sources: { id: string; source: string }[] = [];
+	visit(tree, "element", (node) => {
+		if (
+			node.tagName === "mermaid" &&
+			node.properties &&
+			node.properties["data-mermaid-id"]
+		) {
+			const id = String(node.properties["data-mermaid-id"]);
+			const source = toText(node, { whitespace: "pre" });
+			sources.push({ id, source });
+			node.children = [];
+		}
+	});
+	return sources;
+}
+
 export async function renderMarkdownContent<T extends zc.$ZodObject>(
 	src: string,
 	metadataSchema: T,
@@ -233,12 +252,10 @@ export async function renderMarkdownContent<T extends zc.$ZodObject>(
 	removePosition(rawHastTree, {
 		force: true,
 	});
-	clearMermaidSources();
 	content.hastTree = await htmlPipeline.run(
 		JSON.parse(JSON.stringify(rawHastTree)),
 	);
-	content.mermaidSources = getMermaidSources();
-	clearMermaidSources();
+	content.mermaidSources = collectMermaidSources(content.hastTree);
 	content.rssHastTree = await rssPipeline.run(
 		JSON.parse(JSON.stringify(rawHastTree)),
 	);
