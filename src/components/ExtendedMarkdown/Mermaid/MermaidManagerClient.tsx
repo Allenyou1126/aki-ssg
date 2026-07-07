@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import type { MermaidSource } from "./mermaidRender";
 
+console.log("[MermaidManagerClient] module loaded");
+
 const MermaidRenderer = dynamic(
     async () => {
         const { renderMermaidGraphs } = await import("./mermaidRender");
@@ -17,11 +19,14 @@ const MermaidRenderer = dynamic(
             }) {
                 const hasRendered = useRef(false);
 
-                useEffect(() => {
-                    if (hasRendered.current) return;
-                    hasRendered.current = true;
-                    renderMermaidGraphs(sources);
-                }, [sources]);
+				useEffect(() => {
+					if (hasRendered.current) return;
+					hasRendered.current = true;
+					console.log("[MermaidManagerClient] effect firing, sources:", sources.length);
+					renderMermaidGraphs(sources).catch((err) => {
+						console.error("[MermaidManagerClient] renderMermaidGraphs rejected:", err);
+					});
+				}, [sources]);
 
                 return <>{children}</>;
             },
