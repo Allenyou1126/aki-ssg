@@ -5,41 +5,39 @@ import dynamic from "next/dynamic";
 import type { MermaidSource } from "./mermaidRender";
 
 const MermaidRenderer = dynamic(
-	async () => {
-		const { renderMermaidGraphs } = await import("./mermaidRender");
-		return {
-			default: function MermaidRendererInner({
-				sources,
-				children,
-			}: {
-				sources: MermaidSource[];
-				children: React.ReactNode;
-			}) {
-				const hasRendered = useRef(false);
+    async () => {
+        const { renderMermaidGraphs } = await import("./mermaidRender");
+        return {
+            default: function MermaidRendererInner({
+                sources,
+                children,
+            }: {
+                sources: MermaidSource[];
+                children: React.ReactNode;
+            }) {
+                const hasRendered = useRef(false);
 
-				useEffect(() => {
-					if (hasRendered.current) return;
-					hasRendered.current = true;
-					void renderMermaidGraphs(sources);
-				}, [sources]);
+                useEffect(() => {
+                    if (hasRendered.current) return;
+                    hasRendered.current = true;
+                    renderMermaidGraphs(sources);
+                }, [sources]);
 
-				return <>{children}</>;
-			},
-		};
-	},
-	{
-		ssr: false,
-	},
+                return <>{children}</>;
+            },
+        };
+    },
+    {
+        ssr: false,
+    },
 );
 
 export default function MermaidManagerClient({
-	sources,
-	children,
+    sources,
+    children,
 }: {
-	sources: MermaidSource[];
-	children: React.ReactNode;
+    sources: MermaidSource[];
+    children: React.ReactNode;
 }) {
-	return (
-		<MermaidRenderer sources={sources}>{children}</MermaidRenderer>
-	);
+    return <MermaidRenderer sources={sources}>{children}</MermaidRenderer>;
 }
